@@ -16,7 +16,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_TEST_DB: trade_test
+          POSTGRES_TEST_DB: exchange_test_db
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
