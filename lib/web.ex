@@ -1,12 +1,12 @@
-defmodule ExchangeWeb do
+defmodule Web do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use ExchangeWeb, :controller
-      use ExchangeWeb, :view
+      use Web, :controller
+      use Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,19 +19,20 @@ defmodule ExchangeWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: ExchangeWeb
+      use Phoenix.Controller, namespace: Web
 
       import Plug.Conn
-      import ExchangeWeb.Gettext
-      alias ExchangeWeb.Router.Helpers, as: Routes
+      import Web.Gettext
+      alias Web.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/exchange_web/templates",
-        namespace: ExchangeWeb
+        root: "lib/web/",
+        pattern: "**/*",
+        namespace: Web
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -45,7 +46,7 @@ defmodule ExchangeWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {ExchangeWeb.LayoutView, "live.html"}
+        layout: {Web.LayoutView, "live.html"}
 
       unquote(view_helpers())
     end
@@ -72,7 +73,7 @@ defmodule ExchangeWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import ExchangeWeb.Gettext
+      import Web.Gettext
     end
   end
 
@@ -87,9 +88,9 @@ defmodule ExchangeWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import ExchangeWeb.ErrorHelpers
-      import ExchangeWeb.Gettext
-      alias ExchangeWeb.Router.Helpers, as: Routes
+      import Web.ErrorHelpers
+      import Web.Gettext
+      alias Web.Router.Helpers, as: Routes
     end
   end
 

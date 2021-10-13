@@ -1,7 +1,7 @@
 import Config
 
 # Configure your database
-config :exchange, Exchange.Repo,
+config :exchange, Repo,
   username: (System.get_env("POSTGRES_USER") || "postgres"),
   password: (System.get_env("POSTGRES_PASSWORD") || "postgres"),
   database: (System.get_env("POSTGRES_DB") || "exchange_db"),
@@ -15,7 +15,7 @@ config :exchange, Exchange.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with esbuild to bundle .js and .css sources.
-config :exchange, ExchangeWeb.Endpoint,
+config :exchange, Web.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [port: 4000],
@@ -53,7 +53,7 @@ config :exchange, ExchangeWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :exchange, ExchangeWeb.Endpoint,
+config :exchange, Web.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",

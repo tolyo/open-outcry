@@ -8,13 +8,13 @@
 import Config
 
 config :exchange,
-  ecto_repos: [Exchange.Repo]
+  ecto_repos: [Repo]
 
 # Configures the endpoint
-config :exchange, ExchangeWeb.Endpoint,
+config :exchange, Web.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: ExchangeWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: Exchange.PubSub,
+  render_errors: [view: Web.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: PubSub,
   live_view: [signing_salt: "y/U3N9z6"]
 
 # Configure esbuild (the version is required)

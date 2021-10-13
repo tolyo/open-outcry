@@ -1,5 +1,5 @@
-defmodule ExchangeWeb.PageControllerTest do
-  use ExchangeWeb.ConnCase
+defmodule Web.PageControllerTest do
+  use Web.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")

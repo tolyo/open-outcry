@@ -1,4 +1,4 @@
-defmodule Exchange.Repo do
+defmodule Repo do
   use Ecto.Repo,
     otp_app: :exchange,
     adapter: Ecto.Adapters.Postgres

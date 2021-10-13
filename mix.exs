@@ -1,4 +1,4 @@
-defmodule Exchange.MixProject do
+defmodule MixProject do
   use Mix.Project
 
   def project do
@@ -19,7 +19,7 @@ defmodule Exchange.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Exchange.Application, []},
+      mod: {MainApplication, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

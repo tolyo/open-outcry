@@ -1,3 +1,3 @@
-defmodule ExchangeWeb.PageViewTest do
-  use ExchangeWeb.ConnCase, async: true
+defmodule Web.PageViewTest do
+  use Web.ConnCase, async: true
 end
