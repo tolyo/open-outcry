@@ -1,0 +1,39 @@
+version: "3.4"
+
+x-common-variables: &common-variables
+  POSTGRES_DB: exchange_db
+  POSTGRES_TEST_DB: exchange_db_test
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_PORT: 5432
+  POSTGRES_HOST: db
+
+volumes:
+  postgres-storage:
+services:
+  db:
+    container_name: exchange_db
+    image: postgres:9.6
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-storage:/var/lib/postgresql/data
+    environment: *common-variables
+    restart: unless-stopped
+
+  app:
+    container_name: exchange_app
+    build: 
+      context: .
+    depends_on:
+      - db
+    environment:
+      <<: *common-variables
+      MIX_ENV: dev
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/app  
+    stdin_open: true  
+    command: ["bash", "/tmp/server_init.sh"]
+  

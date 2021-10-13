@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :exchange, Exchange.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "exchange_dev",
-  hostname: "localhost",
+  username: (System.get_env("POSTGRES_USER") || "postgres"),
+  password: (System.get_env("POSTGRES_PASSWORD") || "postgres"),
+  database: (System.get_env("POSTGRES_DB") || "exchange_db"),
+  hostname: (System.get_env("POSTGRES_HOST") || "localhost"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -18,7 +18,7 @@ config :exchange, Exchange.Repo,
 config :exchange, ExchangeWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
