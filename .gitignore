@@ -32,4 +32,4 @@ exchange-*.tar
 npm-debug.log
 /assets/node_modules/
 
-.elixis_ls
+/.elixir_ls
