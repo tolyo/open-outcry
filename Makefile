@@ -29,3 +29,6 @@ run-test:
 	MIX_ENV=test mix test test/ lib/
 
 run-quality-check: lint check run-test check-coverage
+
+style-check:
+	mix credo --all 

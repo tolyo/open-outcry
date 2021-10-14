@@ -10,6 +10,7 @@ defmodule MainApplication do
     children = [
       # Start the Ecto repository
       Repo,
+      DBListener,
       # Start the Telemetry supervisor
       Web.Telemetry,
       # Start the PubSub system
