@@ -7,7 +7,12 @@ defmodule Repo.Migrations.InitialMigration do
   @spec types() :: [String.t]
   def types() do
     [
-
+      "payment_type",
+      "order_fill",
+      "order_side",
+      "order_type",
+      "trade_order_status",
+      "order_time_in_force"
     ]
   end
 
@@ -17,7 +22,19 @@ defmodule Repo.Migrations.InitialMigration do
   @spec models() :: [String.t]
   def models() do
     [
-      "application_entity"
+      "application_entity",
+      "currency",
+      "payment_account",
+      "payment",
+      "instrument",
+      "price_level",
+      "trading_account",
+      "trading_account_instrument",
+      "trading_account_transfer",
+      "trade_order",
+      "trade",
+      "book_order",
+      "stop_order"
     ]
   end
 
