@@ -34,4 +34,9 @@ defmodule MainApplication do
     Web.Endpoint.config_change(changed, removed)
     :ok
   end
+
+  @spec prod :: boolean
+  def prod() do
+    Application.get_env(:server, :environment) == :prod
+  end
 end

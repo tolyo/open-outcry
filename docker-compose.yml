@@ -2,7 +2,7 @@ version: "3.4"
 
 x-common-variables: &common-variables
   POSTGRES_DB: exchange_db
-  POSTGRES_TEST_DB: exchange_db_test
+  POSTGRES_TEST_DB: exchange_test_db
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   POSTGRES_PORT: 5432
