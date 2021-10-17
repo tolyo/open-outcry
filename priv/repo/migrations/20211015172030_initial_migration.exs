@@ -44,6 +44,23 @@ defmodule Repo.Migrations.InitialMigration do
   @spec functions() :: [String.t()]
   def functions() do
     [
+      "banker_round(NUMERIC, INT)",
+      "create_payment_account(TEXT, TEXT)",
+      "create_payment(payment_type, TEXT, NUMERIC, TEXT, TEXT, TEXT, TEXT)",
+      "create_client(TEXT)",
+      "get_crossing_limit_orders(BIGINT, order_side, NUMERIC)",
+      "get_available_limit_volume(BIGINT, order_side, DECIMAL)",
+      "get_available_market_volume(BIGINT, order_side)",
+      "get_best_limit_price(BIGINT, order_side)",
+      "get_fill_type(NUMERIC, NUMERIC)",
+      "create_trade(BIGINT, DECIMAL, DECIMAL, BIGINT, BIGINT, BIGINT)",
+      "create_book_order(TEXT)",
+      "cancel_trade_order(TEXT)",
+      "activate_crossing_stop_orders(BIGINT, order_side, NUMERIC)",
+      "process_crossing_stop_orders(BIGINT, order_side, NUMERIC)",
+      "get_trade_price(order_side, order_type, DECIMAL, order_side, order_type, DECIMAL, BIGINT)",
+      "process_trade_order(TEXT, TEXT, TEXT, order_side, DECIMAL, DECIMAL, TEXT, BIGINT)",
+      "update_price_level(BIGINT, order_side, DECIMAL, DECIMAL, BOOLEAN)"
     ]
   end
 

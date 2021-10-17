@@ -1,5 +1,4 @@
 defmodule TradingAccount do
-
   @typedoc """
     `trading_account.pub_id` db reference
   """

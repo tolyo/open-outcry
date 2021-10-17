@@ -1,5 +1,4 @@
 defmodule Currency do
-
   @type id :: String.t()
 
   @type name :: String.t()
