@@ -58,7 +58,7 @@ defmodule Repo.Migrations.InitialSeeds do
         name,
         base_currency,
         quote_currency,
-        currency_instrument
+        fx_instrument
       ) VALUES (
         'BTC_EUR',
         'BTC',
