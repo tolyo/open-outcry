@@ -52,13 +52,13 @@ defmodule TradeOrder do
       t.pub_id,
       ta.pub_id,
       i.name,
-      t.side,
-      t.order_type,
+      t.side::text,
+      t.order_type::text,
       t.price,
       t.amount,
       t.open_amount,
-      t.status,
-      t.time_in_force
+      t.status::text,
+      t.time_in_force::text
     )
 
     FROM trade_order AS t
