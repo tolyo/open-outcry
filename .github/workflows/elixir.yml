@@ -42,8 +42,6 @@ jobs:
     - name: Install dependencies
       run: mix deps.get
     - name: Initialize schema
-      run: mix ecto.create
-    - name: Rebuild DB 
-      run: mix ecto.migrate  
+      run: 	MIX_ENV=test mix ecto.create  
     - name: Run tests
-      run: mix test test/ lib/
+      run: MIX_ENV=test mix test test/ lib/
