@@ -282,7 +282,7 @@ BEGIN
                 FOR book_order_instance
                     IN SELECT * FROM get_crossing_limit_orders(
                         instrument_instance.id, 
-                        opposite_side_var, prbase_currencyice_param
+                        opposite_side_var, price_param
                     )
                     LOOP
                         SELECT * FROM trade_order
