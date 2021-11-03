@@ -41,6 +41,8 @@ jobs:
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: mix deps.get
+    - name: Initialize schema
+      run: mix ecto.create
     - name: Rebuild DB 
       run: mix ecto.migrate  
     - name: Run tests
