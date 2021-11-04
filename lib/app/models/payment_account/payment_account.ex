@@ -57,7 +57,7 @@ defmodule PaymentAccount do
           ON pa.application_entity_id = ae.id
 
         INNER JOIN currency c
-          ON pa.currency_id = c.id
+          ON pa.currency_name = c.name
   """
 
   @spec get(PaymentAccount.id()) :: PaymentAccount.t()

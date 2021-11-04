@@ -65,7 +65,7 @@ BEGIN
         INNER JOIN application_entity
             ON payment_account.application_entity_id = application_entity.id
         WHERE application_entity.id = trading_account_instance.application_entity_id
-        AND currency_id = (SELECT id FROM currency WHERE name = order_currency_var)
+        AND currency_name = order_currency_var
         INTO payment_account_instance;
         
         IF NOT FOUND THEN

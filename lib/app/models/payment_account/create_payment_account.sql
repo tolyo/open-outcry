@@ -31,7 +31,7 @@ BEGIN
 
     -- prevent dudblicates 
     SELECT * FROM payment_account
-    WHERE currency_id = currency_instance.id
+    WHERE currency_name = currency_instance.name
     AND application_entity_id = application_entity_instance.id
     INTO payment_account_instance;
 
@@ -42,11 +42,11 @@ BEGIN
     -- create payment_account
     INSERT INTO payment_account (
         application_entity_id,
-        currency_id
+        currency_name
     )
     VALUES (
         application_entity_instance.id,
-        currency_instance.id
+        currency_instance.name
     )
     RETURNING * INTO payment_account_instance;
     

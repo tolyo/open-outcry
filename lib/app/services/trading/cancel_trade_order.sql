@@ -65,7 +65,7 @@ BEGIN
     
     UPDATE payment_account
     SET amount_reserved = amount_reserved - trade_order_instance.open_amount
-    WHERE currency_id = (SELECT id FROM currency WHERE name = order_currency_var) 
+    WHERE currency_name = order_currency_var 
     AND application_entity_id = (
         SELECT application_entity_id FROM trading_account ta
         WHERE ta.id = trade_order_instance.trading_account_id

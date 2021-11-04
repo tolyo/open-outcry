@@ -28,55 +28,37 @@ defmodule Repo.Migrations.InitialSeeds do
       );
     ")
 
-    DB.execute("
-      INSERT INTO currency(
-        name,
-        precision
-      )
-      VALUES (
-        'BTC',
-        5
-      );
-    ")
+    # Test env seeds
+    if !MainApplication.prod() do
 
-    DB.execute("
-      SELECT create_payment_account(
-        'MASTER',
-        'EUR'
-      )
-    ")
+      DB.execute("
+        INSERT INTO currency(
+          name,
+          precision
+        )
+        VALUES (
+          'BTC',
+          5
+        );
+      ")
 
-    DB.execute("
-      SELECT create_payment_account(
-        'MASTER',
-        'BTC'
-      )
-    ")
+      DB.execute("
+        SELECT create_payment_account(
+          'MASTER',
+          'EUR'
+        )
+      ")
 
-    DB.execute("
-      INSERT INTO instrument(
-        name,
-        base_currency,
-        quote_currency,
-        fx_instrument
-      ) VALUES (
-        'BTC_EUR',
-        'BTC',
-        'EUR',
-        TRUE
-      );
-    ") # DEFAULT
+      DB.execute("
+        SELECT create_payment_account(
+          'MASTER',
+          'BTC'
+        )
+      ")
 
-
-    DB.execute("
-      INSERT INTO instrument(
-        name,
-        quote_currency
-      ) VALUES (
-        'SPX',
-        'EUR'
-      );
-    ")
+      Instrument.create_fx_instrument("BTC_EUR", "BTC", "EUR")
+      Instrument.create_instrument("SPX", "EUR")
+    end
   end
 
   def down do

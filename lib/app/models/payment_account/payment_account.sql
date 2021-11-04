@@ -6,10 +6,10 @@ CREATE TABLE IF NOT EXISTS payment_account (
         CHECK (amount >= 0),
     amount_reserved         NUMERIC default 0.00 NOT NULL 
         CHECK (amount_reserved >= 0 and amount_reserved <= amount),
-    currency_id             BIGINT REFERENCES currency(id) NOT NULL,
+    currency_name           TEXT REFERENCES currency(name) NOT NULL,
     updated_at              TIMESTAMP DEFAULT current_timestamp NOT NULL,
     created_at              TIMESTAMP DEFAULT current_timestamp NOT NULL,
     
     -- enforce one currency account per application entity
-    UNIQUE (application_entity_id, currency_id) 
-);
+    UNIQUE (application_entity_id, currency_name) 
+);  

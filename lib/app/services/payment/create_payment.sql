@@ -34,7 +34,7 @@ BEGIN
   WHERE application_entity_id =  
         (SELECT id FROM application_entity 
          WHERE pub_id = from_customer_id_param)
-  AND currency_id = currency_instance.id 
+  AND currency_name = currency_instance.name 
   INTO from_payment_account_instance; 
  
   IF NOT FOUND THEN
@@ -53,7 +53,7 @@ BEGIN
   WHERE application_entity_id =  
         (SELECT id FROM application_entity 
          WHERE pub_id = to_customer_id_param)
-  AND currency_id = currency_instance.id
+  AND currency_name = currency_instance.name
   INTO to_payment_account_instance; 
 
   IF NOT FOUND THEN
@@ -64,7 +64,7 @@ BEGIN
   INSERT INTO payment (
       type, 
       amount, 
-      currency_id, 
+      currency_name, 
       sender_payment_account_id, 
       beneficiary_payment_account_id, 
       details, 
@@ -76,7 +76,7 @@ BEGIN
   ) VALUES (
       type_param, 
       amount_param,
-      currency_instance.id, 
+      currency_instance.name, 
       from_payment_account_instance.id,
       to_payment_account_instance.id,
       details_param,

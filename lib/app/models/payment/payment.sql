@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS payment (
        pub_id                             TEXT DEFAULT uuid_generate_v4() UNIQUE NOT NULL,
        type                               payment_type NOT NULL,
        amount                             NUMERIC default 0.00 NOT NULL CHECK (amount > 0),
-       currency_id                        BIGINT REFERENCES currency(id) NOT NULL,
+       currency_name                      TEXT REFERENCES currency(name) NOT NULL,
        sender_payment_account_id          BIGINT REFERENCES payment_account(id) NOT NULL,
        beneficiary_payment_account_id     BIGINT REFERENCES payment_account(id) NOT NULL,
        details                            TEXT NOT NULL,
