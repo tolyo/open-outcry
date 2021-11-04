@@ -1,27 +1,18 @@
 defmodule Currency do
-  @type id :: String.t()
-
   @type name :: String.t()
 
   @type precision :: Decimal.t()
 
-  @type updated_at :: DateTime.t()
-
-  @type created_at :: DateTime.t()
-
   @type t :: %Currency{
-          id: id(),
           name: name(),
           precision: precision()
         }
 
-  defstruct id: nil,
-            name: nil,
+  defstruct name: nil,
             precision: 2
 
   @base_query """
     SELECT(
-        c.pub_id,
         c.name,
         c.precision
     )

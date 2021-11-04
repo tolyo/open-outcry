@@ -12,7 +12,7 @@ defmodule Instrument do
   @typedoc """
     The underlying currency of the FX instrument
   """
-  @type base_currency() :: String.t()
+  @type base_currency() :: Currency.name()
 
   @typedoc """
     The default currency for market quotes of the instrument
@@ -22,20 +22,16 @@ defmodule Instrument do
   @type t :: %Instrument{
           id: id(),
           name: name(),
-          base_currency: base_currency(),
+          base_currency: base_currency() | none(),
           quote_currency: quote_currency(),
-          active: boolean(),
-          created_at: String.t(),
-          updated_at: String.t()
+          active: boolean()
         }
 
   defstruct id: nil,
             name: nil,
             base_currency: nil,
             quote_currency: nil,
-            active: nil,
-            created_at: nil,
-            updated_at: nil
+            active: nil
 
   @spec create_instrument(Instrument.name(), Currency.name()) :: Instrument.id()
   def create_instrument(name, quote_currency) do
@@ -57,18 +53,18 @@ defmodule Instrument do
   def create_fx_instrument(name, base_currency, quote_currency) do
     [name, base_currency, quote_currency]
     |> DB.query_val("""
-    INSERT INTO instrument(
-      name,
-      base_currency,
-      quote_currency,
-      fx_instrument
-    ) VALUES (
-      $1,
-      $2,
-      $3,
-      TRUE
-    )
-    RETURNING pub_id;
+      INSERT INTO instrument(
+        name,
+        base_currency,
+        quote_currency,
+        fx_instrument
+      ) VALUES (
+        $1,
+        $2,
+        $3,
+        TRUE
+      )
+      RETURNING pub_id;
     """)
   end
 end
