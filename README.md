@@ -1,3 +1,5 @@
+![Build status](https://github.com/tolyo/open-outcry/actions/workflows/elixir.yml/badge.svg)
+
 # Exchange
 
 To start your Phoenix server:
