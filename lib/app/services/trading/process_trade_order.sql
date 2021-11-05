@@ -382,11 +382,13 @@ BEGIN
             IF taker_trade_order_instance.open_amount != amount_param THEN
                 UPDATE trade_order
                 SET status = 'PARTIALLY_REJECTED'::trade_order_status
-                WHERE id = taker_trade_order_instance.id;
+                WHERE id = taker_trade_order_instance.id
+                RETURNING * INTO taker_trade_order_instance;
             ELSE
                 UPDATE trade_order
                 SET status = 'REJECTED'::trade_order_status
-                WHERE id = taker_trade_order_instance.id;
+                WHERE id = taker_trade_order_instance.id
+                RETURNING * INTO taker_trade_order_instance;
             END IF;
 
             -- release the funds
@@ -403,9 +405,14 @@ BEGIN
                 WHERE id = payment_account_instance.id;
             END IF;
         ELSE 
+            -- ensure an update order gets passed
+            SELECT * FROM trade_order
+            WHERE id = taker_trade_order_instance.id
+            INTO taker_trade_order_instance;
+            
             -- save orderbook_order
             PERFORM create_book_order(
-                taker_trade_order_instance.pub_id
+                taker_trade_order_instance
             );
         END IF;
     END IF;

@@ -30,8 +30,9 @@ BEGIN
                 UPDATE trade_order
                 SET order_type = 'MARKET'::order_type,
                     price = 0
-                WHERE id = matching_stop_loss_order_instance.id;
-                PERFORM create_book_order(matching_stop_loss_order_instance.pub_id);
+                WHERE id = matching_stop_loss_order_instance.id
+                RETURNING * INTO matching_stop_loss_order_instance;
+                PERFORM create_book_order(matching_stop_loss_order_instance);
                 activated_var := TRUE;
             END LOOP;
 
@@ -51,8 +52,9 @@ BEGIN
                 -- update order type 
                 UPDATE trade_order
                 SET order_type = 'LIMIT'::order_type
-                WHERE id = matching_stop_limit_order_instance.id;
-                PERFORM create_book_order(matching_stop_limit_order_instance.pub_id);
+                WHERE id = matching_stop_limit_order_instance.id
+                RETURNING * INTO matching_stop_limit_order_instance;
+                PERFORM create_book_order(matching_stop_limit_order_instance);
                 
                 activated_var := TRUE;
             END LOOP;
