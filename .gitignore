@@ -33,3 +33,5 @@ npm-debug.log
 /assets/node_modules/
 
 /.elixir_ls
+/package-lock.json
+/node_modules

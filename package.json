@@ -1,0 +1,10 @@
+{
+    "private": true,
+    "scripts": {
+    },
+    "dependencies": {
+    },
+    "devDependencies": {
+      "swagger-cli": "4.0.4"
+    }
+}

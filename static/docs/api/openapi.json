@@ -1,0 +1,68 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "description": "# Introduction\nThis API is documented in **OpenAPI 3.0 format**.\n\nThis API the following operations:\n* Retrieve a list of available instruments \n# TODO\n\n# Basics\n* API calls have to be secured with HTTPS.\n* All data has to be submitted UTF-8 encoded.\n* The reply is sent JSON encoded.\n",
+    "version": "1.0.0",
+    "title": "OPEN OUTCY API"
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://your.public.url"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "paths": {
+    "/currencies": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "currencies",
+        "description": "Returns list of available currencies",
+        "operationId": "getcurrencies",
+        "responses": {
+          "200": {
+            "description": "currencies list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Currency symbol",
+                        "example": "USD"
+                      },
+                      "precision": {
+                        "type": "integer",
+                        "description": "Currency precision as number of decimal points",
+                        "example": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    }
+  }
+}

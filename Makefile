@@ -32,3 +32,9 @@ run-quality-check: lint check run-test check-coverage
 
 style-check:
 	mix credo --all 
+
+
+build-api:
+	node node_modules/swagger-cli/swagger-cli.js bundle -o static/docs/api/openapi.json -t json -r lib/web/openapi/openapi.yaml
+
+
