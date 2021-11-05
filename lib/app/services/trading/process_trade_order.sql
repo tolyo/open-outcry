@@ -236,21 +236,21 @@ BEGIN
                     -- update open amount
                     IF side_param = 'SELL' THEN
                         PERFORM create_trade(
-                            instrument_instance.id,
+                            instrument_instance,
                             trade_price_var,
                             trade_amount_var,
-                            taker_trade_order_instance.id,
-                            maker_book_order_instance.id,
-                            taker_trade_order_instance.id
+                            taker_trade_order_instance,
+                            maker_book_order_instance,
+                            taker_trade_order_instance
                         );
                     ELSE
                         PERFORM create_trade(
-                            instrument_instance.id,
+                            instrument_instance,
                             trade_price_var,
                             trade_amount_var,
-                            maker_book_order_instance.id,
-                            taker_trade_order_instance.id,
-                            taker_trade_order_instance.id
+                            maker_book_order_instance,
+                            taker_trade_order_instance,
+                            taker_trade_order_instance
                         );
                     END IF;
 
@@ -331,21 +331,21 @@ BEGIN
                         
                         IF side_param = 'SELL' THEN
                             PERFORM create_trade(
-                                instrument_instance.id,
+                                instrument_instance,
                                 trade_price_var,
                                 trade_amount_var,
-                                taker_trade_order_instance.id,
-                                maker_book_order_instance.id,
-                                taker_trade_order_instance.id
+                                taker_trade_order_instance,
+                                maker_book_order_instance,
+                                taker_trade_order_instance
                             );
                         ELSE
                             PERFORM create_trade(
-                                instrument_instance.id,
+                                instrument_instance,
                                 trade_price_var,
                                 trade_amount_var,
-                                maker_book_order_instance.id,
-                                taker_trade_order_instance.id,
-                                taker_trade_order_instance.id
+                                maker_book_order_instance,
+                                taker_trade_order_instance,
+                                taker_trade_order_instance
                             );
                         END IF;
 
