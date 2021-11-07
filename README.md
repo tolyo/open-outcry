@@ -16,7 +16,7 @@ a variation of [same data structure](https://link.springer.com/chapter/10.1007/9
 solutions put microsecond performance at the forefront of their productivity, leaving open [the non-trivial management](https://martinfowler.com/articles/lmax.html#KeepingItAllInMemory) of this in-memory data structure up to greater application. This approach may make sense in the context of a large securities exchange, where
 trading and settlement are separated into different contexts and some market participants are given priority
 access to the order book through DMAs. In the context of a small crypto-exchange, however, where every order must be validated against an account balance held in a traditional database, this achitecture makes no sense 
-as your order processing capacity will never exceed that of your database.  
+as the order processing capacity will never exceed that of the database.  
 
 Futhermore, these solutions fail to consider the needs of an active trader for release of funds after a match for subsequent trading. Closing a LONG position implies a trader's assumption that a market has 
 reversed its bullish trend and potential desire to open a SHORT position in a 
