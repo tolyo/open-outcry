@@ -4,10 +4,9 @@
   <a target="_blank" rel="noopener noreferrer">
     <img src="https://raw.githubusercontent.com/tolyo/open-outcry/main/assets/market.jpg" width="400">
   </a>
+
+  # Open Outcry
 </p>
-
-
-# Open Outcry
 
 Open Outcry is a multi-asset [matching](https://en.wikipedia.org/wiki/Order_matching_system) and trading engine for market places of all sizes. As a
 web-application, written in [Elixir](https://elixir-lang.org/) and [Phoenix](https://www.phoenixframework.org/),
