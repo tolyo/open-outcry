@@ -8,13 +8,13 @@ AS $$
 DECLARE
     instrument_instance instrument%ROWTYPE;
     trade_order_instance trade_order%ROWTYPE; 
-    book_order_instance book_order%ROWTYPE; 
-    price_level_instance price_level%ROWTYPE;
     order_currency_var text;
 BEGIN
     
     SELECT * FROM trade_order
     WHERE pub_id = trade_order_id_param
+    -- allow cancellation only of active orders
+    AND status IN ('OPEN'::trade_order_status, 'PARTIALLY_FILLED'::trade_order_status)
     INTO trade_order_instance;
 
     IF NOT FOUND THEN
@@ -24,10 +24,6 @@ BEGIN
     SELECT * FROM instrument
     WHERE id = trade_order_instance.instrument_id
     INTO instrument_instance;
-
-    SELECT * FROM book_order
-    WHERE trade_order_id = trade_order_instance.id
-    INTO book_order_instance;
 
     IF NOT FOUND THEN
         RAISE EXCEPTION 'book_order_instance_not_found';
@@ -72,6 +68,6 @@ BEGIN
     );     
 
     -- delete book order
-    DELETE FROM book_order WHERE id = book_order_instance.id; 
+    DELETE FROM book_order WHERE trade_order_id = trade_order_instance.id; 
 END;
 $$;
