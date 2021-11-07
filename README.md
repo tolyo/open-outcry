@@ -13,7 +13,7 @@ simulation.
 There are plenty of matching engines that [can](https://github.com/Laffini/Java-Matching-Engine) 
 [be](https://github.com/enewhuis/liquibook) [found](https://www.opensourceagenda.com/projects/exchange-core) in open-source that are based around 
 a variation of [same data structure](https://link.springer.com/chapter/10.1007/978-1-4302-0147-2_2), consisting of a [TreeMap](https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html) with keys for prices and a [Queue](https://docs.oracle.com/javase/7/docs/api/java/util/Queue.html) of orders for values. These
-solutions put microsecond performance at the forefront of their productivity, leaving open (the non-trivial management)[https://martinfowler.com/articles/lmax.html#KeepingItAllInMemory] of this in-memory data structure up to greater application. This approach may make sense in the context of a large securities exchange, where
+solutions put microsecond performance at the forefront of their productivity, leaving open [the non-trivial management](https://martinfowler.com/articles/lmax.html#KeepingItAllInMemory) of this in-memory data structure up to greater application. This approach may make sense in the context of a large securities exchange, where
 trading and settlement are separated into different contexts and some market participants are given priority
 access to the order book through DMAs. In the context of a small crypto-exchange, however, where every order must be validated against an account balance held in a traditional database, this achitecture makes no sense 
 as your order processing capacity will never exceed that of your database.  
