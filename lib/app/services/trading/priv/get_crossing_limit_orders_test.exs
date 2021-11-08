@@ -42,7 +42,7 @@ defmodule GetCrossingLimitOrdersTest do
     assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, :SELL, 10.00) |> length == 2
 
     # when given another new order non crossing price
-    MatchingService.create(trading_account, "BTC_EUR", :LIMIT, :SELL, 10.000001, 1, :GTC)
+    MatchingService.create(trading_account, "BTC_EUR", :LIMIT, :SELL, 10.00001, 1, :GTC)
 
     # then count should increase
     assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, :SELL, 10.00) |> length == 2

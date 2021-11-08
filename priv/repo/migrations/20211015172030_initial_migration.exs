@@ -44,7 +44,7 @@ defmodule Repo.Migrations.InitialMigration do
   @spec functions() :: [String.t()]
   def functions() do
     [
-      "banker_round(NUMERIC, INT)",
+      "banker_round(NUMERIC, INTEGER)",
       "create_payment_account(TEXT, TEXT)",
       "create_payment(payment_type, TEXT, NUMERIC, TEXT, TEXT, TEXT, TEXT)",
       "create_client(TEXT)",

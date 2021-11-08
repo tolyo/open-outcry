@@ -27,4 +27,10 @@ defmodule ApplicationEntity do
   defstruct id: nil,
             type: nil,
             external_id: nil
+
+  @spec find_by_external_id(ApplicationEntity.external_id()) :: ApplicationEntity.id()
+  def find_by_external_id(id) do
+    id
+    |> DB.query_val("SELECT pub_id FROM application_entity WHERE external_id = $1")
+  end
 end
