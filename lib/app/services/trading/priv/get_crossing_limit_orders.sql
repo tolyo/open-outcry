@@ -2,7 +2,8 @@ CREATE OR REPLACE FUNCTION
     get_crossing_limit_orders(
         instrument_id_param BIGINT,
         side_param order_side,
-        price_param NUMERIC
+        price_param NUMERIC,
+        trade_account_id_param BIGINT
     )
     RETURNS setof book_order
     LANGUAGE 'plpgsql'
@@ -16,6 +17,7 @@ BEGIN
                 ON b.trade_order_id = t.id
             WHERE t.instrument_id = instrument_id_param
                 AND t.side = side_param
+                AND t.trading_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
             -- order first by price then by date created
             ORDER BY t.order_type DESC, t.price ASC, t.created_at ASC;
@@ -25,6 +27,7 @@ BEGIN
                 ON b.trade_order_id = t.id
             WHERE t.instrument_id = instrument_id_param
                 AND t.side = side_param
+                AND t.trading_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
             -- order first by price then by date created
             ORDER BY t.order_type DESC, t.price DESC, t.created_at ASC;
@@ -37,6 +40,7 @@ BEGIN
                 ON b.trade_order_id = t.id
             WHERE t.instrument_id = instrument_id_param
                 AND t.side = side_param
+                AND t.trading_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
                 AND t.price <= price_param
             -- order first by price then by date created
@@ -47,6 +51,7 @@ BEGIN
                 ON b.trade_order_id = t.id
             WHERE t.instrument_id = instrument_id_param
                 AND t.side = side_param
+                AND t.trading_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
                 AND t.price >= price_param
             -- order first by price then by date created

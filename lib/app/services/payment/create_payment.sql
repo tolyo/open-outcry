@@ -45,7 +45,7 @@ BEGIN
   IF from_customer_id_param != 'MASTER' THEN
     -- TODO calculate with FEE!!!
     IF from_payment_account_instance.amount < amount_param THEN
-      RAISE EXCEPTION 'insufficient_funds';
+      RAISE EXCEPTION 'insufficient_funds available: %, required % ', from_payment_account_instance.amount, amount_param;
     END IF;  
   END IF;
 

@@ -25,8 +25,8 @@ defmodule MatchingServiceTestHelpers do
 
   @spec get_crossing_limit_orders(number(), OrderSide.t(), Decimal.t()) :: [any]
   def get_crossing_limit_orders(instrument_id, side, price) do
-    [instrument_id, side |> Atom.to_string(), price]
-    |> DB.query_list("SELECT get_crossing_limit_orders($1, $2, $3)")
+    [instrument_id, side |> Atom.to_string(), price, 100_000]
+    |> DB.query_list("SELECT get_crossing_limit_orders($1, $2, $3, $4)")
   end
 
   @spec get_available_limit_volume(OrderSide.t(), Decimal.t()) :: float()

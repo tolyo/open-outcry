@@ -158,8 +158,9 @@ BEGIN
     LOOP
         -- check if order can be filled
         total_available_volume_var = 
-            get_available_market_volume(instrument_instance.id, opposite_side_var) + 
-            get_available_limit_volume(instrument_instance.id, opposite_side_var, price_param);
+            get_available_market_volume(instrument_instance.id, opposite_side_var) 
+            + get_available_limit_volume(instrument_instance.id, opposite_side_var, price_param)
+            - get_potential_self_trade_volume(instrument_instance.id, opposite_side_var, trading_account_instance.id, price_param);
 
         IF taker_trade_order_instance.time_in_force = 'FOK'::order_time_in_force 
         AND total_available_volume_var < amount_param THEN
@@ -189,7 +190,8 @@ BEGIN
             IN SELECT * FROM trade_order t
             INNER JOIN book_order b
                 ON b.trade_order_id = t.id
-            WHERE t.instrument_id = instrument_instance.id
+            WHERE t.instrument_id = instrument_instance.id 
+            AND t.trading_account_id != trading_account_instance.id
             AND t.side = opposite_side_var
             AND t.order_type = 'MARKET'::order_type
             ORDER BY t.created_at ASC
@@ -299,7 +301,9 @@ BEGIN
                 FOR book_order_instance
                     IN SELECT * FROM get_crossing_limit_orders(
                         instrument_instance.id, 
-                        opposite_side_var, price_param
+                        opposite_side_var, 
+                        price_param, 
+                        trading_account_instance.id
                     )
                     LOOP
                         SELECT * FROM trade_order

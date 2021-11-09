@@ -79,10 +79,11 @@ defmodule MatchingServiceMarketOrderTest do
 
   test "process/1 market sell order with existing buy limit" do
     account = acc()
+    account2 = acc2()
 
     # when:
     MatchingService.create(account, "BTC_EUR", :LIMIT, :BUY, 10, 100, :GTC)
-    MatchingService.create(account, "BTC_EUR", :MARKET, :SELL, 100, :GTC)
+    MatchingService.create(account2, "BTC_EUR", :MARKET, :SELL, 100, :GTC)
 
     # then:
     assert MatchingServiceTestHelpers.get_trade_count() == 1

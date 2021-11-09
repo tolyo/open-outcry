@@ -19,7 +19,7 @@ a variation of [same data structure](https://link.springer.com/chapter/10.1007/9
 solutions put microsecond performance at the forefront of their productivity, leaving open [the non-trivial management](https://martinfowler.com/articles/lmax.html#KeepingItAllInMemory) of this in-memory data structure up to greater application. This approach may make sense in the context of a large securities exchange where some market participants are given priority access to the order book through [DMAs](https://www.investopedia.com/terms/d/directmarketaccess.asp). In the context of a small crypto-exchange, however, where every order must be validated against an account balance held in a traditional RDBMS, this achitecture makes no sense 
 as the order processing capacity will never exceed that of the database.  
 
-Futhermore, this architecture can actually harm to an active trader as a matching engine, burdened by a multi-step process of syncing and validating all of its moving parts, must necessarily freeze funds during settlement while the market moves away from the price of the executed trade. A true performance of a matching engine must measure the entire trading cycle of instruments and funds between users' accounts.
+Futhermore, this architecture can actually harm an active trader because a matching engine, burdened by a multi-step process of syncing and validating all of its moving parts, must necessarily freeze funds during settlement while the market moves away from the price of the executed trade. A true performance of a matching engine must measure the entire trading cycle of funds allocation between users' accounts.
 
 These problems are fundamental, to say nothing of technical ones like: How do we ensure ACID properties of trading transactions? How do we ensure zero-downtime? Hot-code upgrades? How do we scale for unknown number of clients, connected to our trading system?
 
@@ -30,8 +30,7 @@ of moving parts by putting all the trading logic into optimized PostreSQL proced
 scalable and fault-tolerant access to the database through Erlang/OTP server, which listens to events from the database propagated to a cluster. This approach allows trading and settlement to be processed by a single transactional database call and the notifications to be delivered directly to a client without resorting to routing via a message broker. Erlang/OTP also provides hot-code reloading essential for high-availablity of a
 trading system.
 
-Open Outcry's reliance on SQL also means that can focus on business logic to provide the most feature-complete 
-matching and trading engine to evolve along with future developments in financial technology. These include marging trading, short orders, futures and options, pro-rata amongst many allocation algorithms and trades where more than two parties or more than one instrument are involved.
+Open Outcry's reliance on SQL also means that it can focus on business logic to provide the most feature-complete, tested and accurate trading engine, capable of evolving along with future developments in financial technology. These include marging trading, short orders, futures and options, pro-rata amongst many allocation algorithms, and hop trades where more than two parties accross several instruments are involved.
 
 ## Current features
 
@@ -41,14 +40,16 @@ matching and trading engine to evolve along with future developments in financia
   * Stop loss and stop limit orders
   * GTC, FOK, IOK, GTD, GTT orders
   * Trading and payment accounts 
+  * Self-trade prevention
   
 ## Planned features
 
+  * Peg orders
   * Configurable fees
   * REST API
   * Websocket and FIX client connection
   * Margin trading accounts
-  * Short orders
+  * Short orders`
   * Futures and options
   * Pro-rata allocation
   * Multi-instrument matching

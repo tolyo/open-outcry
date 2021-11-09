@@ -483,4 +483,20 @@ defmodule MatchingServiceLimitOrderTest do
              {9.00, 25}
            ]
   end
+
+  test "process/1 limit self trade preventions" do
+    # given:
+    trading_account = acc()
+
+    # when:
+    MatchingService.create(trading_account, "BTC_EUR", :LIMIT, :BUY, 10.00, 50.00, :GTC)
+    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+
+    # then:
+    MatchingService.create(trading_account, "BTC_EUR", :LIMIT, :SELL, 10.00, 50.00, :GTC)
+    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+    assert MatchingServiceTestHelpers.get_trade_count() == 0
+    assert MatchingServiceTestHelpers.get_available_limit_volume(:BUY, 10) == 50
+    assert MatchingServiceTestHelpers.get_available_limit_volume(:SELL, 10) == 50
+  end
 end

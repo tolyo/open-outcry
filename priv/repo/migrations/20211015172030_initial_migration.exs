@@ -48,7 +48,7 @@ defmodule Repo.Migrations.InitialMigration do
       "create_payment_account(TEXT, TEXT)",
       "create_payment(payment_type, TEXT, NUMERIC, TEXT, TEXT, TEXT, TEXT)",
       "create_client(TEXT)",
-      "get_crossing_limit_orders(BIGINT, order_side, NUMERIC)",
+      "get_crossing_limit_orders(BIGINT, order_side, NUMERIC, BIGINT)",
       "get_available_limit_volume(BIGINT, order_side, DECIMAL)",
       "get_available_market_volume(BIGINT, order_side)",
       "get_best_limit_price(BIGINT, order_side)",
@@ -60,7 +60,8 @@ defmodule Repo.Migrations.InitialMigration do
       "process_crossing_stop_orders(BIGINT, order_side, NUMERIC)",
       "get_trade_price(order_side, order_type, DECIMAL, order_side, order_type, DECIMAL, BIGINT)",
       "process_trade_order(TEXT, TEXT, TEXT, order_side, DECIMAL, DECIMAL, TEXT, BIGINT)",
-      "update_price_level(BIGINT, order_side, DECIMAL, DECIMAL, BOOLEAN)"
+      "update_price_level(BIGINT, order_side, DECIMAL, DECIMAL, BOOLEAN)",
+      "get_potential_self_trade_volume(BIGINT, order_side, BIGINT, NUMERIC)"
     ]
   end
 
