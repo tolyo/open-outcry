@@ -8,7 +8,7 @@
   # Open Outcry
 </p>
 
-Open Outcry is a multi-asset [matching and trading engine](https://en.wikipedia.org/wiki/Order_matching_system) for market places of all sizes. Written in [Elixir](https://elixir-lang.org/), [Phoenix](https://www.phoenixframework.org/), and [PL/pgSQL] (https://www.postgresql.org/docs/14/plpgsql.html) 
+Open Outcry is a multi-asset [matching and trading engine](https://en.wikipedia.org/wiki/Order_matching_system) for market places of all sizes. Written in [Elixir](https://elixir-lang.org/), [Phoenix](https://www.phoenixframework.org/), and [PL/pgSQL](https://www.postgresql.org/docs/14/plpgsql.html) 
 it can be used any context requiring an exchange of assets between two or more parties, including small electronic exchanges, crypto-exchages, currency brokers or trading simulators.
 
 ## Rationale
