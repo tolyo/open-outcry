@@ -9,6 +9,14 @@ CREATE OR REPLACE FUNCTION
     LANGUAGE 'plpgsql'
 AS $$
 BEGIN
+    IF instrument_id_param IS NULL 
+    OR side_param IS NULL
+    OR price_param IS NULL
+    OR trade_account_id_param IS NULL 
+    THEN
+        RAISE EXCEPTION 'param_cannot_be_null %, %, %, %', instrument_id_param, side_param, price_param, trade_account_id_param;
+    END IF;
+    
     IF price_param = 0 THEN
         -- handle market orders
         IF side_param = 'SELL' THEN

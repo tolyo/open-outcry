@@ -140,6 +140,10 @@ BEGIN
         WHERE id = trade_order_id_param
         INTO taker_trade_order_instance;
 
+        SELECT * FROM trading_account
+        WHERE id = taker_trade_order_instance.trading_account_id
+        INTO trading_account_instance;
+
     END IF;
 
     IF order_type_param = 'STOPLOSS' OR order_type_param = 'STOPLIMIT' THEN

@@ -155,39 +155,39 @@ defmodule MatchingServiceStopLossOrderTest do
     assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
   end
 
-  # test "create/1 stop loss sell order activate and settle opposite side" do
-  #   # given
-  #   account = acc()
-  #   account2 = acc2()
+  test "create/1 stop loss sell order activate and settle opposite side" do
+    # given
+    account = acc()
+    account2 = acc2()
 
-  #   # when: a stop loss order is created and then a crossing trade occurs
-  #   MatchingService.create(account, "BTC_EUR", :STOPLOSS, :SELL, 10, 2, :GTC)
-  #   MatchingService.create(account2, "BTC_EUR", :LIMIT, :BUY, 10, 3, :GTC)
-  #   MatchingService.create(account, "BTC_EUR", :LIMIT, :SELL, 10, 1, :GTC)
+    # when: a stop loss order is created and then a crossing trade occurs
+    MatchingService.create(account, "BTC_EUR", :STOPLOSS, :SELL, 10, 2, :GTC)
+    MatchingService.create(account2, "BTC_EUR", :LIMIT, :BUY, 10, 3, :GTC)
+    MatchingService.create(account, "BTC_EUR", :LIMIT, :SELL, 10, 1, :GTC)
 
-  #   # then: the order becomes activated and settled
-  #   assert DBTestUtils.get_count("stop_order") == 0
-  #   assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-  #   assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
-  #   assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
-  # end
+    # then: the order becomes activated and settled
+    assert DBTestUtils.get_count("stop_order") == 0
+    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+    assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
+    assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
+  end
 
-  # test "create/1 stop loss buy order activate and settle opposite side" do
-  #   # given
-  #   account = acc()
-  #   account2 = acc2()
+  test "create/1 stop loss buy order activate and settle opposite side" do
+    # given
+    account = acc()
+    account2 = acc2()
 
-  #   # when: a stop loss order is created and then a crossing trade occurs
-  #   MatchingService.create(account, "BTC_EUR", :STOPLOSS, :BUY, 10, 20, :GTC)
-  #   MatchingService.create(account2, "BTC_EUR", :LIMIT, :SELL, 10, 3, :GTC)
-  #   MatchingService.create(account, "BTC_EUR", :LIMIT, :BUY, 10, 1, :GTC)
+    # when: a stop loss order is created and then a crossing trade occurs
+    MatchingService.create(account, "BTC_EUR", :STOPLOSS, :BUY, 10, 20, :GTC)
+    MatchingService.create(account2, "BTC_EUR", :LIMIT, :SELL, 10, 3, :GTC)
+    MatchingService.create(account, "BTC_EUR", :LIMIT, :BUY, 10, 1, :GTC)
 
-  #   # then: the order becomes activated and settled
-  #   assert DBTestUtils.get_count("stop_order") == 0
-  #   assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-  #   assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
-  #   assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
-  # end
+    # then: the order becomes activated and settled
+    assert DBTestUtils.get_count("stop_order") == 0
+    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+    assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
+    assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
+  end
 
   test "create/1 stop loss sell order activate and settle before worse price orders" do
     # given
@@ -228,60 +228,60 @@ defmodule MatchingServiceStopLossOrderTest do
     assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
   end
 
-  # test "create/1 stop loss sell order activate by market and settle" do
-  #   # given
-  #   account = acc()
-  #   account2 = acc2()
+  test "create/1 stop loss sell order activate by market and settle" do
+    # given
+    account = acc()
+    account2 = acc2()
 
-  #   # when: a stop loss order is created and then a crossing trade occurs
-  #   MatchingService.create(account, "BTC_EUR", :STOPLOSS, :SELL, 10, 2, :GTC)
-  #   MatchingService.create(account, "BTC_EUR", :MARKET, :SELL, 1, :GTC)
-  #   MatchingService.create(account2, "BTC_EUR", :LIMIT, :BUY, 10, 3, :GTC)
+    # when: a stop loss order is created and then a crossing trade occurs
+    MatchingService.create(account, "BTC_EUR", :STOPLOSS, :SELL, 10, 2, :GTC)
+    MatchingService.create(account, "BTC_EUR", :MARKET, :SELL, 1, :GTC)
+    MatchingService.create(account2, "BTC_EUR", :LIMIT, :BUY, 10, 3, :GTC)
 
-  #   # then: the order becomes activated and settled
-  #   assert DBTestUtils.get_count("stop_order") == 0
-  #   assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-  #   assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
-  #   assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
+    # then: the order becomes activated and settled
+    assert DBTestUtils.get_count("stop_order") == 0
+    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+    assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
+    assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
 
-  #   # when: a stop loss order is created and then a crossing trade occurs
-  #   MatchingService.create(account, "BTC_EUR", :STOPLOSS, :SELL, 10, 2, :GTC)
-  #   MatchingService.create(account2, "BTC_EUR", :LIMIT, :BUY, 10, 3, :GTC)
-  #   MatchingService.create(account, "BTC_EUR", :MARKET, :SELL, 1, :GTC)
+    # when: a stop loss order is created and then a crossing trade occurs
+    MatchingService.create(account, "BTC_EUR", :STOPLOSS, :SELL, 10, 2, :GTC)
+    MatchingService.create(account2, "BTC_EUR", :LIMIT, :BUY, 10, 3, :GTC)
+    MatchingService.create(account, "BTC_EUR", :MARKET, :SELL, 1, :GTC)
 
-  #   # then: the order becomes activated and settled
-  #   assert DBTestUtils.get_count("stop_order") == 0
-  #   assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-  #   assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
-  #   assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
-  # end
+    # then: the order becomes activated and settled
+    assert DBTestUtils.get_count("stop_order") == 0
+    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+    assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
+    assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
+  end
 
-  # test "create/1 stop loss buy order activate by market and settle" do
-  #   # given
-  #   account = acc()
-  #   account2 = acc2()
+  test "create/1 stop loss buy order activate by market and settle" do
+    # given
+    account = acc()
+    account2 = acc2()
 
-  #   # when: a stop loss order is created and then a crossing trade occurs
-  #   MatchingService.create(account, "BTC_EUR", :STOPLOSS, :BUY, 10, 20, :GTC)
-  #   MatchingService.create(account, "BTC_EUR", :MARKET, :BUY, 10, :GTC)
-  #   MatchingService.create(account2, "BTC_EUR", :LIMIT, :SELL, 10, 3, :GTC)
+    # when: a stop loss order is created and then a crossing trade occurs
+    MatchingService.create(account, "BTC_EUR", :STOPLOSS, :BUY, 10, 20, :GTC)
+    MatchingService.create(account, "BTC_EUR", :MARKET, :BUY, 10, :GTC)
+    MatchingService.create(account2, "BTC_EUR", :LIMIT, :SELL, 10, 3, :GTC)
 
-  #   # then: the order becomes activated and settled
-  #   assert DBTestUtils.get_count("stop_order") == 0
-  #   assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-  #   assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
-  #   assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
+    # then: the order becomes activated and settled
+    assert DBTestUtils.get_count("stop_order") == 0
+    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+    assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
+    assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
 
-  #   # when: a stop loss order is created and then a crossing trade occurs
-  #   MatchingService.create(account, "BTC_EUR", :STOPLOSS, :BUY, 10, 20, :GTC)
-  #   MatchingService.create(account2, "BTC_EUR", :LIMIT, :SELL, 10, 3, :GTC)
-  #   MatchingService.create(account, "BTC_EUR", :MARKET, :BUY, 10, :GTC)
+    # when: a stop loss order is created and then a crossing trade occurs
+    MatchingService.create(account, "BTC_EUR", :STOPLOSS, :BUY, 10, 20, :GTC)
+    MatchingService.create(account2, "BTC_EUR", :LIMIT, :SELL, 10, 3, :GTC)
+    MatchingService.create(account, "BTC_EUR", :MARKET, :BUY, 10, :GTC)
 
-  #   # then: the order becomes activated and settled
-  #   assert DBTestUtils.get_count("stop_order") == 0
+    # then: the order becomes activated and settled
+    assert DBTestUtils.get_count("stop_order") == 0
 
-  #   assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-  #   assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
-  #   assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
-  # end
+    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+    assert OrderBookService.get_volumes("BTC_EUR", :BUY) == []
+    assert OrderBookService.get_volumes("BTC_EUR", :SELL) == []
+  end
 end
