@@ -17,7 +17,7 @@ There are plenty of matching engines that [can](https://github.com/Laffini/Java-
 [be](https://github.com/enewhuis/liquibook) [found](https://www.opensourceagenda.com/projects/exchange-core) in open-source that are based around 
 a variation of [same data structure](https://link.springer.com/chapter/10.1007/978-1-4302-0147-2_2), consisting of a [TreeMap](https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html) with keys for prices and a [Queue](https://docs.oracle.com/javase/7/docs/api/java/util/Queue.html) of orders for values. These
 solutions put microsecond performance at the forefront of their productivity, leaving open [the non-trivial management](https://martinfowler.com/articles/lmax.html#KeepingItAllInMemory) of this in-memory data structure up to greater application. This approach may make sense in the context of a large securities exchange where some market participants are given priority access to the order book through [DMAs](https://www.investopedia.com/terms/d/directmarketaccess.asp). In the context of a small crypto-exchange, however, where every order must be validated against an account balance held in a traditional RDBMS, this achitecture makes no sense 
-as the order processing capacity will never exceed that of the database.  
+as the order processing capacity will never exceed that of the database. Add your ORM layer into the mix and those benchmarks become irrelevant.   
 
 Futhermore, this architecture can actually harm an active trader because a matching engine, burdened by a multi-step process of syncing and validating all of its moving parts, must necessarily freeze funds during settlement while the market moves away from the price of the executed trade. A true performance of a matching engine must measure the entire trading cycle of funds allocation between users' accounts.
 
@@ -27,10 +27,10 @@ These problems are fundamental, to say nothing of technical ones like: How do we
 
 Open Outcry puts performance and correctness of the entire trading cycle as its priority. It minimizes the number
 of moving parts by putting all the trading logic into optimized PostreSQL procedures. Clients are ensured stable,
-scalable and fault-tolerant access to the database through Erlang/OTP server, which listens to events from the database propagated to a cluster. This approach allows trading and settlement to be processed by a single transactional database call and the notifications to be delivered directly to a client without resorting to routing via a message broker. Erlang/OTP also provides hot-code reloading essential for high-availablity of a
+scalable and fault-tolerant access to the database through Erlang/OTP server, which listens to events from the database propagated to an Erlang cluster. This approach allows trading and settlement to be processed by a single transactional database call with event notifications delivered directly to a client without resorting to routing via a message broker. Erlang/OTP also provides hot-code reloading essential for high-availablity of a
 trading system.
 
-Open Outcry's reliance on SQL also means that it can focus on business logic to provide the most feature-complete, tested and accurate trading engine, capable of evolving along with future developments in financial technology. These include marging trading, short orders, futures and options, pro-rata amongst many allocation algorithms, and hop trades where more than two parties accross several instruments are involved.
+Open Outcry's reliance on SQL also means that it can focus on business logic to provide the most feature-complete, tested and accurate trading engine, capable of evolving along with future developments in financial technology. These include marging trading, short orders, futures and options, pro-rata amongst many allocation algorithms, and hop-trades where more than two parties accross several instruments are involved.
 
 ## Current features
 
