@@ -8,7 +8,7 @@ CREATE OR REPLACE
     )
     RETURNS order_fill
 
-LANGUAGE 'plpgsql'
+LANGUAGE 'plpgsql' IMMUTABLE
 AS $$
 BEGIN
     IF available_amount >= open_amount THEN

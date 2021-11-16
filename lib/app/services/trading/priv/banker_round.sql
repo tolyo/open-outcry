@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION
     banker_round(val NUMERIC, prec INTEGER)
     returns NUMERIC
 
-LANGUAGE 'plpgsql'
+LANGUAGE 'plpgsql' IMMUTABLE
 AS $$
 DECLARE
     retval NUMERIC;

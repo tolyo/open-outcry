@@ -5,11 +5,8 @@ CREATE OR REPLACE FUNCTION
         trading_account_id_param BIGINT, 
         price_param NUMERIC
     )
-
     RETURNS NUMERIC
     LANGUAGE 'plpgsql'
-
-
 AS $$
 DECLARE
     acc NUMERIC := 0;
