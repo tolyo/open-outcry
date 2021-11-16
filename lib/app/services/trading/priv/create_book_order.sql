@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION
         trade_order_param trade_order
     )
     RETURNS TEXT
-    LANGUAGE 'plpgsql'
+    LANGUAGE 'plpgsql' VOLATILE
 AS $$
 BEGIN
     -- create book_order

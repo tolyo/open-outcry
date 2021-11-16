@@ -10,12 +10,9 @@ DECLARE
     difference NUMERIC;
     even BOOLEAN;
 BEGIN
-    IF val IS NULL THEN
-        RAISE EXCEPTION 'val_cannot_be_null';
-    END IF; 
-
-    IF prec IS NULL THEN
-        RAISE EXCEPTION 'prec_cannot_be_null';
+    IF val IS NULL OR 
+    prec IS NULL THEN
+        RAISE EXCEPTION 'param_cannot_be_null val: %, prec %', val, prec;
     END IF; 
 
     retval := round(val,prec);

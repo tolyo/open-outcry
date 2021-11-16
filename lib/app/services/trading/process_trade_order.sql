@@ -15,12 +15,13 @@ AS $$
 DECLARE
     trading_account_instance trading_account%ROWTYPE;
     payment_account_instance payment_account%ROWTYPE;
-    precision_instance INTEGER;
     taker_trade_order_instance trade_order%ROWTYPE; -- saved
     taker_book_order_instance trade_order%ROWTYPE;  
     maker_book_order_instance trade_order%ROWTYPE;
     book_order_instance book_order%ROWTYPE;
     instrument_instance instrument%ROWTYPE;
+    base_currency_precision INTEGER;
+    quote_currency_precision INTEGER;
     opposite_side_var order_side;
     book_order_volume_var NUMERIC;
     available_limit_volume_var NUMERIC;
@@ -62,8 +63,13 @@ BEGIN
 
     SELECT precision 
     FROM currency 
-    WHERE name = order_currency_var 
-    INTO precision_instance;
+    WHERE name = instrument_instance.base_currency 
+    INTO base_currency_precision;
+
+    SELECT precision 
+    FROM currency 
+    WHERE name = instrument_instance.quote_currency 
+    INTO quote_currency_precision;
 
     IF NOT FOUND THEN
         RAISE EXCEPTION 'precision_not_found';
@@ -82,8 +88,8 @@ BEGIN
             RAISE EXCEPTION 'payment_account_instance_not_found';
         END IF; 
 
-        amount_param = round(amount_param, precision_instance);
-        price_param = round(price_param, precision_instance);
+        amount_param = round(amount_param, base_currency_precision);
+        price_param = round(price_param, quote_currency_precision);
 
         IF side_param = 'SELL' OR (side_param = 'BUY' and order_type_param = 'MARKET') THEN
             -- check sufficiency of funds
@@ -94,11 +100,12 @@ BEGIN
             END IF;
             -- reserve required amount
             UPDATE payment_account
-            SET amount_reserved = round(payment_account_instance.amount_reserved + amount_param, precision_instance)
+            SET amount_reserved = 
+                round(payment_account_instance.amount_reserved + amount_param, quote_currency_precision)
             WHERE id = payment_account_instance.id;
         ELSE
             -- check sufficiency of funds
-            IF payment_account_instance.amount - payment_account_instance.amount_reserved < banker_round(amount_param * price_param, precision_instance) 
+            IF payment_account_instance.amount - payment_account_instance.amount_reserved < banker_round(amount_param * price_param, base_currency_precision) 
             THEN
                 RAISE EXCEPTION 'insufficient_funds available: % required: %', 
                         payment_account_instance.amount - payment_account_instance.amount_reserved, 
@@ -107,7 +114,8 @@ BEGIN
             -- reserve required amount
             UPDATE payment_account
             SET amount_reserved = 
-                payment_account_instance.amount_reserved + banker_round(amount_param * price_param, precision_instance)
+                payment_account_instance.amount_reserved + 
+                    banker_round(amount_param * price_param, base_currency_precision)
             WHERE id = payment_account_instance.id;
         END IF;
 
@@ -176,12 +184,12 @@ BEGIN
             IF side_param = 'SELL' OR (side_param = 'BUY' and order_type_param = 'MARKET') THEN
                 -- release reserved  amount
                 UPDATE payment_account 
-                SET amount_reserved = round(amount_reserved - amount_param, precision_instance)
+                SET amount_reserved = round(amount_reserved - amount_param, quote_currency_precision)
                 WHERE id = payment_account_instance.id;
             ELSE
                 -- release reserved amount
                 UPDATE payment_account
-                SET amount_reserved = amount_reserved - banker_round(amount_param * price_param, precision_instance)
+                SET amount_reserved = amount_reserved - banker_round(amount_param * price_param, base_currency_precision)
                 WHERE id = payment_account_instance.id;
             END IF;
             
@@ -219,21 +227,21 @@ BEGIN
                     IF side_param = 'SELL' THEN
                         -- market buy in quote currency
                         trade_amount_var = 
-                            banker_round(maker_book_order_instance.open_amount / trade_price_var, precision_instance);
+                            banker_round(maker_book_order_instance.open_amount / trade_price_var, quote_currency_precision);
                         book_order_volume_var = 
-                            maker_book_order_instance.open_amount - banker_round(trade_amount_var * trade_price_var, precision_instance);
+                            maker_book_order_instance.open_amount - banker_round(trade_amount_var * trade_price_var, quote_currency_precision);
 
                         -- incoming order leftover
                         amount_param = amount_param - trade_amount_var;
                     ELSE
                         IF order_type_param = 'MARKET' THEN
                             -- market on market order handling
-                            IF  maker_book_order_instance.open_amount < banker_round(amount_param / trade_price_var, precision_instance) THEN
+                            IF  maker_book_order_instance.open_amount < banker_round(amount_param / trade_price_var, quote_currency_precision) THEN
                                 trade_amount_var = maker_book_order_instance.open_amount;
                             ELSE 
-                                trade_amount_var = banker_round(amount_param / trade_price_var, precision_instance);
+                                trade_amount_var = banker_round(amount_param / trade_price_var, quote_currency_precision);
                             END IF;    
-                            amount_param = amount_param - banker_round(trade_amount_var * trade_price_var, precision_instance);
+                            amount_param = amount_param - banker_round(trade_amount_var * trade_price_var, quote_currency_precision);
                         END IF;
 
                         IF order_type_param = 'LIMIT' THEN
@@ -326,7 +334,7 @@ BEGIN
 
                         IF side_param = 'BUY' AND order_type_param = 'MARKET' THEN
                             -- market buy in quote currency
-                            trade_amount_var = banker_round(amount_param / maker_book_order_instance.price, precision_instance);
+                            trade_amount_var = banker_round(amount_param / maker_book_order_instance.price, quote_currency_precision);
                             
                             -- ensure to trade at available book order amount
                             IF maker_book_order_instance.open_amount < trade_amount_var THEN
@@ -337,7 +345,7 @@ BEGIN
                                     maker_book_order_instance.open_amount - trade_amount_var;
                             END IF;
                             -- incoming order leftover
-                            amount_param = amount_param - banker_round(trade_amount_var * maker_book_order_instance.price, precision_instance);
+                            amount_param = amount_param - banker_round(trade_amount_var * maker_book_order_instance.price, quote_currency_precision);
                         ELSE
                             IF maker_book_order_instance.open_amount < amount_param THEN
                                 trade_amount_var = maker_book_order_instance.open_amount;
@@ -428,7 +436,7 @@ BEGIN
             ELSE
                 -- release reserved amount
                 UPDATE payment_account
-                SET amount_reserved = amount_reserved - banker_round(amount_param * price_param, precision_instance)
+                SET amount_reserved = amount_reserved - banker_round(amount_param * price_param, base_currency_precision)
                 WHERE id = payment_account_instance.id;
             END IF;
         ELSE 
