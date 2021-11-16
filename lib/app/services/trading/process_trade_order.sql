@@ -156,10 +156,12 @@ BEGIN
 
     IF order_type_param = 'STOPLOSS' OR order_type_param = 'STOPLIMIT' THEN
         INSERT INTO stop_order (
-            trade_order_id
+            trade_order_id,
+            price
         ) 
         VALUES (
-            taker_trade_order_instance.id
+            taker_trade_order_instance.id,
+            price_param
         );
 
         RETURN taker_trade_order_instance.pub_id;

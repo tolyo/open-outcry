@@ -30,7 +30,7 @@ of moving parts by putting all the trading logic into optimized PostreSQL proced
 scalable and fault-tolerant access to the database through Erlang/OTP server, which listens to events from the database propagated to an Erlang cluster. This approach allows trading and settlement to be processed by a single transactional database call with event notifications delivered directly to a client without resorting to routing via a message broker. Erlang/OTP also provides hot-code reloading essential for high-availablity of a
 trading system.
 
-Open Outcry's reliance on SQL also means that it can focus on business logic to provide the most feature-complete, tested and accurate trading engine, capable of evolving along with future developments in financial technology. These include marging trading, short orders, futures and options, pro-rata amongst many allocation algorithms, and hop-trades where more than two parties accross several instruments are involved.
+Open Outcry's reliance on SQL also means that it can focus on business logic to provide the most feature-complete, tested and accurate trading engine, capable of evolving along with future developments in financial technology. These include marging trading, short orders, futures and options, pro-rata amongst many allocation algorithms, and hop-trades (cross-matching) where more than two parties accross several instruments are involved.
 
 ## Current features
 

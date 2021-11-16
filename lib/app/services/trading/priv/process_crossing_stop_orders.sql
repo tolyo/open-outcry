@@ -19,7 +19,7 @@ BEGIN
         INNER JOIN stop_order s
             ON s.trade_order_id = t.id
         WHERE t.instrument_id = instrument_id_param
-        AND t.price >= price_param
+        AND s.price >= price_param
         AND t.side = order_side_param
         AND t.order_type = 'STOPLOSS'::order_type
 
@@ -28,12 +28,13 @@ BEGIN
             WHERE trade_order_id = matching_stop_loss_order_instance.id;
             -- update order type 
             UPDATE trade_order
-            SET order_type = 'MARKET'::order_type
+            SET order_type = 'MARKET'::order_type,
+                price = 0.00
             WHERE id = matching_stop_loss_order_instance.id;
             PERFORM process_trade_order(
-                'VOID'::text, 
+                'VOID', 
                 (SELECT name FROM instrument WHERE id = instrument_id_param),
-                'MARKET'::text,
+                'MARKET',
                 order_side_param,
                 0,
                 matching_stop_loss_order_instance.amount,
@@ -48,7 +49,7 @@ BEGIN
         INNER JOIN stop_order s
             ON s.trade_order_id = t.id
         WHERE t.instrument_id = instrument_id_param
-        AND t.price >= price_param
+        AND s.price >= price_param
         AND t.side = order_side_param
         AND t.order_type = 'STOPLIMIT'::order_type
 
@@ -60,9 +61,9 @@ BEGIN
             SET order_type = 'LIMIT'::order_type
             WHERE id = matching_stop_limit_order_instance.id;
             PERFORM process_trade_order(
-                'VOID'::text, 
+                'VOID', 
                 (SELECT name FROM instrument WHERE id = instrument_id_param),
-                'LIMIT'::text,
+                'LIMIT',
                 order_side_param,
                 matching_stop_limit_order_instance.price,
                 matching_stop_limit_order_instance.amount,
