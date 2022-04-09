@@ -69,9 +69,7 @@ defmodule PaymentAccount do
           WHERE pa.pub_id = $1
         """
     )
-    |> case do
-      x -> from_atom(x)
-    end
+    |> from_atom()
   end
 
   @spec find_all_by_application_entity(ApplicationEntity.id()) :: [PaymentAccount.t()]
@@ -83,7 +81,7 @@ defmodule PaymentAccount do
           WHERE ae.pub_id = $1
         """
     )
-    |> Enum.map(fn a -> from_atom(a) end)
+    |> Enum.map(&from_atom(&1))
   end
 
   @spec find_by_application_entity_and_currency(ApplicationEntity.id(), PaymentAccount.currency()) ::

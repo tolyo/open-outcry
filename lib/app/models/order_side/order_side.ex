@@ -1,3 +1,3 @@
-defmodule OrderSide do
+defmodule TradeOrder.Side do
   @type t :: :BUY | :SELL
 end

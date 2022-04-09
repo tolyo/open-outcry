@@ -9,8 +9,8 @@ defmodule MatchingService do
   @spec create(
           TradingAccount.id(),
           Instrument.name(),
-          TradeOrderType.t(),
-          OrderSide.t(),
+          TradeOrder.Type.t(),
+          TradeOrder.Side.t(),
           TradeOrder.amount(),
           OrderTimeInForce.t()
         ) :: TradeOrder.id()
@@ -30,8 +30,8 @@ defmodule MatchingService do
   @spec create(
           TradingAccount.id(),
           Instrument.name(),
-          TradeOrderType.t(),
-          OrderSide.t(),
+          TradeOrder.Type.t(),
+          TradeOrder.Side.t(),
           TradeOrder.price(),
           TradeOrder.amount(),
           OrderTimeInForce.t()

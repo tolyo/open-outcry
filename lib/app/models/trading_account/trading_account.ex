@@ -34,9 +34,7 @@ defmodule TradingAccount do
           WHERE t.pub_id = $1
         """
     )
-    |> case do
-      x -> from_atom(x)
-    end
+    |> from_atom()
   end
 
   @spec find_by_application_entity_id(ApplicationEntity.id()) :: TradingAccount.t()
@@ -48,9 +46,7 @@ defmodule TradingAccount do
           WHERE ae.pub_id = $1
         """
     )
-    |> case do
-      x -> from_atom(x)
-    end
+    |> from_atom()
   end
 
   @spec from_atom({String.t(), String.t()}) :: TradingAccount.t()

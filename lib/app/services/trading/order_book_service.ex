@@ -1,5 +1,5 @@
 defmodule OrderBookService do
-  @spec get_volume_at_price(Instrument.name(), OrderSide.t(), Decimal.t()) :: Decimal.t()
+  @spec get_volume_at_price(Instrument.name(), TradeOrder.Side.t(), Decimal.t()) :: Decimal.t()
   def get_volume_at_price(instument_name, side, price) do
     [instument_name, side |> Atom.to_string(), price]
     |> DB.query_val("""
@@ -15,7 +15,7 @@ defmodule OrderBookService do
     end
   end
 
-  @spec get_volumes(Instrument.name(), OrderSide.t()) :: [
+  @spec get_volumes(Instrument.name(), TradeOrder.Side.t()) :: [
           {PriceLevel.price(), PriceLevel.volume()}
         ]
   def get_volumes(instrument_name, side) do

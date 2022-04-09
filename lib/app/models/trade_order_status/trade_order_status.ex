@@ -1,4 +1,4 @@
-defmodule TradeOrderStatus do
+defmodule TradeOrder.Status do
   @type t ::
           :OPEN
           | :PARTIALLY_FILLED

@@ -1,3 +1,3 @@
-defmodule TradeOrderType do
+defmodule TradeOrder.Type do
   @type t :: :LIMIT | :MARKET | :STOPLOSS | :STOPLIMIT
 end

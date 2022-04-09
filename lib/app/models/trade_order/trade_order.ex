@@ -27,12 +27,12 @@ defmodule TradeOrder do
           id: id() | nil,
           trading_account_id: TradingAccount.id(),
           instrument_name: Instrument.name(),
-          side: OrderSide.t(),
-          type: TradeOrderType.t(),
+          side: TradeOrder.Side.t(),
+          type: TradeOrder.Type.t(),
           price: price(),
           amount: amount(),
           open_amount: open_amount(),
-          status: TradeOrderStatus.t(),
+          status: TradeOrder.Status.t(),
           time_in_force: OrderTimeInForce.t()
         }
 
