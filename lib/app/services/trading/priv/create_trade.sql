@@ -104,7 +104,7 @@ BEGIN
         PERFORM create_trading_account_transfer(
             (SELECT pub_id FROM trading_account WHERE application_entity_id = seller_application_entity_instance.id),
             (SELECT pub_id FROM trading_account WHERE application_entity_id = buyer_application_entity_instance.id),
-            to_trading_account_id_param text,
+            to_trading_account_id_param,
             instrument_param,
             amount_param
         );
