@@ -30,7 +30,6 @@ defmodule Repo.Migrations.InitialSeeds do
 
     # Test env seeds
     if !MainApplication.prod() do
-
       DB.execute("
         INSERT INTO currency(
           name,
@@ -62,6 +61,5 @@ defmodule Repo.Migrations.InitialSeeds do
   end
 
   def down do
-
   end
 end

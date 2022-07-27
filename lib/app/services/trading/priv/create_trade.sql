@@ -52,7 +52,7 @@ BEGIN
         RAISE EXCEPTION 'master_application_entity_instance_not_found';
     END IF;   
 
-    -- set up buyer
+    -- set up seller
     SELECT * FROM application_entity
     INNER JOIN trading_account
         ON trading_account.application_entity_id = application_entity.id
@@ -78,26 +78,41 @@ BEGIN
         RAISE EXCEPTION 'buyer_application_entity_instance_not_found';
     END IF;       
 
-    -- EXECUTE PAYMENTS FOR SELLER
-    PERFORM create_payment(
-        'INSTRUMENT_SELL'::payment_type,
-        seller_application_entity_instance.pub_id,
-        amount_param,
-        instrument_param.base_currency,
-        'MASTER',
-        trade_instance.pub_id,
-        trade_instance.pub_id
-    );
+    -- EXECUTE PAYMENTS FOR SELLER IF INSTRUMENT IS FX
+    IF instrument_param.fx_instrument IS TRUE THEN
+        PERFORM create_payment(
+            'INSTRUMENT_SELL'::payment_type,
+            seller_application_entity_instance.pub_id,
+            amount_param,
+            instrument_param.base_currency,
+            'MASTER',
+            trade_instance.pub_id,
+            trade_instance.pub_id
+        );
 
-    PERFORM create_payment(
-        'INSTRUMENT_BUY'::payment_type,
-        'MASTER',
-        amount_param * price_param,
-        instrument_param.quote_currency,
-        seller_application_entity_instance.pub_id,
-        trade_instance.pub_id,
-        trade_instance.pub_id
-    );
+        PERFORM create_payment(
+            'INSTRUMENT_BUY'::payment_type,
+            'MASTER',
+            amount_param * price_param,
+            instrument_param.quote_currency,
+            seller_application_entity_instance.pub_id,
+            trade_instance.pub_id,
+            trade_instance.pub_id
+        );
+    ELSE
+        -- transfer instuments directly between two accounts
+        PERFORM create_trading_account_transfer(
+            (SELECT pub_id FROM trading_account WHERE application_entity_id = seller_application_entity_instance.id),
+            (SELECT pub_id FROM trading_account WHERE application_entity_id = buyer_application_entity_instance.id),
+            to_trading_account_id_param text,
+            instrument_param,
+            amount_param
+        );
+
+        -- TODO release any funds that are insufficient for buying an single instument
+    END IF;
+
+    
 
     -- EXECUTE PAYMENTS FOR BUYER
     PERFORM create_payment(

@@ -4,7 +4,7 @@ defmodule Repo.Migrations.InitialMigration do
   @doc """
     Returns a list of SQL ENUMS types
   """
-  @spec types() :: [String.t]
+  @spec types() :: [String.t()]
   def types() do
     [
       "payment_type",
@@ -19,7 +19,7 @@ defmodule Repo.Migrations.InitialMigration do
   @doc """
     Returns a list of SQL TABLES
   """
-  @spec models() :: [String.t]
+  @spec models() :: [String.t()]
   def models() do
     [
       "application_entity",
@@ -61,7 +61,8 @@ defmodule Repo.Migrations.InitialMigration do
       "get_trade_price(order_side, order_type, DECIMAL, order_side, order_type, DECIMAL, BIGINT)",
       "process_trade_order(TEXT, TEXT, TEXT, order_side, DECIMAL, DECIMAL, TEXT, BIGINT)",
       "update_price_level(BIGINT, order_side, DECIMAL, DECIMAL, BOOLEAN)",
-      "get_potential_self_trade_volume(BIGINT, order_side, BIGINT, NUMERIC)"
+      "get_potential_self_trade_volume(BIGINT, order_side, BIGINT, NUMERIC)",
+      "create_trading_account_transfer(TEXT, TEXT, TEXT, NUMERIC)"
     ]
   end
 
@@ -87,8 +88,7 @@ defmodule Repo.Migrations.InitialMigration do
   end
 
   def down do
-
-     # migrate down functions
+    # migrate down functions
     functions()
     |> Enum.reverse()
     |> Enum.each(fn function -> DB.migrate_down_function(function) end)
@@ -98,10 +98,10 @@ defmodule Repo.Migrations.InitialMigration do
     |> Enum.reverse()
     |> Enum.each(fn model -> DB.migrate_down_table(model) end)
 
-     # mirgate down types
-     types()
-     |> Enum.each(fn type -> DB.migrate_down_type(type) end)
+    # mirgate down types
+    types()
+    |> Enum.each(fn type -> DB.migrate_down_type(type) end)
 
-     DB.execute("DROP EXTENSION \"uuid-ossp\"")
+    DB.execute("DROP EXTENSION \"uuid-ossp\"")
   end
 end
