@@ -1,9 +1,9 @@
 compile:
 	mix do deps.get, deps.compile
 
-# Helper for running dev mode
-run-dev:
-	MIX_ENV=dev iex -S mix phx.server
+# run: Start dev mode
+run:
+	@go run main.go
 
 db-update:
 	MIX_ENV=dev mix ecto.migrate
