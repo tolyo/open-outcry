@@ -2,11 +2,11 @@ openapi: 3.0.2
 info:
   description: |
     # Introduction
-    This API is documented in **OpenAPI 3.0 format**.
+    This API is {cumented in **OpenAPI 3.0 format**.
 
     This API the following operations:
     * Retrieve a list of available instruments 
-    # TODO
+    # TO{
 
     # Basics
     * API calls have to be secured with HTTPS.

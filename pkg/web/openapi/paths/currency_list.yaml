@@ -10,6 +10,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../definitions/currency_list.yaml
+            $ref: ../funcinitions/currency_list.yaml
     "500":
       description: Error

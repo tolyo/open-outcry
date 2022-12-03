@@ -1,40 +1,29 @@
-compile:
-	mix do deps.get, deps.compile
 
-# run: Start dev mode
-run:
+.DEFAULT_GOAL := help
+.PHONY: help
+
+setup: ## Installs and compiles dependencies
+	@go install github.com/pressly/goose/v3/cmd/goose@latest 
+
+run: ## Start dev mode
 	@go run main.go
 
-db-update:
-	MIX_ENV=dev mix ecto.migrate
-	MIX_ENV=test mix ecto.migrate
+DB_DSN:=$$(yq e '.DB_DSN' /pkg/conf/dev.yaml)
+MIGRATE_OPTIONS=-dir="/pkg/db/migrations"
 
-db-downgrade:
-	MIX_ENV=dev mix ecto.rollback --all
-	MIX_ENV=test mix ecto.rollback --all
+db-update: ## Migrate down on database
+	@goose -v $(MIGRATE_OPTIONS) postgres "$(DB_DSN)" up
 
-# Helper for executing a hard reset on the database
-db-rebuild: db-downgrade db-update
+db-downgrade: ## Migrate up on database
+	@goose -v $(MIGRATE_OPTIONS) postgres "$(DB_DSN)" down
 
-lint:
-	mix format mix.exs 'lib/**/*.{ex,exs}' 'test/**/*.{ex,exs}'
-	
-check:
-	mix dialyzer --format dialyzer
+db-rebuild: ## Reset the database
+	$(MAKE) db-downgrade 
+	$(MAKE) db-update
 
-check-coverage:
-	MIX_ENV=test mix coveralls ./lib/
-
-run-test:
-	MIX_ENV=test mix test test/ lib/
-
-run-quality-check: lint check run-test check-coverage
-
-style-check:
-	mix credo --all 
-
-
-build-api:
+build-api: ## Build OpenAPI
 	node node_modules/swagger-cli/swagger-cli.js bundle -o static/docs/api/openapi.json -t json -r lib/web/openapi/openapi.yaml
 
-
+help:
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+	| sed -n 's/^\(.*\): \(.*\)##\(.*\)/\1\3/p' 
