@@ -1,5 +1,10 @@
 package utils
 
+import "open-outcry/pkg/db"
+
 func GetCount(tableName string) int {
-	return db.QueryVal(utils.Format("SELECT COUNT(*) FROM {{.}}", tableName))
+	var count int
+	rows := db.Instance().QueryRow(Format("SELECT COUNT(*) FROM {{.}}", tableName))
+	rows.Scan(&count)
+	return count
 }

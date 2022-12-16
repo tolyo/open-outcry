@@ -1,15 +1,15 @@
 get:
   tags:
     - currencies
-  summary: currencies
+  summary: currencies list
   description: Returns list of available currencies
-  operationId: getcurrencies
+  operationId: getCurrencies
   responses:
     "200":
       description: currencies list
       content:
         application/json:
           schema:
-            $ref: ../funcinitions/currency_list.yaml
+            $ref: ../definitions/currency_list.yaml
     "500":
       description: Error

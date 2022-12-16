@@ -8,14 +8,15 @@ setup: ## Installs and compiles dependencies
 run: ## Start dev mode
 	@go run main.go
 
-DB_DSN:=$$(yq e '.DB_DSN' /pkg/conf/dev.yaml)
-MIGRATE_OPTIONS=-dir="/pkg/db/migrations"
+DB_DSN:=$$(yq e '.DB_DSN' ./pkg/conf/dev.yaml)
+MIGRATE_OPTIONS=-allow-missing -dir="./pkg/db/migrations"
 
 db-update: ## Migrate down on database
 	@goose -v $(MIGRATE_OPTIONS) postgres "$(DB_DSN)" up
 
 db-downgrade: ## Migrate up on database
-	@goose -v $(MIGRATE_OPTIONS) postgres "$(DB_DSN)" down
+	@echo "$(MIGRATE_OPTIONS)"
+	@goose -v $(MIGRATE_OPTIONS) postgres "$(DB_DSN)" reset
 
 db-rebuild: ## Reset the database
 	$(MAKE) db-downgrade 

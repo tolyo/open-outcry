@@ -29,7 +29,6 @@ services:
       - db
     environment:
       <<: *common-variables
-      MIX_ENV: dev
     ports:
       - 4000:4000
     volumes:
