@@ -5,7 +5,7 @@ package services
 //
 //  test "process/1 limit sell order save with reserved balance" {
 // given:
-//    appEntityId := TestUtils.create_client()
+//    appEntityId := create_client()
 //    PaymentAccount.create(appEntityId, "BTC")
 //    tradingAccountId := TradingAccount.find_by_appEntityId(appEntityId).id
 //
@@ -52,7 +52,7 @@ package services
 //
 //  test "process/1 limit buy order save with reserved balance" {
 // given:
-//    appEntityId := TestUtils.create_client()
+//    appEntityId := create_client()
 //
 //    payment_account_id =
 //      models.FindPaymentAccountByAppEntityIdAndCurrencyName(appEntityId, "EUR").id

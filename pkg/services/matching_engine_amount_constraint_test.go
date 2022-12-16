@@ -10,7 +10,7 @@ package services
 //
 //  test "process/1 limit sell order save with insufficient funds" {
 // given:
-//    appEntityId := TestUtils.create_client()
+//    appEntityId := create_client()
 //    PaymentAccount.create(appEntityId, "BTC")
 //    PaymentService.deposit(appEntityId, 100, "BTC", "test", "Test")
 //    tradingAccountId := TradingAccount.find_by_appEntityId(appEntityId).id
@@ -27,7 +27,7 @@ package services
 //
 //  test "process/1 limit buy order save with insufficient funds" {
 // given:
-//    appEntityId := TestUtils.create_client()
+//    appEntityId := create_client()
 //    PaymentService.deposit(appEntityId, 100, "EUR", "test", "Test")
 //    tradingAccountId := TradingAccount.find_by_appEntityId(appEntityId).id
 //    ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", "BUY", 10, 10, "GTC")
@@ -58,7 +58,7 @@ package services
 //
 //  test "process/1 market buy order save with insufficient funds" {
 // given:
-//    appEntityId := TestUtils.create_client()
+//    appEntityId := create_client()
 //    PaymentService.deposit(appEntityId, 100, "EUR", "test", "Test")
 //    tradingAccountId := TradingAccount.find_by_appEntityId(appEntityId).id
 //    ProcessTradeOrder(tradingAccountId, "BTC_EUR", models.Market, "BUY", 100, "GTC")

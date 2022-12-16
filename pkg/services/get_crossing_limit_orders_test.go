@@ -70,7 +70,7 @@ package services
 //
 //  #when given a new order
 //  #   order = %TradeOrder{
-//  #     tradingAccountId: TestUtils.create_tradingAccountId(),
+//  #     tradingAccountId: create_tradingAccountId(),
 //  #     instrument: "BTC_EUR",
 //  #     type: "LIMIT",
 //  #     side: "BUY",
@@ -131,7 +131,7 @@ package services
 //
 //  #when given a new order
 //  #   order = %TradeOrder{
-//  #     tradingAccountId: TestUtils.create_tradingAccountId(),
+//  #     tradingAccountId: create_tradingAccountId(),
 //  #     instrument: "BTC_EUR",
 //  #     type: "LIMIT",
 //  #     side: "SELL",
@@ -201,7 +201,7 @@ package services
 //
 //  #   # when given a new order
 //  #   order = %TradeOrder{
-//  #     tradingAccountId: TestUtils.create_tradingAccountId(),
+//  #     tradingAccountId: create_tradingAccountId(),
 //  #     instrument: "BTC_EUR",
 //  #     type: "LIMIT",
 //  #     side: "BUY",

@@ -37,7 +37,7 @@ package services
 //
 // then: a matching unit should save the trade order but it should not be visible to the order book
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 market buy order save" {
@@ -46,7 +46,7 @@ package services
 //
 // then: a matching unit should save the trade order but it should not be visible to the order book
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 market sell order with existing sell limit" {
@@ -59,7 +59,7 @@ package services
 // then: a matching unit should save the trade order but it should not be visible to the order book
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 2
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
 //  }
@@ -74,7 +74,7 @@ package services
 // then: a matching unit should save the trade order but it should not be visible to the order book
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 2
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.0, 10}
 //           ]
 //  }
@@ -92,8 +92,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [10]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 market buy order with existing sell limit" {
@@ -109,8 +109,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [10]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [{10, 90}]
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{10, 90}]
 //  }
 //
 //  test "process/1 market sell order with multiple existing buy limits" {
@@ -128,8 +128,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [7, 5, 4]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 market buy order with multiple existing sell limits" {
@@ -147,8 +147,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [4, 5, 7]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 limit buy order with existing market sell" {
@@ -164,8 +164,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 limit sell order with existing market buy" {
@@ -181,8 +181,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [{5.0, 8.0}]
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{5.0, 8.0}]
 //  }
 //
 //  test "process/1 limit buy order with existing market sell and better limit sell" {
@@ -199,8 +199,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 limit sell order with existing market buy and better limit buy" {
@@ -217,8 +217,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 limit buy order with existing market sell and worse limit sell" {
@@ -235,8 +235,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [6]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [{7, 10}]
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{7, 10}]
 //  }
 //
 //  test "process/1 limit sell order with existing market buy and worse limit buy" {
@@ -253,8 +253,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [{4, 10}]
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{4, 10}]
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 market buy order with existing market sell and no reference price" {
@@ -270,8 +270,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == []
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 market sell order with existing market buy and no reference price" {
@@ -287,8 +287,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == []
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 market buy order with existing market sell and a limit sell" {
@@ -305,8 +305,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [{5, 10}]
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{5, 10}]
 //  }
 //
 //  test "process/1 market sell order with existing market buy and a limit buy" {
@@ -323,8 +323,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [{5, 10}]
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{5, 10}]
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 market buy order with existing market sell and a reference price" {
@@ -342,8 +342,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 market sell order with existing market buy and a reference price" {
@@ -361,8 +361,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 limit buy order with existing market sell and a reference price" {
@@ -380,8 +380,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  # ---- TESTS BELOW REQUIRE VARIOUS HACKS TO SIMULATE TIMESTAMP INCREMENTS
@@ -419,8 +419,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() |> List.first() == 5
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
 //  test "process/1 market sell order with existing market buy and multiple reference prices" {
@@ -457,7 +457,7 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() |> List.first() == 5
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //}

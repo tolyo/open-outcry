@@ -14,7 +14,7 @@ package services
 //    assert.Equal(res == db.QueryVal("SELECT pub_id FROM tradeOrder WHERE pub_id = '#{res}'")
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
 //  }
@@ -26,7 +26,7 @@ package services
 // then: a matching unit should save the orderSELL
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10, 100}
 //           ]
 //  }
@@ -41,11 +41,11 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {9, 100}
 //           ]
 //  }
@@ -60,11 +60,11 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {9, 100}
 //           ]
 //  }
@@ -81,7 +81,7 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) ==
 //             100
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
 //
@@ -93,8 +93,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match incoming buy single trade" {
@@ -105,7 +105,7 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10.00, 100}
 //           ]
 //
@@ -117,11 +117,11 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10.00, 50}
 //           ]
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit overflow match incoming buy single trade" {
@@ -141,9 +141,9 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.00, 5}
 //           ]
 //  }
@@ -167,9 +167,9 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 50
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.00, 50}
 //           ]
 //  }
@@ -193,11 +193,11 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 50
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10.00, 50}
 //           ]
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit exact match incoming buys multiple trades" {
@@ -221,8 +221,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
 //    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 0
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit exact match incoming sell multiple trades" {
@@ -246,8 +246,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match multiple book sells to multiple trades" {
@@ -275,11 +275,11 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10.00, 25}
 //           ]
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match  multiple book buys to multiple trades" {
@@ -304,9 +304,9 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.00, 25}
 //           ]
 //  }
@@ -335,8 +335,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 4
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit exact match multiple book buy to multiple trades" {
@@ -363,8 +363,8 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 4
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit incomplete match multiple book sells to multiple trades" {
@@ -389,9 +389,9 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.00, 7}
 //           ]
 //  }
@@ -419,11 +419,11 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10.00, 75}
 //           ]
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match multiple book sells to multiple trades multiple prices" {
@@ -448,11 +448,11 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10.00, 25}
 //           ]
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match  multiple book buys to multiple trades multiple prices" {
@@ -479,9 +479,9 @@ package services
 //    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
 //    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 9) == 25
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
-//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {9.00, 25}
 //           ]
 //  }
