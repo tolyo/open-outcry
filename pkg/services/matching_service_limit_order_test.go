@@ -10,11 +10,11 @@ package services
 //    res = ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 //
 // then: a matching unit should save the trade order on save order to the order book
-//    assert res != nil
-//    assert res == db.QueryVal("SELECT pub_id FROM tradeOrder WHERE pub_id = '#{res}'")
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(res != nil
+//    assert.Equal(res == db.QueryVal("SELECT pub_id FROM tradeOrder WHERE pub_id = '#{res}'")
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
 //  }
@@ -24,9 +24,9 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 10, 100, "GTC")
 //
 // then: a matching unit should save the orderSELL
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
 //             {10, 100}
 //           ]
 //  }
@@ -37,15 +37,15 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "BUY", 9, 100, "GTC")
 //
 // then: the book should have both orders and no trade should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
 //             {9, 100}
 //           ]
 //  }
@@ -56,15 +56,15 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 //
 // then: the book should have both orders and no trade should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
 //             {9, 100}
 //           ]
 //  }
@@ -74,14 +74,14 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 //
 // then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) ==
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) ==
 //             100
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
 //
@@ -89,23 +89,23 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "BUY", 10, 100, "GTC")
 //
 // then: the book should have no orders and a single trade should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 0
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 0
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match incoming buy single trade" {
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10.00, 100.00, "GTC")
 //
 // then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10.00, 100}
 //           ]
 //
@@ -113,15 +113,15 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
 //
 // then: the book should have one sell order and a single trade should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10.00, 50}
 //           ]
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit overflow match incoming buy single trade" {
@@ -129,21 +129,21 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10.00, 10.00, "GTC")
 //
 // then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 10
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 10
 //
 // when: a BUY limit order arrives that crosses and is more that the book amount
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "BUY", 10.00, 15, "GTC")
 //
 // then: the book should be one buy order,  no sell orders and a one trade
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
 //             {10.00, 5}
 //           ]
 //  }
@@ -153,23 +153,23 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 10.00, 100.00, "GTC")
 //
 // then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 100
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 100
 //
 // when: incoming SELL order is only partially matched
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
 //
 // then: the book should have one BUY order and a 1 trade should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 50
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 50
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
 //             {10.00, 50}
 //           ]
 //  }
@@ -179,25 +179,25 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 10.00, 100.00, "GTC")
 //
 // then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 100
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 100
 //
 //    # when: a SELL limit order arrives that crosses and is more that the book amount
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "SELL", 10.00, 150.00, "GTC")
 //
 //    # then: the book should be one SELL order,  no BUY orders and 1 trade
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 50
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 50
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10.00, 50}
 //           ]
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit exact match incoming buys multiple trades" {
@@ -205,11 +205,11 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10.00, 10.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 10
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 10
 //
 //    # when: incoming buy order that are partially matched
 //    tradingAccount = Acc2()
@@ -217,12 +217,12 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 5.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 0
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 0
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit exact match incoming sell multiple trades" {
@@ -233,21 +233,21 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 10.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 10
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 10
 //
 //    # when: incoming buy order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10.00, 5.00, "GTC")
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10.00, 5.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match multiple book sells to multiple trades" {
@@ -260,26 +260,26 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 2
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) ==
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) ==
 //             100
 //
 //    # when: incoming buy order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 10.00, 75.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10.00, 25}
 //           ]
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match  multiple book buys to multiple trades" {
@@ -292,21 +292,21 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 2
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 100
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 100
 //
 //    # when: incoming SELL order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10.00, 75.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
 //             {10.00, 25}
 //           ]
 //  }
@@ -323,20 +323,20 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 10.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 4
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 40
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 4
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 40
 //
 //    # when: incoming buy order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 10.00, 40.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 4
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 4
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit exact match multiple book buy to multiple trades" {
@@ -351,20 +351,20 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 5.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 4
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 20
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 4
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 20
 //
 //    # when: incoming buy order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10.00, 20.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 4
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 4
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit incomplete match multiple book sells to multiple trades" {
@@ -377,21 +377,21 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 5.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 2
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 10
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 10
 //
 //    # when: incoming buy order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 10.00, 17, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
 //             {10.00, 7}
 //           ]
 //  }
@@ -406,24 +406,24 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 2
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 100
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 100
 //
 //    # when: incoming SELL order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10.00, 175.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10.00, 75}
 //           ]
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match multiple book sells to multiple trades multiple prices" {
@@ -436,23 +436,23 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 2
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
 //
 //    # when: incoming buy order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 11.00, 75.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_trade_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == [
 //             {10.00, 25}
 //           ]
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == []
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == []
 //  }
 //
 //  test "process/1 limit partial match  multiple book buys to multiple trades multiple prices" {
@@ -465,23 +465,23 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 2
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 50
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 9) == 100
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 50
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 9) == 100
 //
 //    # when: incoming SELL order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 8.00, 75.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 0
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 9) == 25
-//    assert OrderBookService.get_volumes("BTC_EUR", "SELL") == []
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 9) == 25
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "SELL") == []
 //
-//    assert OrderBookService.get_volumes("BTC_EUR", "BUY") == [
+//    assert.Equal(OrderBookService.get_volumes("BTC_EUR", "BUY") == [
 //             {9.00, 25}
 //           ]
 //  }
@@ -492,13 +492,13 @@ package services
 //
 //    # when:
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
-//    assert MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
 //
 //    # then:
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
-//    assert MatchingServiceTestHelpers.get_sell_book_order_count() == 1
-//    assert MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 50
-//    assert MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 50
+//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("BUY", 10) == 50
+//    assert.Equal(MatchingServiceTestHelpers.GetAvailableLimitVolume("SELL", 10) == 50
 //  }
 //}

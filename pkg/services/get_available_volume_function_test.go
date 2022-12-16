@@ -27,10 +27,10 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSingleOrder() {
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 // then expect the available volume to increase
-//    assert GetAvailableLimitVolume("SELL", 10.00) == 200
-//    assert GetAvailableLimitVolume("SELL", 11.00) == 200
-//    assert GetAvailableLimitVolume("SELL", 9.00) == 0
-//    assert GetAvailableLimitVolume("BUY", 10.00) == 0
+//    assert.Equal(GetAvailableLimitVolume("SELL", 10.00) == 200
+//    assert.Equal(GetAvailableLimitVolume("SELL", 11.00) == 200
+//    assert.Equal(GetAvailableLimitVolume("SELL", 9.00) == 0
+//    assert.Equal(GetAvailableLimitVolume("BUY", 10.00) == 0
 //  }
 //
 //  test "GetAvailableLimitVolume/3 sell side multiple orders different prices" {
@@ -40,11 +40,11 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSingleOrder() {
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 9, 100, "GTC")
 //
 // then expect the available volume to increase
-//    assert GetAvailableLimitVolume("SELL", 10.00) == 200
-//    assert GetAvailableLimitVolume("SELL", 9.00) == 100
-//    assert GetAvailableLimitVolume("SELL", 11.00) == 200
-//    assert GetAvailableLimitVolume("SELL", 8.99) == 0
-//    assert GetAvailableLimitVolume("BUY", 10.00) == 0
+//    assert.Equal(GetAvailableLimitVolume("SELL", 10.00) == 200
+//    assert.Equal(GetAvailableLimitVolume("SELL", 9.00) == 100
+//    assert.Equal(GetAvailableLimitVolume("SELL", 11.00) == 200
+//    assert.Equal(GetAvailableLimitVolume("SELL", 8.99) == 0
+//    assert.Equal(GetAvailableLimitVolume("BUY", 10.00) == 0
 //  }
 //
 //  @{c `
@@ -58,10 +58,10 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSingleOrder() {
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10, 10, "GTC")
 //
 // then expect the available volume to increase
-//    assert GetAvailableLimitVolume("BUY", 10.00) == 10
-//    assert GetAvailableLimitVolume("BUY", 9.00) == 10
-//    assert GetAvailableLimitVolume("BUY", 11.00) == 0
-//    assert GetAvailableLimitVolume("SELL", 10.00) == 0
+//    assert.Equal(GetAvailableLimitVolume("BUY", 10.00) == 10
+//    assert.Equal(GetAvailableLimitVolume("BUY", 9.00) == 10
+//    assert.Equal(GetAvailableLimitVolume("BUY", 11.00) == 0
+//    assert.Equal(GetAvailableLimitVolume("SELL", 10.00) == 0
 //  }
 //
 //  test "GetAvailableLimitVolume/3 buy side multiple orders same price" {
@@ -71,10 +71,10 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSingleOrder() {
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10, 10, "GTC")
 //
 // then expect the available volume to increase
-//    assert GetAvailableLimitVolume("BUY", 10.00) == 20
-//    assert GetAvailableLimitVolume("BUY", 9.00) == 20
-//    assert GetAvailableLimitVolume("BUY", 11.00) == 0
-//    assert GetAvailableLimitVolume("SELL", 10.00) == 0
+//    assert.Equal(GetAvailableLimitVolume("BUY", 10.00) == 20
+//    assert.Equal(GetAvailableLimitVolume("BUY", 9.00) == 20
+//    assert.Equal(GetAvailableLimitVolume("BUY", 11.00) == 0
+//    assert.Equal(GetAvailableLimitVolume("SELL", 10.00) == 0
 //  }
 //
 //  test "GetAvailableLimitVolume/3 buy side multiple orders different prices" {
@@ -84,11 +84,11 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSingleOrder() {
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 9, 10, "GTC")
 //
 // then expect the available volume to increase
-//    assert GetAvailableLimitVolume("BUY", 10.00) == 10
-//    assert GetAvailableLimitVolume("BUY", 9.00) == 20
-//    assert GetAvailableLimitVolume("BUY", 11.00) == 0
-//    assert GetAvailableLimitVolume("BUY", 9.99) == 10
-//    assert GetAvailableLimitVolume("BUY", 10.000001) == 0
-//    assert GetAvailableLimitVolume("SELL", 10.00) == 0
+//    assert.Equal(GetAvailableLimitVolume("BUY", 10.00) == 10
+//    assert.Equal(GetAvailableLimitVolume("BUY", 9.00) == 20
+//    assert.Equal(GetAvailableLimitVolume("BUY", 11.00) == 0
+//    assert.Equal(GetAvailableLimitVolume("BUY", 9.99) == 10
+//    assert.Equal(GetAvailableLimitVolume("BUY", 10.000001) == 0
+//    assert.Equal(GetAvailableLimitVolume("SELL", 10.00) == 0
 //  }
 //}

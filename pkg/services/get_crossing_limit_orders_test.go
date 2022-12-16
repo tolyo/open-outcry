@@ -10,44 +10,44 @@ package services
 //    tradingAccount = Acc()
 //
 // should return none
-//    assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) == []
+//    assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) == []
 //
 // when given a new order
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 1, "GTC")
 //
 // then count should increase
-//    assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 1
+//    assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 1
 //
 // # when given another new order
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 1, "GTC")
 //
 // then count should increase
-//    assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 2
 //
 // when given another new order with crossing price
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 9.00, 1, "GTC")
 //
 // then count should increase
-//    assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 3
+//    assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 3
 //
 // when given another new order non crossing price
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 19.00, 1, "GTC")
 //
 // then count should not change
-//    assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 3
+//    assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 3
 //
 // when given another new order with crossing price for buy side
 //    tradingAccount2 := Acc2()
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 10.00, 1, "GTC")
 //
 // then count should decrease
-//    assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 2
 //
 // when given another new order non crossing price
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.01, 1, "GTC")
 //
 // then count should increase
-//    assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 2
+//    assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 2
 //
 // when given another new order with crossing price
 //    ProcessTradeOrder(
@@ -61,12 +61,12 @@ package services
 //    )
 //
 // then count should increase because buy side is emtpy
-//    assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 3
+//    assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) |> length == 3
 //  }
 //
 //  # test "get_crossing_limit_orders/3 test price BUY side" {
 //  #should return none
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) == []
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) == []
 //
 //  #when given a new order
 //  #   order = %TradeOrder{
@@ -82,43 +82,43 @@ package services
 //  #   ProcessTradeOrder(order)
 //
 //  #then count should increase
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 1
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 1
 //
 //  #when given another new order
 //  #   ProcessTradeOrder(order)
 //
 //  #then count should increase
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 2
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 2
 //
 //  #when given another new order with crossing price
 //  #   ProcessTradeOrder(%TradeOrder{order | price: 11.00})
 //
 //  #then count should increase
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
 //
 //  #when given another new order non crossing price
 //  #   ProcessTradeOrder(%TradeOrder{order | price: 9.00})
 //
 //  #then count should not change
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
 //
 //  #when given another new order with crossing price for buy side
 //  #   ProcessTradeOrder(%TradeOrder{order | price: 10.00, side: "SELL"})
 //
 //  #then count should not change
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
 //
 //  #when given another new order non crossing price
 //  #   ProcessTradeOrder(%TradeOrder{order | price: 9.99999})
 //
 //  #then count should not change
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
 //
 //  #when given another new order with crossing price
 //  #   ProcessTradeOrder(%TradeOrder{order | price: 10.000001})
 //
 //  #then count should increase
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 4
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 4
 //  # }
 //
 //  # @{c `
@@ -127,7 +127,7 @@ package services
 //  # `
 //  # test "get_crossing_limit_orders/3 test ordering SELL side" {
 //  #should return none
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) == []
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "SELL", 10.00) == []
 //
 //  #when given a new order
 //  #   order = %TradeOrder{
@@ -148,7 +148,7 @@ package services
 //  #     |> Enum.fetch!(0)
 //  #     |> from_db_tuple
 //
-//  #   assert pub_id1 === pub_id
+//  #   assert.Equal(pub_id1 === pub_id
 //
 //  #   # when given another new order
 //  #   pub_id2 = ProcessTradeOrder(order)
@@ -156,9 +156,9 @@ package services
 //
 //  #   # then it should be second in list
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(0) |> from_db_tuple
-//  #   assert pub_id1 === pub_id
+//  #   assert.Equal(pub_id1 === pub_id
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(1) |> from_db_tuple
-//  #   assert pub_id2 === pub_id
+//  #   assert.Equal(pub_id2 === pub_id
 //
 //  #   # when given another new order with crossing price
 //  #   pub_id3 = ProcessTradeOrder(%TradeOrder{order | price: 9.00})
@@ -166,7 +166,7 @@ package services
 //
 //  #   # then it should be first in list
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(0) |> from_db_tuple
-//  #   assert pub_id3 === pub_id
+//  #   assert.Equal(pub_id3 === pub_id
 //
 //  #   # when given another new order with crossing price
 //  #   pub_id4 = ProcessTradeOrder(%TradeOrder{order | price: 9.50})
@@ -174,9 +174,9 @@ package services
 //
 //  #   # then it should be 2rd in list
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(1) |> from_db_tuple
-//  #   assert pub_id4 === pub_id
+//  #   assert.Equal(pub_id4 === pub_id
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(0) |> from_db_tuple
-//  #   assert pub_id3 === pub_id
+//  #   assert.Equal(pub_id3 === pub_id
 //
 //  #   # when given another new order with crossing price
 //  #   pub_id5 = ProcessTradeOrder(%TradeOrder{order | price: 9.25})
@@ -184,11 +184,11 @@ package services
 //
 //  #   # then it should be 2rd in list
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(1) |> from_db_tuple
-//  #   assert pub_id5 === pub_id
+//  #   assert.Equal(pub_id5 === pub_id
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(2) |> from_db_tuple
-//  #   assert pub_id4 === pub_id
+//  #   assert.Equal(pub_id4 === pub_id
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(0) |> from_db_tuple
-//  #   assert pub_id3 === pub_id
+//  #   assert.Equal(pub_id3 === pub_id
 //  # }
 //
 //  # @{c `
@@ -197,7 +197,7 @@ package services
 //  # `
 //  # test "get_crossing_limit_orders/3 test ordering BUY side" {
 //  #   # should return none
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) == []
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) == []
 //
 //  #   # when given a new order
 //  #   order = %TradeOrder{
@@ -218,37 +218,37 @@ package services
 //  #     |> Enum.fetch!(0)
 //  #     |> from_db_tuple
 //
-//  #   assert pub_id1 === pub_id
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 11.00) |> length == 0
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 9.00) |> length == 1
+//  #   assert.Equal(pub_id1 === pub_id
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 11.00) |> length == 0
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 9.00) |> length == 1
 //
 //  #   # when given another limit order
 //  #   pub_id2 = ProcessTradeOrder(order)
 //
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 2
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 11.00) |> length == 0
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 8.00) |> length == 2
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 2
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 11.00) |> length == 0
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 8.00) |> length == 2
 //
 //  #   order_list = MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00)
 //
 //  #   # then it should be second in list
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(0) |> from_db_tuple
-//  #   assert pub_id1 === pub_id
+//  #   assert.Equal(pub_id1 === pub_id
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(1) |> from_db_tuple
-//  #   assert pub_id2 === pub_id
+//  #   assert.Equal(pub_id2 === pub_id
 //
 //  #   # when given another new order with a higher crossing price
 //  #   pub_id3 = ProcessTradeOrder(%TradeOrder{order | price: 11.00})
 //
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 12.00) |> length == 0
-//  #   assert MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 8.00) |> length == 3
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 10.00) |> length == 3
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 12.00) |> length == 0
+//  #   assert.Equal(MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 8.00) |> length == 3
 //
 //  #   order_list = MatchingServiceTestHelpers.get_crossing_limit_orders(1, "BUY", 11.00)
 //
 //  #   # then it should be first in list
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(0) |> from_db_tuple
-//  #   assert pub_id3 === pub_id
+//  #   assert.Equal(pub_id3 === pub_id
 //
 //  #   # when given another new order with crossing price
 //  #   pub_id4 = ProcessTradeOrder(%TradeOrder{order | price: 10.50})
@@ -256,9 +256,9 @@ package services
 //
 //  #   # then it should be 2rd in list
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(1) |> from_db_tuple
-//  #   assert pub_id4 === pub_id
+//  #   assert.Equal(pub_id4 === pub_id
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(0) |> from_db_tuple
-//  #   assert pub_id3 === pub_id
+//  #   assert.Equal(pub_id3 === pub_id
 //
 //  #   # when given another new order with crossing price
 //  #   pub_id5 = ProcessTradeOrder(%TradeOrder{order | price: 10.75})
@@ -266,10 +266,10 @@ package services
 //
 //  #   # then it should be 2rd in list
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(1) |> from_db_tuple
-//  #   assert pub_id5 === pub_id
+//  #   assert.Equal(pub_id5 === pub_id
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(2) |> from_db_tuple
-//  #   assert pub_id4 === pub_id
+//  #   assert.Equal(pub_id4 === pub_id
 //  #   %TradeOrder{id: pub_id} = order_list |> Enum.fetch!(0) |> from_db_tuple
-//  #   assert pub_id3 === pub_id
+//  #   assert.Equal(pub_id3 === pub_id
 //  # }
 //}

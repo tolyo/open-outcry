@@ -51,6 +51,6 @@ func GetAvailableLimitVolume(side models.OrderSide, price models.OrderPrice) flo
 //          :none | PaymentAccount.t()
 //  func get_payment_account(tradingAccount, currency) {
 //    TradingAccount.get(tradingAccount).appEntityId
-//    |> FindPaymentAccountByAppEntityIdAndCurrencyName(currency)
+//    |> models.FindPaymentAccountByAppEntityIdAndCurrencyName(currency)
 //  }
 //}
