@@ -12,33 +12,23 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_TEST_DB: exchange_test_db
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
     steps:
+      # need checkout before using compose-action
+      - uses: actions/checkout@v3
+      - name: Start db
+      - uses: isbang/compose-action@v1.4.1
+        with:
+          down-flags: "--volumes"
+          services: |
+            db
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.19
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
 
-    - name: Install dependencies
-      run: make setup
+      - name: Build
+        run: make build
 
-    - name: Initialize schema
-      run: make db-rebuild
-
-    - name: Run tests
-      run: make test
+      - name: Test
+        run: make test

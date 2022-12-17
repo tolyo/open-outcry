@@ -2,7 +2,8 @@
 .DEFAULT_GOAL := help
 .PHONY: help
 
-setup: ## Installs and compiles dependencies
+build: ## Installs and compiles dependencies
+	@go build -v ./...
 	@go install github.com/pressly/goose/v3/cmd/goose@latest 
 
 run: ## Start dev mode
