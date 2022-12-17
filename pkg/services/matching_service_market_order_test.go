@@ -36,7 +36,7 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", models.Market, "SELL", 100, "GTC")
 //
 // then: a matching unit should save the trade order but it should not be visible to the order book
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(get_sell_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
 //
@@ -45,7 +45,7 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", models.Market, "BUY", 100, "GTC")
 //
 // then: a matching unit should save the trade order but it should not be visible to the order book
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(get_buy_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //  }
 //
@@ -57,7 +57,7 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 100, "GTC")
 //
 // then: a matching unit should save the trade order but it should not be visible to the order book
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 2
+//    assert.Equal(get_sell_book_order_count() == 2
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10, 100}
@@ -72,7 +72,7 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "BUY", 10, "GTC")
 //
 // then: a matching unit should save the trade order but it should not be visible to the order book
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 2
+//    assert.Equal(get_buy_book_order_count() == 2
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.0, 10}
@@ -88,10 +88,10 @@ package services
 //    ProcessTradeOrder(account2, "BTC_EUR", models.Market, "SELL", 100, "GTC")
 //
 // then:
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [10]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(get_trade_prices() == [10]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -105,10 +105,10 @@ package services
 //    ProcessTradeOrder(account2, "BTC_EUR", models.Market, "BUY", 100, "GTC")
 //
 // then:
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [10]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(get_trade_prices() == [10]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{10, 90}]
 //  }
@@ -124,10 +124,10 @@ package services
 //    ProcessTradeOrder(account2, "BTC_EUR", models.Market, "SELL", 30, "GTC")
 //
 // then:
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 3
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [7, 5, 4]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 3
+//    assert.Equal(get_trade_prices() == [7, 5, 4]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -143,10 +143,10 @@ package services
 //    ProcessTradeOrder(account2, "BTC_EUR", models.Market, "BUY", 160, "GTC")
 //
 // then:
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 3
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [4, 5, 7]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 3
+//    assert.Equal(get_trade_prices() == [4, 5, 7]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -160,10 +160,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "BUY", 5, 10, "GTC")
 //
 // then: the trade settles at the incoming order’s limit price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(get_trade_prices() == [5]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -177,10 +177,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "SELL", 5, 10, "GTC")
 //
 // then: the trade settles at the incoming order’s limit price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(get_trade_prices() == [5]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{5.0, 8.0}]
 //  }
@@ -195,10 +195,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "BUY", 6, 20, "GTC")
 //
 // then: the trade settles at the book order’s limit price as if market order did not exist
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(get_trade_prices() == [5, 5]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -213,10 +213,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "SELL", 4, 20, "GTC")
 //
 // then: the trade settles at the book order’s limit price as if market order did not exist
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(get_trade_prices() == [5, 5]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -231,10 +231,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "BUY", 6, 10, "GTC")
 //
 //    # then: the trade settles at the incoming order’s limit price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [6]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(get_trade_prices() == [6]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{7, 10}]
 //  }
@@ -249,10 +249,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "SELL", 5, 20, "GTC")
 //
 //    # then: the trade settles at the incoming order’s limit price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(get_trade_prices() == [5]
+//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{4, 10}]
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -266,10 +266,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "BUY", 50, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == []
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(get_trade_count() == 0
+//    assert.Equal(get_trade_prices() == []
+//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(get_sell_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -283,10 +283,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 10, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == []
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(get_trade_count() == 0
+//    assert.Equal(get_trade_prices() == []
+//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(get_sell_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -301,10 +301,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "BUY", 50, "GTC")
 //
 //    # then: the trade settles at the book order’s limit price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(get_trade_prices() == [5]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{5, 10}]
 //  }
@@ -319,10 +319,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 10, "GTC")
 //
 //    # then: the trade settles at the book order’s limit price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(get_trade_prices() == [5]
+//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{5, 10}]
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -338,10 +338,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "BUY", 50, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(get_trade_prices() == [5, 5]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -357,10 +357,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 10, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(get_trade_prices() == [5, 5]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -376,10 +376,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "BUY", 6, 10, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 2
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [5, 5]
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(get_trade_prices() == [5, 5]
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -415,10 +415,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "BUY", 50, "GTC")
 //
 //    # then: the trade settles at last reference price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 4
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() |> List.first() == 5
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 4
+//    assert.Equal(get_trade_prices() |> List.first() == 5
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -453,10 +453,10 @@ package services
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 10, "GTC")
 //
 //    # then: the trade settles at last reference price
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 4
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() |> List.first() == 5
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_trade_count() == 4
+//    assert.Equal(get_trade_prices() |> List.first() == 5
+//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }

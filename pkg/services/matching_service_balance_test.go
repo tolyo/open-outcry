@@ -125,10 +125,10 @@ package services
 //
 // when: a trade is executed
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10, 10, "GTC")
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 0
+//    assert.Equal(get_trade_count() == 0
 //    assert.Equal(PaymentAccount.get(seller_debit_account.id).AmountReserved |> Decimal.to_float() == 10
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 10, 10, "GTC")
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_count() == 1
+//    assert.Equal(get_trade_count() == 1
 //
 // then: 4 payments are executed in addition to 4 deposits
 //    assert.Equal(db.QueryVal("SELECT COUNT(*) FROM payment") == 8

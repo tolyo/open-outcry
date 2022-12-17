@@ -56,7 +56,7 @@ type TradeOrderId string
 type OrderPrice float64
 
 type TradeOrder struct {
-	Id               TradeOrderId
+	Id               TradeOrderId "db: pub_id"
 	TradingAccountId TradingAccountId
 	InstrumentName   InstrumentName
 	Side             OrderSide

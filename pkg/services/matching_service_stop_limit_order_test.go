@@ -20,7 +20,7 @@ package services
 // then:
 //    assert.Equal(res != nil
 //    assert.Equal(DBget_count("stop_order") == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
 //    assert.Equal(FindPaymentAccountByAppEntityIdAndCurrencyName(c.entity, "BTC").AmountReserved
@@ -34,7 +34,7 @@ package services
 // then:
 //    assert.Equal(res != nil
 //    assert.Equal(DBget_count("stop_order") == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 0
+//    assert.Equal(get_buy_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //
 //    assert.Equal(FindPaymentAccountByAppEntityIdAndCurrencyName(c.entity, "EUR").AmountReserved
@@ -49,7 +49,7 @@ package services
 //
 // then: the order becomes activated
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(get_sell_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{10, 2}]
 //  }
 //
@@ -61,7 +61,7 @@ package services
 //
 // then: the order becomes activated
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(get_buy_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{10, 2}]
 //  }
 //
@@ -73,7 +73,7 @@ package services
 //
 // then: the order remains deactivated
 //    assert.Equal(DBget_count("stop_order") == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
 // when: a crossing trade occurs
@@ -82,7 +82,7 @@ package services
 //
 // then: it becomes activated
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 1
+//    assert.Equal(get_sell_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{10, 2}]
 //  }
 //
@@ -94,7 +94,7 @@ package services
 //
 // then: the order remains deactivated
 //    assert.Equal(DBget_count("stop_order") == 1
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
 // when: a crossing trade occurs
@@ -103,7 +103,7 @@ package services
 //
 // then: it becomes activated
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_buy_book_order_count() == 1
+//    assert.Equal(get_buy_book_order_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{10, 2}]
 //  }
 //
@@ -115,7 +115,7 @@ package services
 //
 // then: the order becomes activated and settled
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -128,7 +128,7 @@ package services
 //
 // then: the order becomes activated and settled
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -141,7 +141,7 @@ package services
 //
 // then: the order becomes activated and settled
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -154,7 +154,7 @@ package services
 //
 //    # then: the order becomes activated and settled
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -167,9 +167,9 @@ package services
 //    ProcessTradeOrder(c.tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 11, 3, "GTC")
 //
 //    # then: the order becomes activated and settled
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [10, 10, 11]
+//    assert.Equal(get_trade_prices() == [10, 10, 11]
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -182,9 +182,9 @@ package services
 //    ProcessTradeOrder(c.tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 9, 3, "GTC")
 //
 //    # then: the order becomes activated and settled
-//    assert.Equal(MatchingServiceTestHelpers.get_trade_prices() == [10, 10, 9]
+//    assert.Equal(get_trade_prices() == [10, 10, 9]
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -197,7 +197,7 @@ package services
 //
 //    # then: the order becomes activated and settled
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
@@ -208,7 +208,7 @@ package services
 //
 //    # then: the order becomes activated and settled
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
@@ -221,7 +221,7 @@ package services
 //
 //    # then: the order becomes activated and settled
 //    assert.Equal(DBget_count("stop_order") == 0
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
@@ -233,7 +233,7 @@ package services
 //    # then: the order becomes activated and settled
 //    assert.Equal(DBget_count("stop_order") == 0
 //
-//    assert.Equal(MatchingServiceTestHelpers.get_sell_book_order_count() == 0
+//    assert.Equal(get_sell_book_order_count() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
