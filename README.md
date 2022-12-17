@@ -2,7 +2,7 @@
 
 <p align="center">
   <a target="_blank" rel="noopener noreferrer">
-    <img src="https://raw.githubusercontent.com/tolyo/open-outcry/main/assets/market.jpg" width="400">
+    <img src="https://raw.githubusercontent.com/tolyo/open-outcry/main/market.jpg" width="400">
   </a>
 </p>
 
