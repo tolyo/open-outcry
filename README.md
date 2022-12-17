@@ -1,4 +1,4 @@
-![Build status](https://github.com/tolyo/open-outcry/actions/workflows/elixir.yml/badge.svg)
+![Build status](https://github.com/tolyo/open-outcry/actions/workflows/ci.yml/badge.svg)
 
 <p align="center">
   <a target="_blank" rel="noopener noreferrer">
