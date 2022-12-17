@@ -57,11 +57,11 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderSaveWithInsufficientFu
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderSaveWithInsufficientFunds() {
 	// given:
-   appEntityId := CreateClient()
-   CreatePaymentDeposit(appEntityId, 100, "EUR", "test", "Test")
-   tradingAccountId := models.FindTradingAccountByApplicationEntityId(appEntityId).Id
-   ProcessTradeOrder(tradingAccountId, "BTC_EUR", models.Market, "BUY",  0, 100, "GTC")
-   CreatePaymentDeposit(appEntityId, 100, "EUR", "test", "Test")
+	appEntityId := CreateClient()
+	CreatePaymentDeposit(appEntityId, 100, "EUR", "test", "Test")
+	tradingAccountId := models.FindTradingAccountByApplicationEntityId(appEntityId).Id
+	ProcessTradeOrder(tradingAccountId, "BTC_EUR", models.Market, "BUY",  0, 100, "GTC")
+	CreatePaymentDeposit(appEntityId, 100, "EUR", "test", "Test")
 	// when: a market order is sent with insufficient funds
 	// then: exception is raised
 	_, err := ProcessTradeOrder(tradingAccountId, "BTC_EUR", models.Market, "BUY",  0, 101, "GTC")

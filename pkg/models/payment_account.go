@@ -1,6 +1,7 @@
 package models
 
 import (
+	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/db"
 )
 
@@ -34,17 +35,21 @@ const basePaymentAccountQuery = `
 	  ON pa.currency_name = c.name
   `
 
-// //   @spec get(PaymentAccount.id()) PaymentAccount.t()
-// //   func get(id) {
-// //     id
-// //     |> db.QueryVal(
-// //        baseQuery +
-// //         `
-// //           WHERE pa.pub_id = $1
-// //         `
-// //     )
-// //     |> from_atom()
-// //   }
+func GetPaymentAccount(id PaymentAccountId) *PaymentAccount {
+	var res PaymentAccount
+	err := db.Instance().QueryRow(basePaymentAccountQuery + ` WHERE pa.pub_id = $1`, id).Scan(
+		&res.Id,
+		&res.AppEntityId,
+		&res.Amount,
+		&res.AmountReserved,
+		&res.AmountAvailable,
+		&res.Currency,
+	)
+	if err != nil {
+		log.Error(err)
+	}
+	return &res
+}
 
 // //   @spec find_all_by_app_entity(AppEntity.id()) [PaymentAccount.t()]
 // //   func find_all_by_app_entity(app_entity_id) {
@@ -56,7 +61,7 @@ const basePaymentAccountQuery = `
 // //         `
 // //     )
 // //     |> Enum.map(&from_atom(&1))
-// //   }
+//}
 
 func FindPaymentAccountByAppEntityIdAndCurrencyName(
 	appEntityId AppEntityId,
