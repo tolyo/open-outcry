@@ -5,7 +5,7 @@ import "open-outcry/pkg/models"
 func (assert *ServiceTestSuite) TestCancelTradeOrder() {
 	// given: an existing trade limit order
 	tradingAccount := Acc()
-	tradeOrder := ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
+	tradeOrder, _ := ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 
 	assert.Equal(1, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{
@@ -34,10 +34,10 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithMultipleOrders() {
 
 	assert.Equal(0.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(GetAppEntityId(), "BTC").AmountReserved)
 
-	tradeOrderId := ProcessTradeOrder(tradingAccount,
+	tradeOrderId, _ := ProcessTradeOrder(tradingAccount,
 		"BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 
-	tradeOrderId2 := ProcessTradeOrder(tradingAccount,
+	tradeOrderId2, _ := ProcessTradeOrder(tradingAccount,
 		"BTC_EUR", "LIMIT", "SELL", 5, 100, "GTC")
 
 	assert.Equal(2, GetSellBookOrderCount())
@@ -85,7 +85,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithPartiallyExecutedOrder()
 		"BTC",
 	).AmountReserved)
 
-	tradeOrderId := ProcessTradeOrder(tradingAccount,
+	tradeOrderId, _ := ProcessTradeOrder(tradingAccount,
 		"BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 
 	assert.Equal(1, GetSellBookOrderCount())

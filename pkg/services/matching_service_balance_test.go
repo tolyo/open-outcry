@@ -3,11 +3,11 @@ package services
 //funcmodule MatchingServiceBalanceTest {
 //  use DataCase
 //
-//  test "process/1 limit sell order save with reserved balance" {
+func (assert *ServiceTestSuite) TestProcessLimitSellOrderSaveWithReservedBalance() {
 // given:
-//    appEntityId := create_client()
-//    PaymentAccount.create(appEntityId, "BTC")
-//    tradingAccountId := TradingAccount.find_by_appEntityId(appEntityId).id
+//    appEntityId := CreateClient()
+//    models.CreatePaymentAccount(appEntityId, "BTC")
+//    tradingAccountId := model.FindTradingAccountByAppEntityId(appEntityId).id
 //
 //    payment_account =
 //      models.FindPaymentAccountByAppEntityIdAndCurrencyName(appEntityId, "BTC")
@@ -17,7 +17,7 @@ package services
 //    assert.Equal(Decimal.equal?(payment_account.amount_available, 0)
 //
 // when:
-//    PaymentService.deposit(appEntityId, 1000, "BTC", "Test", "Test")
+//    CreatePaymentDeposit(appEntityId, 1000, "BTC", "Test", "Test")
 //
 // then:
 //    payment_account =
@@ -48,16 +48,16 @@ package services
 //    assert.Equal(Decimal.equal?(payment_account.amount, 1000)
 //    assert.Equal(Decimal.equal?(payment_account.AmountReserved, 200)
 //    assert.Equal(Decimal.equal?(payment_account.amount_available, 800)
-//  }
-//
-//  test "process/1 limit buy order save with reserved balance" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitBuyOrderSaveWithReservedBalance() {
 // given:
-//    appEntityId := create_client()
+//    appEntityId := CreateClient()
 //
 //    payment_account_id =
 //      models.FindPaymentAccountByAppEntityIdAndCurrencyName(appEntityId, "EUR").id
 //
-//    tradingAccountId := TradingAccount.find_by_appEntityId(appEntityId).id
+//    tradingAccountId := model.FindTradingAccountByAppEntityId(appEntityId).id
 //
 //    payment_account = PaymentAccount.get(payment_account_id)
 //
@@ -66,7 +66,7 @@ package services
 //    assert.Equal(Decimal.equal?(payment_account.amount_available, 0)
 //
 // when:
-//    PaymentService.deposit(appEntityId, 1000, "EUR", "Test", "Test")
+//    CreatePaymentDeposit(appEntityId, 1000, "EUR", "Test", "Test")
 //
 // then:
 //    payment_account = PaymentAccount.get(payment_account_id)
@@ -94,9 +94,9 @@ package services
 //    assert.Equal(Decimal.equal?(payment_account.amount, 1000)
 //    assert.Equal(Decimal.equal?(payment_account.AmountReserved, 200)
 //    assert.Equal(Decimal.equal?(payment_account.amount_available, 800)
-//  }
-//
-//  test "process/1 limit sell order against matching buy order with funds transfer" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitSellOrderAgainstMatchingBuyOrderWithFundsTransfer() {
 // given:
 // -- a seller
 //    tradingAccount := Acc()
@@ -149,4 +149,4 @@ package services
 //    assert.Equal(PaymentAccount.get(buyer_credit_account.id).amount |> Decimal.to_float() == 1010
 //    assert.Equal(PaymentAccount.get(buyer_credit_account.id).AmountReserved |> Decimal.to_float() == 0
 //  }
-//}
+}

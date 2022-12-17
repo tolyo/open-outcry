@@ -1,13 +1,7 @@
 package services
 
-//funcmodule MatchingServiceMarketOrderTest {
-//  use DataCase
-//
-//  import TestUtils
-//  use ExUnit.Case, async: false
-//
-//  @module{c `
-//
+import "open-outcry/pkg/models"
+
 //  Primary market order test cases:
 //    * An incoming market order hits an outstanding limit order in the opposite book
 //    * An incoming limit order hits an outstanding market order in the opposite book
@@ -29,42 +23,37 @@ package services
 //      - the opposte order book {es not have outstanding limit orders, so the “best limit” price is not funcined.
 //        In this case the trade occurs at the “reference price”. Most often reference price is the last traded price for a security.
 //      - if no trades have occured (upon security launch), market orders simply rest
-//  `
-//
-//  test "process/1 market sell order save" {
-// when: a market order is sent to an empty matching unit
-//    ProcessTradeOrder(Acc(), "BTC_EUR", models.Market, "SELL", 100, "GTC")
-//
-// then: a matching unit should save the trade order but it should not be visible to the order book
-//    assert.Equal(GetSellBookOrderCount() == 1
-//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 market buy order save" {
-// when: a market order is sent to an empty matching unit
-//    ProcessTradeOrder(Acc(), "BTC_EUR", models.Market, "BUY", 100, "GTC")
-//
-// then: a matching unit should save the trade order but it should not be visible to the order book
-//    assert.Equal(GetBuyBookOrderCount() == 1
-//    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 market sell order with existing sell limit" {
-//    account = Acc()
-//
-// when: a market order is sent to an non empty matching unit
-//    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
-//    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 100, "GTC")
-//
-// then: a matching unit should save the trade order but it should not be visible to the order book
-//    assert.Equal(GetSellBookOrderCount() == 2
-//
-//    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
-//             {10, 100}
-//           ]
-//  }
-//
-//  test "process/1 market buy order with existing buy limit" {
+
+func (assert *ServiceTestSuite) TestProcessMarketSellOrderSave() {
+	// when: a market order is sent to an empty matching unit
+	ProcessTradeOrder(Acc(), "BTC_EUR", models.Market, "SELL", 0, 100, "GTC")
+	// then: a matching unit should save the trade order but it should not be visible to the order book
+   assert.Equal(1, GetSellBookOrderCount())
+   assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", "SELL"))
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketBuyOrderSave() {
+	// when: a market order is sent to an empty matching unit
+	ProcessTradeOrder(Acc(), "BTC_EUR", models.Market, "BUY", 0, 100, "GTC")
+
+	// then: a matching unit should save the trade order but it should not be visible to the order book
+	assert.Equal(1, GetBuyBookOrderCount())
+	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", "BUY"))
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingSellLimit() {
+	account := Acc()
+
+	// when: a market order is sent to an non empty matching unit
+	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
+	ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL",  0, 100, "GTC")
+
+	// then: a matching unit should save the trade order but it should not be visible to the order book
+	assert.Equal(2, GetSellBookOrderCount())
+	assert.Equal([]PriceVolume{{10, 100}}, GetVolumes("BTC_EUR", "SELL"))
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingBuyLimit() {
 //    account = Acc()
 //
 // when: a market order is sent to an non empty matching unit
@@ -77,9 +66,9 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.0, 10}
 //           ]
-//  }
-//
-//  test "process/1 market sell order with existing buy limit" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingBuyLimit() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -94,9 +83,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 market buy order with existing sell limit" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingSellLimit() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -111,9 +100,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{10, 90}]
-//  }
-//
-//  test "process/1 market sell order with multiple existing buy limits" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithMultipleExistingBuyLimits() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -130,9 +119,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 market buy order with multiple existing sell limits" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithMultipleExistingSellLimits() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -149,9 +138,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 limit buy order with existing market sell" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSell() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -166,9 +155,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 limit sell order with existing market buy" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuy() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -183,9 +172,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{5.0, 8.0}]
-//  }
-//
-//  test "process/1 limit buy order with existing market sell and better limit sell" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAndBetterLimitSell() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -201,9 +190,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 limit sell order with existing market buy and better limit buy" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAndBetterLimitBuy() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -219,9 +208,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 limit buy order with existing market sell and worse limit sell" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAndWorseLimitSell() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -237,9 +226,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{7, 10}]
-//  }
-//
-//  test "process/1 limit sell order with existing market buy and worse limit buy" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAndWorseLimitBuy() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -255,9 +244,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{4, 10}]
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 market buy order with existing market sell and no reference price" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellAndNoReferencePrice() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -272,9 +261,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 market sell order with existing market buy and no reference price" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndNoReferencePrice() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -289,9 +278,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 market buy order with existing market sell and a limit sell" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketBuOrderWithExistingMarketSellAndLimitSell() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -307,9 +296,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{5, 10}]
-//  }
-//
-//  test "process/1 market sell order with existing market buy and a limit buy" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndLimitBuy() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -325,9 +314,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{5, 10}]
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 market buy order with existing market sell and a reference price" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellAnReferencePrice() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -344,9 +333,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 market sell order with existing market buy and a reference price" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndReferencePrice() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -363,9 +352,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 limit buy order with existing market sell and a reference price" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAndReferencePrice() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -382,10 +371,10 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
+}
+
 //  # ---- TESTS BELOW REQUIRE VARIOUS HACKS TO SIMULATE TIMESTAMP INCREMENTS
-//  test "process/1 market buy order with existing market sell and multiple reference prices" {
+func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellAndMultipleReferencePrices() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -421,9 +410,9 @@ package services
 //    assert.Equal(GetSellBookOrderCount() == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
-//  }
-//
-//  test "process/1 market sell order with existing market buy and multiple reference prices" {
+}
+
+func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndMultipleReferencePrices() {
 //    account = Acc()
 //    account2 = Acc2()
 //
@@ -460,4 +449,4 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //  }
-//}
+}

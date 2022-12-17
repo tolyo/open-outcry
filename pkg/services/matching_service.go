@@ -17,7 +17,7 @@ func ProcessTradeOrder(
 	price models.OrderPrice,
 	amount float64,
 	timeInForce models.OrderTimeInForce,
-) models.TradeOrderId {
+) (models.TradeOrderId, error) {
 	var tradeOrderId string
 	err := db.Instance().QueryRow("SELECT process_trade_order($1, $2, $3, $4, $5, $6, $7, 0)",
 		tradingAccountId,
@@ -30,9 +30,10 @@ func ProcessTradeOrder(
 	).Scan(&tradeOrderId)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
+		return "", err
 	}
-	return models.TradeOrderId(tradeOrderId)
+	return models.TradeOrderId(tradeOrderId), nil
 }
 
 func CancelTradeOrder(tradeOrderId models.TradeOrderId) {

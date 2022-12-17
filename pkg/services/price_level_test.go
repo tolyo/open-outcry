@@ -55,7 +55,7 @@ func (assert *ServiceTestSuite) TestCancelWithSingle() {
 	// when given a new saved limit order
 	tradingAccountId := Acc()
 
-	id := ProcessTradeOrder(
+	id, _  := ProcessTradeOrder(
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
@@ -80,7 +80,7 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersOfSameSize() {
 	// when given a new saved limit order
 	tradingAccountId := Acc()
 
-	id := ProcessTradeOrder(
+	id, _ := ProcessTradeOrder(
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
@@ -116,7 +116,7 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersWithDiffPrice() {
 	// when given a new saved limit order
 	tradingAccountId := Acc()
 
-	id := ProcessTradeOrder(
+	id, _  := ProcessTradeOrder(
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",

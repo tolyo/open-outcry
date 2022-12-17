@@ -5,7 +5,7 @@ package services
 //
 //  import TestUtils
 //
-//  test "process/1 limit sell order save" {
+func (assert *ServiceTestSuite) TestProcessLimitSellOrderSave() {
 // when: a limit order is sent to an empty matching unit
 //    res = ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 //
@@ -17,9 +17,9 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10, 100}
 //           ]
-//  }
-//
-//  test "process/1 limit buy order save" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitBuyOrderSave() {
 // when: a limit order is sent to an empty matching unit
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 10, 100, "GTC")
 //
@@ -29,9 +29,9 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10, 100}
 //           ]
-//  }
-//
-//  test "process/1 limit no match case incoming buy" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitNoMatchCaseIncomingBuy() {
 // when: there is a SELL order in the book and a BUY limit order arrives that {es not cross
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "BUY", 9, 100, "GTC")
@@ -48,9 +48,9 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {9, 100}
 //           ]
-//  }
-//
-//  test "process/1 limit no match case incoming sell" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitNoMatchCaseIncomingSell() {
 // when: there is a BUY order in the book and a SELL limit order arrives that {es not cross
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 9, 100, "GTC")
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
@@ -67,9 +67,9 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {9, 100}
 //           ]
-//  }
-//
-//  test "process/1 limit exact match incoming buy" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingBuy() {
 // when: there is a SELL order in the book
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 //
@@ -95,9 +95,9 @@ package services
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit partial match incoming buy single trade" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitPartialMatchIncomingBuySingleTrade() {
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10.00, 100.00, "GTC")
 //
 // then:
@@ -122,9 +122,9 @@ package services
 //           ]
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit overflow match incoming buy single trade" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitOverflowMatchIncomingBuySingleTrade() {
 // when: there is a SELL order in the book
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10.00, 10.00, "GTC")
 //
@@ -146,9 +146,9 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.00, 5}
 //           ]
-//  }
-//
-//  test "process/1 limit partial match incoming sell single trade" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitPartialMatchIncomingSellSingleTrade() {
 // when: there is a BUY order
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 10.00, 100.00, "GTC")
 //
@@ -172,9 +172,9 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.00, 50}
 //           ]
-//  }
-//
-//  test "process/1 limit overflow match incoming sell single trade" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitOverflowMatchIncomingSellSingleTrade() {
 // when: there is a BUY order in the book
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 10.00, 100.00, "GTC")
 //
@@ -198,9 +198,9 @@ package services
 //           ]
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit exact match incoming buys multiple trades" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingBuysMultipleTrades() {
 //    # when: there is a SELL order in the book and 2 BUY limit order arrive that cross
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10.00, 10.00, "GTC")
 //
@@ -223,9 +223,9 @@ package services
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit exact match incoming sell multiple trades" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingSellMultipleTrades() {
 //    tradingAccount = Acc()
 //    tradingAccount2 = Acc2()
 //
@@ -248,9 +248,9 @@ package services
 //    assert.Equal(get_trade_count() == 2
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit partial match multiple book sells to multiple trades" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookSellsToMultipleTrades() {
 //    # given:
 //    tradingAccount = Acc()
 //    tradingAccount2 = Acc2()
@@ -280,9 +280,9 @@ package services
 //           ]
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit partial match  multiple book buys to multiple trades" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookBuysToMultipleTrades() {
 //    # given:
 //    tradingAccount = Acc()
 //    tradingAccount2 = Acc2()
@@ -309,9 +309,9 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.00, 25}
 //           ]
-//  }
-//
-//  test "process/1 limit exact match multiple book sells to multiple trades" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitExactMatchMultipleBookSellsToMultipleTrades() {
 //    # given:
 //    tradingAccount = Acc()
 //    tradingAccount2 = Acc2()
@@ -337,9 +337,9 @@ package services
 //    assert.Equal(get_trade_count() == 4
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit exact match multiple book buy to multiple trades" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitExactMatchMultipleBookBuyToMultipleTrades() {
 //    # given:
 //    tradingAccount = Acc()
 //    tradingAccount2 = Acc2()
@@ -365,9 +365,9 @@ package services
 //    assert.Equal(get_trade_count() == 4
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit incomplete match multiple book sells to multiple trades" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitIncompleteMatchMultipleBookSellsToMultipleTrades() {
 //    # given:
 //    tradingAccount = Acc()
 //    tradingAccount2 = Acc2()
@@ -394,9 +394,9 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10.00, 7}
 //           ]
-//  }
-//
-//  test "process/1 limit incomplete match multiple book buys to multiple trades" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitIncompleteMatchMultipleBookBuysToMultipleTrades() {
 //    # given:
 //    tradingAccount = Acc()
 //    tradingAccount2 = Acc2()
@@ -424,9 +424,9 @@ package services
 //           ]
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit partial match multiple book sells to multiple trades multiple prices" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookSellsToMultipleTradesMultiplePrices() {
 //    # given:
 //    tradingAccount = Acc()
 //    tradingAccount2 = Acc2()
@@ -453,9 +453,9 @@ package services
 //           ]
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
-//  }
-//
-//  test "process/1 limit partial match  multiple book buys to multiple trades multiple prices" {
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookBuysToMultipleTradesMultiplePrices() {
 //    # given:
 //    tradingAccount = Acc()
 //    tradingAccount2 = Acc2()
@@ -484,21 +484,21 @@ package services
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {9.00, 25}
 //           ]
-//  }
-//
-//  test "process/1 limit self trade preventions" {
-//    # given:
-//    tradingAccount = Acc()
-//
-//    # when:
-//    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
-//    assert.Equal(GetBuyBookOrderCount() == 1
-//
-//    # then:
-//    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
-//    assert.Equal(GetSellBookOrderCount() == 1
-//    assert.Equal(get_trade_count() == 0
-//    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 50
-//    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 50
-//  }
-//}
+}
+
+func (assert *ServiceTestSuite) TestProcessLimitSelfTradePreventions() {
+	//    # given:
+	//    tradingAccount = Acc()
+	//
+	//    # when:
+	//    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
+	//    assert.Equal(GetBuyBookOrderCount() == 1
+	//
+	//    # then:
+	//    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
+	//    assert.Equal(GetSellBookOrderCount() == 1
+	//    assert.Equal(get_trade_count() == 0
+	//    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 50
+	//    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 50
+	//  }
+}

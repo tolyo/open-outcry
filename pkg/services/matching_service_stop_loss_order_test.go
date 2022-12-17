@@ -9,7 +9,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderSave() {
 	tradingAccount := Acc()
 
 	// when: a stop loss order is created
-	res := ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLoss, "SELL", 10, 100, "GTC")
+	res, _ := ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLoss, "SELL", 10, 100, "GTC")
 
 	// then:
 	assert.NotNil(res)
@@ -23,7 +23,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderSave() {
 func (assert *ServiceTestSuite) TestCreateStoLossBuyOrderBuy() {
 	tradingAccount := Acc()
 	// when: a stop loss order is created
-	res := ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLoss, "BUY", 10, 100, "GTC")
+	res, _ := ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLoss, "BUY", 10, 100, "GTC")
 
 	// then:
 	assert.NotNil(res)
