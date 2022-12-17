@@ -10,7 +10,7 @@ package services
 //
 //  test "process/1 limit sell order save with insufficient funds" {
 // given:
-//    appEntityId := create_client()
+//    appEntityId := CreateClient()
 //    PaymentAccount.create(appEntityId, "BTC")
 //    PaymentService.deposit(appEntityId, 100, "BTC", "test", "Test")
 //    tradingAccountId := TradingAccount.find_by_appEntityId(appEntityId).id

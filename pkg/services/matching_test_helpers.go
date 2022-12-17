@@ -19,7 +19,7 @@ func GetBuyBookOrderCount() int {
 	return db.QueryVal[int](
 		`
 		SELECT COUNT(*) 
-		FROM tradeOrder t 
+		FROM trade_order t 
 		    INNER JOIN book_order b 
 			ON t.id = b.trade_order_id 
 		WHERE t.side = 'BUY'
@@ -30,11 +30,10 @@ func GetTradeCount() int {
 	return db.QueryVal[int]("SELECT COUNT(*) FROM trade")
 }
 
-//
-//  func get_trade_prices() {
-//    DB.query_list("SELECT (price) FROM trade ORDER BY created_at ASC")
-//    |> Enum.map(&Decimal.to_float(&1))
-//  }
+func GetTradePrices() []float64 {
+	return db.QueryList[float64]("SELECT (price) FROM trade ORDER BY created_at ASC")
+}
+
 //
 //  @spec get_crossing_limit_orders(number(), TradeOrder.Side.t(), Decimal.t()) [any]
 //  func get_crossing_limit_orders(instrument_id, side, price) {
