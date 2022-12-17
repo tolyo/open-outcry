@@ -1,4 +1,4 @@
-name: Elixir CI
+name: Golang CI
 
 on:
   push:
@@ -27,26 +27,39 @@ jobs:
         ports:
           - 5432:5432
 
-    # steps:
-    # - uses: actions/checkout@v2
-    # - name: Set up Elixir
-    #   uses: erlef/setup-elixir@885971a72ed1f9240973bd92ab57af8c1aa68f24
-    #   with:
-    #     elixir-version: '1.12' # Define the elixir version [required]
-    #     otp-version: '24.1.2' # Define the OTP version [required]
+    steps:
 
-    # - name: Restore dependencies cache
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: deps
-    #     key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-    #     restore-keys: ${{ runner.os }}-mix-
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.19
 
-    # - name: Install dependencies
-    #   run: mix deps.get
+    - name: Verify dependencies
+      run: go mod verify
 
-    # - name: Initialize schema
-    #   run: 	MIX_ENV=test mix ecto.create  
+    - name: Build
+      run: go build -v ./...
 
-    # - name: Run tests
-    #   run: MIX_ENV=test mix test test/ lib/
+    - name: Run go vet
+      run: go vet ./...
+
+    - name: Install staticcheck
+      run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+    - name: Run staticcheck
+      run: staticcheck ./...
+
+    - name: Install golint
+      run: go install golang.org/x/lint/golint@latest
+
+    - name: Run golint
+      run: golint ./...
+
+    - name: Install dependencies
+      run: make setup
+
+    - name: Initialize schema
+      run: make db-rebuild
+
+    - name: Run tests
+      run: make test

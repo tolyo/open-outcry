@@ -8,6 +8,9 @@ setup: ## Installs and compiles dependencies
 run: ## Start dev mode
 	@go run main.go
 
+test:
+	@go test ./...
+
 DB_DSN:=$$(yq e '.DB_DSN' ./pkg/conf/dev.yaml)
 MIGRATE_OPTIONS=-allow-missing -dir="./pkg/db/migrations"
 
