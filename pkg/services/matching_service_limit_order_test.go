@@ -12,7 +12,7 @@ package services
 // then: a matching unit should save the trade order on save order to the order book
 //    assert.Equal(res != nil
 //    assert.Equal(res == db.QueryVal("SELECT pub_id FROM tradeOrder WHERE pub_id = '#{res}'")
-//    assert.Equal(get_sell_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 1
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
 //             {10, 100}
@@ -24,7 +24,7 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 10, 100, "GTC")
 //
 // then: a matching unit should save the orderSELL
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [
 //             {10, 100}
@@ -37,8 +37,8 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "BUY", 9, 100, "GTC")
 //
 // then: the book should have both orders and no trade should be generated
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 0
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
@@ -56,8 +56,8 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 //
 // then: the book should have both orders and no trade should be generated
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 0
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
@@ -74,8 +74,8 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
 //
 // then:
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 0
 //
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) ==
@@ -89,8 +89,8 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "BUY", 10, 100, "GTC")
 //
 // then: the book should have no orders and a single trade should be generated
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 1
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
@@ -101,8 +101,8 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10.00, 100.00, "GTC")
 //
 // then:
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 0
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
@@ -113,8 +113,8 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
 //
 // then: the book should have one sell order and a single trade should be generated
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 1
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
@@ -129,8 +129,8 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10.00, 10.00, "GTC")
 //
 // then:
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 10
 //
@@ -138,8 +138,8 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "BUY", 10.00, 15, "GTC")
 //
 // then: the book should be one buy order,  no sell orders and a one trade
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
@@ -153,8 +153,8 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 10.00, 100.00, "GTC")
 //
 // then:
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 0
 //
 //    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 100
@@ -163,8 +163,8 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
 //
 // then: the book should have one BUY order and a 1 trade should be generated
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 1
 //    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 50
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
@@ -179,8 +179,8 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "BUY", 10.00, 100.00, "GTC")
 //
 // then:
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 100
 //
@@ -188,8 +188,8 @@ package services
 //    ProcessTradeOrder(Acc2(), "BTC_EUR", "LIMIT", "SELL", 10.00, 150.00, "GTC")
 //
 //    # then: the book should be one SELL order,  no BUY orders and 1 trade
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 1
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 50
 //
@@ -205,8 +205,8 @@ package services
 //    ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", "SELL", 10.00, 10.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 0
 //
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 10
@@ -217,8 +217,8 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 5.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 2
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 0
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
@@ -233,8 +233,8 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 10.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 10
 //
@@ -243,8 +243,8 @@ package services
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10.00, 5.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 2
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
@@ -260,8 +260,8 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 2
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 2
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 0
 //
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) ==
@@ -271,8 +271,8 @@ package services
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 10.00, 75.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 2
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
@@ -292,8 +292,8 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 2
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 2
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 100
 //
@@ -301,8 +301,8 @@ package services
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10.00, 75.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 2
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
@@ -323,8 +323,8 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 10.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 4
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 4
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 40
 //
@@ -332,8 +332,8 @@ package services
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 10.00, 40.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 4
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
@@ -351,8 +351,8 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 5.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 4
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 4
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 20
 //
@@ -360,8 +360,8 @@ package services
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10.00, 20.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 4
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == []
@@ -377,8 +377,8 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 5.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 2
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 2
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 10
 //
@@ -386,8 +386,8 @@ package services
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 10.00, 17, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 2
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
 //
@@ -406,8 +406,8 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 2
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 2
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 100
 //
@@ -415,8 +415,8 @@ package services
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10.00, 175.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 2
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
@@ -436,16 +436,16 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 2
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 2
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 0
 //
 //    # when: incoming buy order is only partially matched
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 11.00, 75.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 1
-//    assert.Equal(get_buy_book_order_count() == 0
+//    assert.Equal(GetSellBookOrderCount() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(get_trade_count() == 2
 //
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [
@@ -465,8 +465,8 @@ package services
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
 //
 //    # then:
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 2
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 2
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 50
 //    assert.Equal(GetAvailableLimitVolume("BUY", 9) == 100
@@ -475,8 +475,8 @@ package services
 //    ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 8.00, 75.00, "GTC")
 //
 //    # then: the book should have 2 trades should be generated
-//    assert.Equal(get_sell_book_order_count() == 0
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 2
 //    assert.Equal(GetAvailableLimitVolume("BUY", 9) == 25
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == []
@@ -492,11 +492,11 @@ package services
 //
 //    # when:
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 50.00, "GTC")
-//    assert.Equal(get_buy_book_order_count() == 1
+//    assert.Equal(GetBuyBookOrderCount() == 1
 //
 //    # then:
 //    ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10.00, 50.00, "GTC")
-//    assert.Equal(get_sell_book_order_count() == 1
+//    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(get_trade_count() == 0
 //    assert.Equal(GetAvailableLimitVolume("BUY", 10) == 50
 //    assert.Equal(GetAvailableLimitVolume("SELL", 10) == 50
