@@ -15,8 +15,9 @@ jobs:
     steps:
       # need checkout before using compose-action
       - uses: actions/checkout@v3
+
       - name: Start db
-      - uses: isbang/compose-action@v1.4.1
+        uses: isbang/compose-action@v1.4.1
         with:
           down-flags: "--volumes"
           services: |
