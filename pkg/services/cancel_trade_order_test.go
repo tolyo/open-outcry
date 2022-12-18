@@ -75,7 +75,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithMultipleOrders() {
 	).AmountReserved)
 }
 
-func (assert *ServiceTestSuite) TestCancelTradeOrderWithPartiallyExecutedOrder() {
+func (assert *ServiceTestSuite) TestCancelTradeOrderWithPartiallyExecdOrder() {
 	// given: an existing trade limit order
 	tradingAccount := Acc()
 	tradingAccount2 := Acc2()
