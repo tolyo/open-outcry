@@ -79,8 +79,8 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingBuyLimit()
 // then:
 //    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [10]
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -96,7 +96,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingSellLimit()
 // then:
 //    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [10]
-//    assert.Equal(GetBuyBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{10, 90}]
@@ -115,8 +115,8 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithMultipleExistingBu
 // then:
 //    assert.Equal(GetTradeCount() == 3
 //    assert.Equal(GetTradePrices() == [7, 5, 4]
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -134,8 +134,8 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithMultipleExistingSel
 // then:
 //    assert.Equal(GetTradeCount() == 3
 //    assert.Equal(GetTradePrices() == [4, 5, 7]
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -151,8 +151,8 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSell()
 // then: the trade settles at the incoming order’s limit price
 //    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -168,7 +168,7 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuy()
 // then: the trade settles at the incoming order’s limit price
 //    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
-//    assert.Equal(GetBuyBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{5.0, 8.0}]
@@ -186,8 +186,8 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 // then: the trade settles at the book order’s limit price as if market order did not exist
 //    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -204,8 +204,8 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAn
 // then: the trade settles at the book order’s limit price as if market order did not exist
 //    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -222,7 +222,7 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 // then: the trade settles at the incoming order’s limit price
 //    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [6]
-//    assert.Equal(GetBuyBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{7, 10}]
@@ -241,7 +241,7 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAn
 //    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
 //    assert.Equal(GetBuyBookOrderCount() == 1
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{4, 10}]
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -292,7 +292,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuOrderWithExistingMarketSellAn
 // then: the trade settles at the book order’s limit price
 //    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
-//    assert.Equal(GetBuyBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
 //    assert.Equal(GetSellBookOrderCount() == 1
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL") == [{5, 10}]
@@ -311,7 +311,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 //    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
 //    assert.Equal(GetBuyBookOrderCount() == 1
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY") == [{5, 10}]
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -329,8 +329,8 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 // then: the trade settles at a reference price
 //    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -348,8 +348,8 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 // then: the trade settles at a reference price
 //    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -367,8 +367,8 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 // then: the trade settles at a reference price
 //    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -406,8 +406,8 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 // then: the trade settles at last reference price
 //    assert.Equal(GetTradeCount() == 4
 //    assert.Equal(GetTradePrices() |> List.first() == 5
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 }
@@ -444,8 +444,8 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 // then: the trade settles at last reference price
 //    assert.Equal(GetTradeCount() == 4
 //    assert.Equal(GetTradePrices() |> List.first() == 5
-//    assert.Equal(GetBuyBookOrderCount() == 0
-//    assert.Equal(GetSellBookOrderCount() == 0
+//    assert.Equal(0, GetBuyBookOrderCount())
+//    assert.Equal(0, GetSellBookOrderCount())
 //    assert.Equal(GetVolumes("BTC_EUR", "BUY"))
 //    assert.Equal(GetVolumes("BTC_EUR", "SELL"))
 //  }
