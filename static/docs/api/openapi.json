@@ -1,0 +1,192 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "description": "# Introduction\nThis API is {cumented in **OpenAPI 3.0 format**.\n\nThis API the following operations:\n* Retrieve a list of available instruments \n# TO{\n\n# Basics\n* API calls have to be secured with HTTPS.\n* All data has to be submitted UTF-8 encoded.\n* The reply is sent JSON encoded.\n",
+    "version": "1.0.0",
+    "title": "OPEN OUTCY API"
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://your.public.url"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "paths": {
+    "/currencies": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "currencies list",
+        "description": "Returns list of available currencies",
+        "operationId": "getCurrencies",
+        "responses": {
+          "200": {
+            "description": "currencies list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "Currency"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/instruments": {
+      "get": {
+        "tags": [
+          "instruments"
+        ],
+        "summary": "instrument list",
+        "description": "Returns list of available instruments",
+        "operationId": "getInstruments",
+        "responses": {
+          "200": {
+            "description": "instruments list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "Instrument"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/order_books/{instrument_name}": {
+      "get": {
+        "tags": [
+          "order_books"
+        ],
+        "summary": "get order books",
+        "description": "Return an order book for an instrument",
+        "operationId": "getOrderBook",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "instrument_name",
+            "required": true,
+            "schema": {
+              "name": {
+                "type": "string",
+                "description": "Ticker-like name of the instrument. For monetary instruments, a currency pair is used."
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "order book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sell": {
+                      "type": "array",
+                      "items": {
+                        "type": "PriceVolume"
+                      }
+                    },
+                    "buy": {
+                      "type": "array",
+                      "items": {
+                        "type": "PriceVolume"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/trades": {
+      "get": {
+        "tags": [
+          "trades"
+        ],
+        "summary": "trades list",
+        "description": "Returns list of user's trades",
+        "operationId": "getTrades",
+        "responses": {
+          "200": {
+            "description": "trades list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "Trade"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/trade_orders": {
+      "get": {
+        "tags": [
+          "trade_order"
+        ],
+        "summary": "trade order list",
+        "description": "Returns list of user's active trade orders",
+        "operationId": "getTradeOrders",
+        "responses": {
+          "200": {
+            "description": "trades orders list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "TradeOrder"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    }
+  }
+}

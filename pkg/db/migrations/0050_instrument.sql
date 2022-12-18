@@ -7,7 +7,7 @@ CREATE TABLE instrument(
     -- fx instruments involve an exchange of currencies 
     fx_instrument   BOOLEAN NOT NULL default FALSE,
     base_currency   TEXT NULL,
-    active          BOOLEAN NOT NULL default TRUE
+    enabled         BOOLEAN NOT NULL default TRUE
 );
 
 -- +goose Down

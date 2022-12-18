@@ -27,7 +27,7 @@ db-rebuild: ## Reset the database
 	$(MAKE) db-update
 
 build-api: ## Build OpenAPI
-	node node_modules/swagger-cli/swagger-cli.js bundle -o static/docs/api/openapi.json -t json -r lib/web/openapi/openapi.yaml
+	node node_modules/swagger-cli/swagger-cli.js bundle -o static/docs/api/openapi.json -t json -r openapi/openapi.yaml
 
 help:
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \

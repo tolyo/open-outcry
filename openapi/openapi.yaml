@@ -1,0 +1,41 @@
+openapi: 3.0.2
+info:
+  description: |
+    # Introduction
+    This API is {cumented in **OpenAPI 3.0 format**.
+
+    This API the following operations:
+    * Retrieve a list of available instruments 
+    # TO{
+
+    # Basics
+    * API calls have to be secured with HTTPS.
+    * All data has to be submitted UTF-8 encoded.
+    * The reply is sent JSON encoded.
+
+    
+  version: 1.0.0
+  title: OPEN OUTCY API
+
+security:
+  - basicAuth: []
+servers:
+  - url: https://your.public.url
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+paths:
+  /currencies:
+    $ref: paths/currencies_list.yaml
+  /instruments:
+    $ref: paths/instruments_list.yaml
+  /order_books/{instrument_name}:
+    $ref: paths/order_books.yaml
+  /trades:
+    $ref: paths/trades_list.yaml
+  /trade_orders:
+    $ref: paths/trade_orders_list.yaml
+
+

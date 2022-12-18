@@ -1,0 +1,20 @@
+components:
+  schemas:
+    CurrencyList:
+      type: array
+      items:
+        type: Currency
+    CurrencyName:
+      type: string
+      description: Currency symbol
+      example: USD
+    Currency:
+      type: object
+      properties:
+        name:
+          type: CurrencyName
+        precision:
+          type: integer
+          description: Currency precision as number of decimal points
+          example: 2
+

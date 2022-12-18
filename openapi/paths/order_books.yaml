@@ -1,0 +1,22 @@
+get:
+  tags:
+    - order_books
+  summary: get order books
+  description: Return an order book for an instrument
+  operationId: getOrderBook
+  parameters:
+    - in: path
+      name: instrument_name
+      required: true
+      schema:
+        $ref: ../definitions/instrument.yaml#/components/schemas/InstrumentName
+
+  responses:
+    "200":
+      description: order book
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/order_book.yaml#/components/schemas/OrderBook
+    "500":
+      description: Error

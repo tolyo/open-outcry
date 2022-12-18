@@ -1,0 +1,12 @@
+components:
+  schemas:
+    TradingAccountList:
+      type: array
+      items:
+        type: TradingAccount
+
+    TradingAccount:
+      type: object
+      properties:
+        id:
+          $ref: ./shared.yaml#/components/schemas/Id

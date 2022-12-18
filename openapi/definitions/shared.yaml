@@ -1,0 +1,5 @@
+components:
+  schemas:
+    Id:
+      type: string
+      format: uuid

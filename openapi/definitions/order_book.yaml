@@ -1,0 +1,22 @@
+components:
+  schemas:
+    PriceVolume:
+      type: object
+      properties:
+        price:
+          type: big decimal
+        volume:
+          type: big decimal
+
+    OrderBook:
+      type: object
+      properties:
+        sell:
+          type: array
+          items:
+            type: PriceVolume
+        buy:
+          type: array
+          items:
+            type: PriceVolume
+

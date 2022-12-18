@@ -5,6 +5,6 @@
     "dependencies": {
     },
     "devDependencies": {
-      "swagger-cli": "4.0.4"
+      "swagger-cli": "^4.0.4"
     }
 }

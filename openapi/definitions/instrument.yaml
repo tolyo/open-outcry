@@ -1,0 +1,28 @@
+components:
+  schemas:
+    InstrumentList:
+      type: array
+      items:
+        type: Instrument
+
+    InstrumentName:
+      name:
+        type: string
+        description: Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
+
+    Instrument:
+      type: object
+      properties:
+        id:
+          $ref: ./shared.yaml#/components/schemas/Id
+        name:
+          type: InstrumentName
+        base_currency:
+          $ref: ./currency.yaml#components/schemas/CurrencyName
+        quote_currency:
+          $ref: ./currency.yaml#components/schemas/CurrencyName
+        enabled:
+          type: boolean
+          description: Availability for trading
+
+
