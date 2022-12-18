@@ -47,7 +47,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 		models.GTC,
 	)
 
-	// # then another price level is created
+	// then another price level is created
 	assert.Equal(2, utils.GetCount("price_level"))
 }
 

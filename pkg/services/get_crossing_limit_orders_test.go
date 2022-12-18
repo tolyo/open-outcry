@@ -63,7 +63,7 @@ func (assert *ServiceTestSuite)	TestGetCrossingLimitOrdersPriceBuySide() {
 	// when given another new order
 	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.00, 1, "GTC")
 
-	//  #then count should increase
+	// then count should increase
 	assert.Equal(2, GetCrossingLimitOrders(1, "BUY", 10.00))
 
 	// when given another new order with crossing price
@@ -72,7 +72,7 @@ func (assert *ServiceTestSuite)	TestGetCrossingLimitOrdersPriceBuySide() {
 	// then count should increase
 	assert.Equal(3, GetCrossingLimitOrders(1, "BUY", 10.00))
 
-	//  #when given another new order non crossing price
+	// when given another new order non crossing price
 	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 9.00, 1, "GTC")
 
 	// then count should not change
@@ -84,8 +84,8 @@ func (assert *ServiceTestSuite)	TestGetCrossingLimitOrdersPriceBuySide() {
 	//  then count should not change
 	assert.Equal(3, GetCrossingLimitOrders(1, "BUY", 10.00))
 
-	//  #when given another new order non crossing price
-	//  #   ProcessTradeOrder(%TradeOrder{order | price: 9.99999})
+	// when given another new order non crossing price
+	//    ProcessTradeOrder(%TradeOrder{order | price: 9.99999})
 	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 9.99999, 1, "GTC")
 
 	// then count should not change
@@ -94,6 +94,6 @@ func (assert *ServiceTestSuite)	TestGetCrossingLimitOrdersPriceBuySide() {
 	// when given another new order with crossing price
 	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "BUY", 10.000001, 1, "GTC")
 
-	//  #then count should increase
+	// then count should increase
 	assert.Equal(4, GetCrossingLimitOrders(1, "BUY", 10.00))
 }

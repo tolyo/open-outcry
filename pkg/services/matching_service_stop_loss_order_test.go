@@ -251,7 +251,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossBuyOrderActivateByMarketAndSet
 	tradingAccount := Acc()
 	tradingAccount2 := Acc2()
 
-	//    # when: a stop loss order is created and then a crossing trade occurs
+	// when: a stop loss order is created and then a crossing trade occurs
 	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLoss, "BUY", 10, 20, "GTC")
 	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.Market, "BUY", 0, 10, "GTC")
 	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "SELL", 10, 3, "GTC")
