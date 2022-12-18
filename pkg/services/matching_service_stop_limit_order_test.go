@@ -3,7 +3,7 @@ package services
 
 func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderSave() {
 // when: a stop limit order is created
-//    res = ProcessTradeOrder(c.tradingAccount, "BTC_EUR", models.StopLimit, "SELL", 10, 100, "GTC")
+//    res, _ := ProcessTradeOrder(c.tradingAccount, "BTC_EUR", models.StopLimit, "SELL", 10, 100, "GTC")
 //
 // then:
 //    assert.Equal(res != nil
@@ -17,7 +17,7 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderSave() {
 
 func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderBuy() {
 // when: a stop limit order is created
-//    res = ProcessTradeOrder(c.tradingAccount, "BTC_EUR", models.StopLimit, "BUY", 10, 100, "GTC")
+//    res, _ := ProcessTradeOrder(c.tradingAccount, "BTC_EUR", models.StopLimit, "BUY", 10, 100, "GTC")
 //
 // then:
 //    assert.Equal(res != nil

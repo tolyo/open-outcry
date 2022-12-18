@@ -77,7 +77,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingBuyLimit()
 //    ProcessTradeOrder(account2, "BTC_EUR", models.Market, "SELL", 100, "GTC")
 //
 // then:
-//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [10]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -94,7 +94,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingSellLimit()
 //    ProcessTradeOrder(account2, "BTC_EUR", models.Market, "BUY", 100, "GTC")
 //
 // then:
-//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [10]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 1
@@ -113,7 +113,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithMultipleExistingBu
 //    ProcessTradeOrder(account2, "BTC_EUR", models.Market, "SELL", 30, "GTC")
 //
 // then:
-//    assert.Equal(get_trade_count() == 3
+//    assert.Equal(GetTradeCount() == 3
 //    assert.Equal(GetTradePrices() == [7, 5, 4]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -132,7 +132,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithMultipleExistingSel
 //    ProcessTradeOrder(account2, "BTC_EUR", models.Market, "BUY", 160, "GTC")
 //
 // then:
-//    assert.Equal(get_trade_count() == 3
+//    assert.Equal(GetTradeCount() == 3
 //    assert.Equal(GetTradePrices() == [4, 5, 7]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -149,7 +149,7 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSell()
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "BUY", 5, 10, "GTC")
 //
 // then: the trade settles at the incoming order’s limit price
-//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -166,7 +166,7 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuy()
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "SELL", 5, 10, "GTC")
 //
 // then: the trade settles at the incoming order’s limit price
-//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 1
@@ -184,7 +184,7 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "BUY", 6, 20, "GTC")
 //
 // then: the trade settles at the book order’s limit price as if market order did not exist
-//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -202,7 +202,7 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAn
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "SELL", 4, 20, "GTC")
 //
 // then: the trade settles at the book order’s limit price as if market order did not exist
-//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -220,7 +220,7 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "BUY", 6, 10, "GTC")
 //
 //    # then: the trade settles at the incoming order’s limit price
-//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [6]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 1
@@ -238,7 +238,7 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAn
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "SELL", 5, 20, "GTC")
 //
 //    # then: the trade settles at the incoming order’s limit price
-//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
 //    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -255,7 +255,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "BUY", 50, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(get_trade_count() == 0
+//    assert.Equal(GetTradeCount() == 0
 //    assert.Equal(GetTradePrices() == []
 //    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(GetSellBookOrderCount() == 1
@@ -272,7 +272,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 10, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(get_trade_count() == 0
+//    assert.Equal(GetTradeCount() == 0
 //    assert.Equal(GetTradePrices() == []
 //    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(GetSellBookOrderCount() == 1
@@ -290,7 +290,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuOrderWithExistingMarketSellAn
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "BUY", 50, "GTC")
 //
 //    # then: the trade settles at the book order’s limit price
-//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 1
@@ -308,7 +308,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 10, "GTC")
 //
 //    # then: the trade settles at the book order’s limit price
-//    assert.Equal(get_trade_count() == 1
+//    assert.Equal(GetTradeCount() == 1
 //    assert.Equal(GetTradePrices() == [5]
 //    assert.Equal(GetBuyBookOrderCount() == 1
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -327,7 +327,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "BUY", 50, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -346,7 +346,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 10, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -365,7 +365,7 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 //    ProcessTradeOrder(account, "BTC_EUR", "LIMIT", "BUY", 6, 10, "GTC")
 //
 //    # then: the trade settles at a reference price
-//    assert.Equal(get_trade_count() == 2
+//    assert.Equal(GetTradeCount() == 2
 //    assert.Equal(GetTradePrices() == [5, 5]
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -404,7 +404,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "BUY", 50, "GTC")
 //
 //    # then: the trade settles at last reference price
-//    assert.Equal(get_trade_count() == 4
+//    assert.Equal(GetTradeCount() == 4
 //    assert.Equal(GetTradePrices() |> List.first() == 5
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
@@ -442,7 +442,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 //    ProcessTradeOrder(account, "BTC_EUR", models.Market, "SELL", 10, "GTC")
 //
 //    # then: the trade settles at last reference price
-//    assert.Equal(get_trade_count() == 4
+//    assert.Equal(GetTradeCount() == 4
 //    assert.Equal(GetTradePrices() |> List.first() == 5
 //    assert.Equal(GetBuyBookOrderCount() == 0
 //    assert.Equal(GetSellBookOrderCount() == 0
