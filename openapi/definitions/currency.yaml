@@ -3,7 +3,7 @@ components:
     CurrencyList:
       type: array
       items:
-        type: Currency
+        $ref: '#/components/schemas/Currency'
     CurrencyName:
       type: string
       description: Currency symbol
@@ -12,7 +12,7 @@ components:
       type: object
       properties:
         name:
-          type: CurrencyName
+          $ref: '#/components/schemas/CurrencyName'
         precision:
           type: integer
           description: Currency precision as number of decimal points

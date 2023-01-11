@@ -40,7 +40,19 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "Currency"
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Currency symbol",
+                        "example": "USD"
+                      },
+                      "precision": {
+                        "type": "integer",
+                        "description": "Currency precision as number of decimal points",
+                        "example": 2
+                      }
+                    }
                   }
                 }
               }
@@ -68,7 +80,31 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "Instrument"
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Ticker-like name of the instrument. For monetary instruments, a currency pair is used."
+                      },
+                      "base_currency": {
+                        "type": "string",
+                        "description": "Currency symbol",
+                        "example": "USD"
+                      },
+                      "quote_currency": {
+                        "type": "string",
+                        "description": "Currency symbol",
+                        "example": "USD"
+                      },
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "Availability for trading"
+                      }
+                    }
                   }
                 }
               }
@@ -94,10 +130,8 @@
             "name": "instrument_name",
             "required": true,
             "schema": {
-              "name": {
-                "type": "string",
-                "description": "Ticker-like name of the instrument. For monetary instruments, a currency pair is used."
-              }
+              "type": "string",
+              "description": "Ticker-like name of the instrument. For monetary instruments, a currency pair is used."
             }
           }
         ],
@@ -112,13 +146,29 @@
                     "sell": {
                       "type": "array",
                       "items": {
-                        "type": "PriceVolume"
+                        "type": "object",
+                        "properties": {
+                          "price": {
+                            "type": "number"
+                          },
+                          "volume": {
+                            "type": "number"
+                          }
+                        }
                       }
                     },
                     "buy": {
                       "type": "array",
                       "items": {
-                        "type": "PriceVolume"
+                        "type": "object",
+                        "properties": {
+                          "price": {
+                            "type": "number"
+                          },
+                          "volume": {
+                            "type": "number"
+                          }
+                        }
                       }
                     }
                   }
@@ -148,7 +198,13 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "Trade"
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    }
                   }
                 }
               }
@@ -176,7 +232,13 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "TradeOrder"
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    }
                   }
                 }
               }

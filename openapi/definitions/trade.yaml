@@ -3,10 +3,10 @@ components:
     TradeList:
       type: array
       items:
-        type: Trade
+        $ref: '#/components/schemas/Trade'
 
     Trade:
       type: object
       properties:
         id:
-          $ref: ./shared.yaml#/components/schemas/Id
+          $ref: './shared.yaml#/components/schemas/Id'

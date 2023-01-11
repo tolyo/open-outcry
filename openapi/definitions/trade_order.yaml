@@ -3,10 +3,32 @@ components:
     TradeOrderList:
       type: array
       items:
-        type: TradeOrder
+        $ref: '#/components/schemas/TradeOrder'
 
     TradeOrder:
       type: object
       properties:
         id:
           $ref: ./shared.yaml#/components/schemas/Id
+        instrument:
+          $ref: ./instrument.yaml#/components/schemas/InstrumentName
+        side:
+          type: enum
+            - SELL
+            - BUY
+        timeInForce:
+          type: enum
+            - GTC
+            - IOC
+            - FOK
+            - GTD
+            - GTT
+        status:
+          type: enum
+            - OPEN
+            - REJECTED    
+            - CANCELLED
+
+
+
+

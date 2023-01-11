@@ -4,9 +4,9 @@ components:
       type: object
       properties:
         price:
-          type: big decimal
+          type: number
         volume:
-          type: big decimal
+          type: number
 
     OrderBook:
       type: object
@@ -14,9 +14,9 @@ components:
         sell:
           type: array
           items:
-            type: PriceVolume
+            $ref: '#/components/schemas/PriceVolume'
         buy:
           type: array
           items:
-            type: PriceVolume
+            $ref: '#/components/schemas/PriceVolume'
 

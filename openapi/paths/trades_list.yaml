@@ -10,6 +10,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../definitions/trade.yaml#/components/schemas/TradeList
+            $ref: '../definitions/trade.yaml#/components/schemas/TradeList'
     "500":
       description: Error

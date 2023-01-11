@@ -3,7 +3,7 @@ components:
     TradingAccountList:
       type: array
       items:
-        type: TradingAccount
+        $ref: '#/components/schemas/TradingAccount'
 
     TradingAccount:
       type: object
