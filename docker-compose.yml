@@ -25,14 +25,11 @@ services:
     container_name: exchange_app
     build: 
       context: .
+      dockerfile: Dockerfile
     depends_on:
       - db
     environment:
       <<: *common-variables
     ports:
       - 4000:4000
-    volumes:
-      - .:/app  
-    stdin_open: true  
-    command: ["bash", "/tmp/server_init.sh"]
   

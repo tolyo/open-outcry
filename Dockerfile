@@ -1,15 +1,27 @@
-FROM bitwalker/alpine-elixir-phoenix:latest
+# Build stage
+FROM golang:1.20 AS build
 
-# PG dependencies to start up db from container
-RUN apk update && \
-    apk add postgresql-client
+# Set the working directory
+WORKDIR /app
 
-# Set exposed ports
+# Copy the source code to the container
+COPY . .
+
+# Downlaod dependencies
+RUN go mod download
+
+# Build the Go binary
+RUN CGO_ENABLED=0 GOOS=linux go build -o exchange
+
+
+FROM alpine:latest
+
+# Set the working directory
+WORKDIR /
+
+COPY --from=build /app/exchange /exchange
+
 EXPOSE 4000
 
-ENV APP_HOME /app
-WORKDIR $APP_HOME
-
-USER root
-
-COPY .docker /tmp
+# Start the application
+CMD ["/exchange"]

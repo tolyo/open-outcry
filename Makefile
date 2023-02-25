@@ -2,6 +2,9 @@
 .DEFAULT_GOAL := help
 .PHONY: help
 
+setup:
+	npm install
+
 build: ## Installs and compiles dependencies
 	go build -v ./...
 	go install github.com/pressly/goose/v3/cmd/goose@latest
@@ -27,7 +30,10 @@ db-rebuild: ## Reset the database
 	$(MAKE) db-update
 
 build-api: ## Build OpenAPI
-	node node_modules/swagger-cli/swagger-cli.js bundle --dereference -o static/docs/api/openapi.json -t json -r openapi/openapi.yaml
+	node node_modules/swagger-cli/swagger-cli.js bundle --dereference \
+ 		-o pkg/static/docs/api/openapi.json \
+ 		-t json \
+ 		-r openapi/openapi.yaml
 
 help:
 	grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \

@@ -25,41 +25,45 @@
   },
   "paths": {
     "/currencies": {
-      "get": {
-        "tags": [
-          "currencies"
-        ],
-        "summary": "currencies list",
-        "description": "Returns list of available currencies",
-        "operationId": "getCurrencies",
-        "responses": {
-          "200": {
-            "description": "currencies list",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string",
-                        "description": "Currency symbol",
-                        "example": "USD"
-                      },
-                      "precision": {
-                        "type": "integer",
-                        "description": "Currency precision as number of decimal points",
-                        "example": 2
+      "paths": {
+        "/test": {
+          "get": {
+            "tags": [
+              "currencies"
+            ],
+            "summary": "currencies list",
+            "description": "Returns list of available currencies",
+            "operationId": "getCurrencies",
+            "responses": {
+              "200": {
+                "description": "currencies list",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Currency symbol",
+                            "example": "USD"
+                          },
+                          "precision": {
+                            "type": "integer",
+                            "description": "Currency precision as number of decimal points",
+                            "example": 2
+                          }
+                        }
                       }
                     }
                   }
                 }
+              },
+              "500": {
+                "description": "Error"
               }
             }
-          },
-          "500": {
-            "description": "Error"
           }
         }
       }
@@ -237,6 +241,19 @@
                       "id": {
                         "type": "string",
                         "format": "uuid"
+                      },
+                      "instrument": {
+                        "type": "string",
+                        "description": "Ticker-like name of the instrument. For monetary instruments, a currency pair is used."
+                      },
+                      "side": {
+                        "type": "enum - SELL - BUY"
+                      },
+                      "timeInForce": {
+                        "type": "enum - GTC - IOC - FOK - GTD - GTT"
+                      },
+                      "status": {
+                        "type": "enum - OPEN - REJECTED - CANCELLED"
                       }
                     }
                   }
