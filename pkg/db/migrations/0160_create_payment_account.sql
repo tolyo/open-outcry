@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 
--- Create payment account for application entity
+-- Create payment account for application entity; return an existing account if already exists
 CREATE OR REPLACE FUNCTION
     create_payment_account(
         app_entity_id_param text,
@@ -38,21 +38,20 @@ BEGIN
     AND app_entity_id = app_entity_instance.id
     INTO payment_account_instance;
 
-    IF FOUND THEN
-        RAISE EXCEPTION 'payment_account_already_exists_for_currency';
+    IF NOT FOUND THEN
+        -- create payment_account
+        INSERT INTO payment_account (
+            app_entity_id,
+            currency_name
+        )
+        VALUES (
+           app_entity_instance.id,
+           currency_instance.name
+        )
+        RETURNING * INTO payment_account_instance;
     END IF;
-    
-    -- create payment_account
-    INSERT INTO payment_account (
-        app_entity_id,
-        currency_name
-    )
-    VALUES (
-        app_entity_instance.id,
-        currency_instance.name
-    )
-    RETURNING * INTO payment_account_instance;
-    
+
+
     RETURN payment_account_instance.pub_id;
 END;
 $$;
