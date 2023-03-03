@@ -14,7 +14,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
-		"BUY",
+		models.Buy,
 		10.00,
 		10.00,
 		models.GTC,
@@ -28,7 +28,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	ProcessTradeOrder(tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
-		"BUY",
+		models.Buy,
 		10.00,
 		5,
 		models.GTC,
@@ -41,7 +41,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	// when give another order for different price
 	ProcessTradeOrder(tradingAccountId,
 		"BTC_EUR",
-		"LIMIT", "BUY",
+		"LIMIT", models.Buy,
 		5.00,
 		5,
 		models.GTC,
@@ -55,11 +55,11 @@ func (assert *ServiceTestSuite) TestCancelWithSingle() {
 	// when given a new saved limit order
 	tradingAccountId := Acc()
 
-	id, _  := ProcessTradeOrder(
+	id, _ := ProcessTradeOrder(
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
-		"BUY",
+		models.Buy,
 		10.00,
 		10.00,
 		models.GTC,
@@ -84,7 +84,7 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersOfSameSize() {
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
-		"BUY",
+		models.Buy,
 		10.00,
 		10.00,
 		models.GTC,
@@ -94,7 +94,7 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersOfSameSize() {
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
-		"BUY",
+		models.Buy,
 		10.00,
 		10.00,
 		models.GTC,
@@ -116,11 +116,11 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersWithDiffPrice() {
 	// when given a new saved limit order
 	tradingAccountId := Acc()
 
-	id, _  := ProcessTradeOrder(
+	id, _ := ProcessTradeOrder(
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
-		"BUY",
+		models.Buy,
 		20.00,
 		10.00,
 		models.GTC,
@@ -130,7 +130,7 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersWithDiffPrice() {
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
-		"BUY",
+		models.Buy,
 		10.00,
 		10.00,
 		models.GTC,

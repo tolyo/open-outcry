@@ -6,8 +6,9 @@ info:
 
     This API the following operations:
     * Retrieve a list of available instruments 
-    # TO{
-
+    * Retrieve a list of executed trades
+    
+    
     # Basics
     * API calls have to be secured with HTTPS.
     * All data has to be submitted UTF-8 encoded.
@@ -15,7 +16,7 @@ info:
 
     
   version: 1.0.0
-  title: OPEN OUTCY API
+  title: OPEN OUTCRY API
 
 security:
   - basicAuth: []

@@ -186,7 +186,8 @@ BEGIN
             WHERE id = taker_trade_order_instance.id;
             -- release the funds
             -- reserve required amount
-            IF side_param = 'SELL' OR (side_param = 'BUY' and order_type_param = 'MARKET') THEN
+            IF side_param = 'SELL' OR
+               (side_param = 'BUY' AND order_type_param = 'MARKET') THEN
                 -- release reserved  amount
                 UPDATE payment_account 
                 SET amount_reserved = round(amount_reserved - amount_param, quote_currency_precision)

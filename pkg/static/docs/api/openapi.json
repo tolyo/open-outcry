@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "description": "# Introduction\nThis API is {cumented in **OpenAPI 3.0 format**.\n\nThis API the following operations:\n* Retrieve a list of available instruments \n# TO{\n\n# Basics\n* API calls have to be secured with HTTPS.\n* All data has to be submitted UTF-8 encoded.\n* The reply is sent JSON encoded.\n",
+    "description": "# Introduction\nThis API is {cumented in **OpenAPI 3.0 format**.\n\nThis API the following operations:\n* Retrieve a list of available instruments \n* Retrieve a list of executed trades\n\n\n# Basics\n* API calls have to be secured with HTTPS.\n* All data has to be submitted UTF-8 encoded.\n* The reply is sent JSON encoded.\n",
     "version": "1.0.0",
-    "title": "OPEN OUTCY API"
+    "title": "OPEN OUTCRY API"
   },
   "security": [
     {
@@ -26,7 +26,7 @@
   "paths": {
     "/currencies": {
       "paths": {
-        "/test": {
+        "/": {
           "get": {
             "tags": [
               "currencies"
@@ -41,12 +41,14 @@
                   "application/json": {
                     "schema": {
                       "type": "array",
+                      "description": "List of currencies supported by app",
                       "items": {
                         "type": "object",
+                        "description": "Currency of payment account",
                         "properties": {
                           "name": {
                             "type": "string",
-                            "description": "Currency symbol",
+                            "description": "ISO 4217 Currency symbol",
                             "example": "USD"
                           },
                           "precision": {
@@ -96,12 +98,12 @@
                       },
                       "base_currency": {
                         "type": "string",
-                        "description": "Currency symbol",
+                        "description": "ISO 4217 Currency symbol",
                         "example": "USD"
                       },
                       "quote_currency": {
                         "type": "string",
-                        "description": "Currency symbol",
+                        "description": "ISO 4217 Currency symbol",
                         "example": "USD"
                       },
                       "enabled": {
@@ -201,8 +203,10 @@
               "application/json": {
                 "schema": {
                   "type": "array",
+                  "description": "List of executed trades",
                   "items": {
                     "type": "object",
+                    "description": "Execute trade",
                     "properties": {
                       "id": {
                         "type": "string",

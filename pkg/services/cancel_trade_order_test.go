@@ -5,19 +5,19 @@ import "open-outcry/pkg/models"
 func (assert *ServiceTestSuite) TestCancelTradeOrder() {
 	// given: an existing trade limit order
 	tradingAccount := Acc()
-	tradeOrder, _ := ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
+	tradeOrder, _ := ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
 
 	assert.Equal(1, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{
 		{Price: 10, Volume: 100},
-	}, GetVolumes("BTC_EUR", "SELL"))
+	}, GetVolumes("BTC_EUR", models.Sell))
 
 	// when: order is cancelled
 	CancelTradeOrder(tradeOrder)
 
 	// then: it is removed from the order book
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", "SELL"))
+	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
 	// and: its status is cancelled
 	res := models.GetTradeOrder(tradeOrder)
@@ -35,10 +35,10 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithMultipleOrders() {
 	assert.Equal(0.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(GetAppEntityId(), "BTC").AmountReserved)
 
 	tradeOrderId, _ := ProcessTradeOrder(tradingAccount,
-		"BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
+		"BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
 
 	tradeOrderId2, _ := ProcessTradeOrder(tradingAccount,
-		"BTC_EUR", "LIMIT", "SELL", 5, 100, "GTC")
+		"BTC_EUR", "LIMIT", models.Sell, 5, 100, "GTC")
 
 	assert.Equal(2, GetSellBookOrderCount())
 
@@ -86,7 +86,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithPartiallyExecdOrder() {
 	).AmountReserved)
 
 	tradeOrderId, _ := ProcessTradeOrder(tradingAccount,
-		"BTC_EUR", "LIMIT", "SELL", 10, 100, "GTC")
+		"BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
 
 	assert.Equal(1, GetSellBookOrderCount())
 
@@ -96,7 +96,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithPartiallyExecdOrder() {
 	).AmountReserved)
 
 	// when: it is partially matched against another order and then cancelled
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", "BUY", 10, 50, "GTC")
+	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 50, "GTC")
 
 	assert.Equal(50.00, models.FindPaymentAccountByAppEntityIdAndCurrencyName(
 		GetAppEntityId(),

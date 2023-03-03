@@ -2,14 +2,18 @@ components:
   schemas:
     CurrencyList:
       type: array
+      description: List of currencies supported by app
       items:
         $ref: '#/components/schemas/Currency'
+
     CurrencyName:
       type: string
-      description: Currency symbol
+      description: ISO 4217 Currency symbol
       example: USD
+
     Currency:
       type: object
+      description: Currency of payment account
       properties:
         name:
           $ref: '#/components/schemas/CurrencyName'

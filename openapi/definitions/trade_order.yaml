@@ -1,5 +1,25 @@
 components:
   schemas:
+
+    TradeOrderSide:
+      type: enum
+        - SELL
+        - BUY
+
+    TradeOrderTimeInForce:
+      type: enum
+        - GTC
+        - IOC
+        - FOK
+        - GTD
+        - GTT
+
+    TradeOrderStatus:
+      type: enum
+        - OPEN
+        - REJECTED
+        - CANCELLED
+
     TradeOrderList:
       type: array
       items:
@@ -13,21 +33,11 @@ components:
         instrument:
           $ref: ./instrument.yaml#/components/schemas/InstrumentName
         side:
-          type: enum
-            - SELL
-            - BUY
+          $ref: '#/components/schemas/TradeOrderSide'
         timeInForce:
-          type: enum
-            - GTC
-            - IOC
-            - FOK
-            - GTD
-            - GTT
+          $ref: '#/components/schemas/TradeOrderTimeInForce'
         status:
-          type: enum
-            - OPEN
-            - REJECTED    
-            - CANCELLED
+          $ref: '#/components/schemas/TradeOrderStatus'
 
 
 
