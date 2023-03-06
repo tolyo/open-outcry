@@ -215,20 +215,17 @@ BEGIN
             ORDER BY t.created_at ASC
             
             LOOP
-                IF amount_param > 0 THEN
-                    trade_price_var = get_trade_price(
-                            side_param::order_side,
-                            order_type_param::order_type,
-                            price_param,
-                            opposite_side_var,
-                            'MARKET'::order_type,
-                            0,
-                            instrument_instance.id 
-                        );
-                    
-                    IF trade_price_var = 0 THEN
-                        EXIT market_matching_loop;
-                    END IF;
+                trade_price_var = get_trade_price(
+                    side_param::order_side,
+                    order_type_param::order_type,
+                    price_param,
+                    opposite_side_var,
+                    'MARKET'::order_type,
+                    0,
+                    instrument_instance.id
+                );
+
+                IF trade_price_var != 0 AND amount_param > 0 THEN
 
                     IF side_param = 'SELL' THEN
                         -- market buy in quote currency
