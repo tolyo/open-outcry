@@ -57,12 +57,6 @@ BEGIN
             RETURN best_limit_price_var;
         END IF;
 
-        -- incoming limit matches on outstanding market
-        IF taker_order_type_param = 'LIMIT'::order_type
-            AND maker_order_type_param = 'MARKET'::order_type THEN
-            RETURN taker_price_param;
-        END IF;
-
         -- incoming market matches an outstandling limit
         IF maker_order_type_param = 'LIMIT'::order_type THEN
             RETURN best_limit_price_var;
@@ -74,7 +68,7 @@ BEGIN
         -- handle matching against limit orders
         IF maker_order_type_param = 'LIMIT'::order_type THEN
             -- limit orders cannot be executed at prices below their limit price
-            -- so we always return the mathc on the limit price of in the order book
+            -- so we always return the match on the limit price in the order book
             -- regardless of takers order type or side
             RETURN maker_price_param;
 
