@@ -12,6 +12,7 @@ const (
 	Transfer       PaymentType = "TRANSFER"
 	InstrumentBuy  PaymentType = "INSTRUMENT_BUY"
 	InstrumentSell PaymentType = "INSTRUMENT_SELL"
+	Charge         PaymentType = "CHARGE"
 )
 
 type PaymentAmount decimal.Decimal
@@ -30,10 +31,7 @@ type Payment struct {
 	BeneficiaryAccountId    string
 	Details                 string
 	ExternalReferenceNumber string
-	FeeSender               string
-	FeeBeneficiary          string
 	Status                  string
-	TotalAmount             string
 	DebitBalanceAmount      string
 	CreditBalanceAmount     string
 }

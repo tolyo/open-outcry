@@ -15,10 +15,10 @@ CREATE OR REPLACE FUNCTION
 LANGUAGE 'plpgsql'
 AS $$
 DECLARE
-  from_payment_account_instance payment_account%ROWTYPE;
-  to_payment_account_instance payment_account%ROWTYPE;
-  payment_instance payment%ROWTYPE;
-  currency_instance currency%ROWTYPE;
+    from_payment_account_instance payment_account%ROWTYPE;
+    to_payment_account_instance payment_account%ROWTYPE;
+    payment_instance payment%ROWTYPE;
+    currency_instance currency%ROWTYPE;
 BEGIN
 
   IF from_customer_id_param = to_customer_id_param THEN
@@ -46,7 +46,6 @@ BEGIN
   
   -- check sufficiency of funds in case of non-master accounts
   IF from_customer_id_param != 'MASTER' THEN
-    -- TO{ calculate with FEE!!!
     IF from_payment_account_instance.amount < amount_param THEN
       RAISE EXCEPTION 'insufficient_funds available: %, required % ', from_payment_account_instance.amount, amount_param;
     END IF;
@@ -73,8 +72,7 @@ BEGIN
       details, 
       external_reference_number, 
       status, 
-      total_amount, 
-      debit_balance_amount, 
+      debit_balance_amount,
       credit_balance_amount
   ) VALUES (
       type_param, 
@@ -85,11 +83,10 @@ BEGIN
       details_param,
       reference_param,
       'COMPLETE',
-      amount_param,
       (CASE WHEN from_customer_id_param = 'MASTER' THEN 0 ELSE from_payment_account_instance.amount - amount_param END),
       (CASE WHEN to_customer_id_param = 'MASTER' THEN 0 ELSE to_payment_account_instance.amount + amount_param END)
-  );
- 
+  ) RETURNING * INTO payment_instance;
+
   -- update recipient balance
   IF from_customer_id_param != 'MASTER' THEN
     UPDATE payment_account

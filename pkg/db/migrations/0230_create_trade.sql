@@ -17,12 +17,10 @@ CREATE OR REPLACE FUNCTION
     LANGUAGE 'plpgsql'
 AS $$
 DECLARE
-    price_level_instance price_level%ROWTYPE;
     trade_instance trade%ROWTYPE;
     master_app_entity_instance app_entity%ROWTYPE;
     seller_app_entity_instance app_entity%ROWTYPE;
     buyer_app_entity_instance app_entity%ROWTYPE;
-    update_price_level_var BOOLEAN := TRUE;
 BEGIN
 
     INSERT INTO trade (
@@ -112,7 +110,7 @@ BEGIN
             amount_param
         );
 
-        -- TO{ release any funds that are insufficient for buying an single instument
+        -- TODO release any funds that are insufficient for buying an single instument
     END IF;
 
     

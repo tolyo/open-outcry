@@ -19,7 +19,6 @@ DECLARE
     trading_account_instance trading_account%ROWTYPE;
     payment_account_instance payment_account%ROWTYPE;
     taker_trade_order_instance trade_order%ROWTYPE; -- saved
-    taker_book_order_instance trade_order%ROWTYPE;  
     maker_book_order_instance trade_order%ROWTYPE;
     book_order_instance book_order%ROWTYPE;
     instrument_instance instrument%ROWTYPE;
@@ -27,11 +26,8 @@ DECLARE
     quote_currency_precision INTEGER;
     opposite_side_var order_side;
     book_order_volume_var NUMERIC;
-    available_limit_volume_var NUMERIC;
-    available_market_volume_var NUMERIC;
     total_available_volume_var NUMERIC;
     trade_amount_var NUMERIC;
-    fill_type_var order_fill;
     order_currency_var text;
     trade_price_var NUMERIC;
     trigger_loop_restart BOOLEAN := FALSE;

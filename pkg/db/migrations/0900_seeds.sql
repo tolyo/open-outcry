@@ -16,4 +16,7 @@ VALUES ('BTC_EUR', 'BTC', 'EUR', TRUE);
 INSERT INTO instrument(name, quote_currency)
 VALUES ('SPX', 'EUR');
 
+-- INSERT INTO fee(type, currency_name, min)
+-- VALUES ('DEPOSIT_FEE', 'EUR', 1.00);
+
 -- +goose Down

@@ -12,7 +12,7 @@ func CreatePaymentDeposit(appEntityId models.AppEntityId,
 	details string) models.PaymentId {
 	var id string
 	db.Instance().QueryRow(
-		"SELECT create_payment('DEPOSIT', 'MASTER', $2, $3, $1, $4, $5)",
+		"SELECT process_payment('DEPOSIT', 'MASTER', $2, $3, $1, $4, $5)",
 		appEntityId, amount, currency, reference, details,
 	).Scan(&id)
 	return models.PaymentId(id)

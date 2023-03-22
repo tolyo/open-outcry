@@ -6,7 +6,8 @@ CREATE TYPE payment_type AS ENUM (
     'WITHDRAWAL',
     'TRANSFER',
     'INSTRUMENT_BUY',
-    'INSTRUMENT_SELL'
+    'INSTRUMENT_SELL',
+    'CHARGE'
 );
 
 -- +goose Down
