@@ -3,14 +3,15 @@
 
 CREATE OR REPLACE FUNCTION
     process_payment(
-    type_param payment_type,
-    from_customer_id_param text,
-    amount_param numeric,
-    currency_param text,
-    to_customer_id_param text,
-    reference_param text,
-    details_param text
-)
+        type_param payment_type,
+        from_customer_id_param TEXT,
+        amount_param NUMERIC,
+        currency_param TEXT,
+        to_customer_id_param TEXT,
+        reference_param TEXT,
+        details_param TEXT,
+        fee_type_param TEXT
+    )
     RETURNS TEXT -- payment_instance.pub_id
     LANGUAGE 'plpgsql'
 AS $$
@@ -19,19 +20,14 @@ DECLARE
     currency_instance currency%ROWTYPE;
     fee_instance fee%ROWTYPE;
     fee_amount_var NUMERIC = 0.00;
-    fee_type_var fee_type := NULL;
 BEGIN
 
     payment_instance_pub_id_var = create_payment(type_param, from_customer_id_param, amount_param, currency_param, to_customer_id_param, reference_param, details_param);
 
     -- create fee paymen fee
-    IF type_param = 'DEPOSIT' THEN
-        fee_type_var = 'DEPOSIT_FEE'::fee_type;
-    END IF;
---
-    IF fee_type_var IS NOT NULL THEN
+    IF fee_type_param IS NOT NULL THEN
         SELECT * FROM fee
-        WHERE type = fee_type_var AND currency_name = currency_param
+        WHERE type = fee_type_param AND currency_name = currency_param
         INTO fee_instance;
 
         IF FOUND THEN
@@ -73,4 +69,4 @@ $$;
 -- +goose StatementEnd
 
 -- +goose Down
-DROP FUNCTION  process_payment(payment_type, TEXT, NUMERIC, TEXT, TEXT, TEXT, TEXT);
+DROP FUNCTION  process_payment(payment_type, TEXT, NUMERIC, TEXT, TEXT, TEXT, TEXT, TEXT);

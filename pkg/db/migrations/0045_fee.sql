@@ -1,6 +1,6 @@
 -- +goose Up
 CREATE TABLE IF NOT EXISTS fee (
-     type                               fee_type NOT NULL,
+     type                               TEXT NOT NULL,
      currency_name                      TEXT REFERENCES currency(name) NOT NULL,
      min                                NUMERIC NULL,
      max                                NUMERIC NULL,

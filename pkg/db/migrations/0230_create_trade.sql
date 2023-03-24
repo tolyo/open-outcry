@@ -81,24 +81,29 @@ BEGIN
 
     -- EXECUTE PAYMENTS FOR SELLER IF INSTRUMENT IS FX
     IF instrument_param.fx_instrument IS TRUE THEN
-        PERFORM create_payment(
+        PERFORM process_payment(
             'INSTRUMENT_SELL'::payment_type,
             seller_app_entity_instance.pub_id,
             amount_param,
             instrument_param.base_currency,
             'MASTER',
             trade_instance.pub_id,
-            trade_instance.pub_id
+            trade_instance.pub_id,
+            NULL
         );
 
-        PERFORM create_payment(
+        PERFORM process_payment(
             'INSTRUMENT_BUY'::payment_type,
             'MASTER',
             amount_param * price_param,
             instrument_param.quote_currency,
             seller_app_entity_instance.pub_id,
             trade_instance.pub_id,
-            trade_instance.pub_id
+            trade_instance.pub_id,
+            (CASE seller_trade_order_param = taker_trade_order_param
+                WHEN TRUE THEN 'TAKER_FEE'
+                WHEN FALSE THEN 'MAKER_FEE'
+            END)
         );
     ELSE
         -- transfer instuments directly between two accounts
@@ -113,27 +118,32 @@ BEGIN
         -- TODO release any funds that are insufficient for buying an single instument
     END IF;
 
-    
+
 
     -- EXECUTE PAYMENTS FOR BUYER
-    PERFORM create_payment(
+    PERFORM process_payment(
         'INSTRUMENT_BUY'::payment_type,
         buyer_app_entity_instance.pub_id,
         amount_param * price_param,
         instrument_param.quote_currency,
         'MASTER',
         trade_instance.pub_id,
-        trade_instance.pub_id
+        trade_instance.pub_id,
+        NULL
     );
 
-    PERFORM create_payment(
+    PERFORM process_payment(
         'INSTRUMENT_BUY'::payment_type,
         'MASTER',
         amount_param,
         instrument_param.base_currency,
         buyer_app_entity_instance.pub_id,
         trade_instance.pub_id,
-        trade_instance.pub_id
+        trade_instance.pub_id,
+        (CASE buyer_trade_order_param = taker_trade_order_param
+             WHEN TRUE THEN 'TAKER_FEE'
+             WHEN FALSE THEN 'MAKER_FEE'
+        END)
     );
 
     -- update open amounts

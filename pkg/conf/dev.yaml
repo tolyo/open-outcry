@@ -1,1 +1,2 @@
 DB_DSN: "host=localhost user=postgres password=postgres dbname=exchange_db port=5432 sslmode=disable"
+UPDATE_FEES: true

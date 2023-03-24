@@ -2,6 +2,7 @@
 
 INSERT INTO currency(name, precision)
 VALUES ('EUR',2),
+       ('USD',2),
        ('BTC',5);
 
 INSERT INTO app_entity (pub_id, external_id, type)
@@ -15,8 +16,5 @@ VALUES ('BTC_EUR', 'BTC', 'EUR', TRUE);
 
 INSERT INTO instrument(name, quote_currency)
 VALUES ('SPX', 'EUR');
-
--- INSERT INTO fee(type, currency_name, min)
--- VALUES ('DEPOSIT_FEE', 'EUR', 1.00);
 
 -- +goose Down

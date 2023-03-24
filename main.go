@@ -1,11 +1,16 @@
 package main
 
 import (
+	_ "embed"
 	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/conf"
 	"open-outcry/pkg/db"
+	"open-outcry/pkg/models"
 	"os"
 )
+
+//go:embed fees.csv
+var fees string
 
 func main() {
 
@@ -15,6 +20,10 @@ func main() {
 
 	if err := db.MigrateUp(); err != nil {
 		log.Fatal(err)
+	}
+
+	if conf.Get().UpdateFees {
+		models.LoadFees(fees)
 	}
 
 }

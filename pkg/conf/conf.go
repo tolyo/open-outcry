@@ -31,7 +31,8 @@ var mapper = map[EnvName]string{
 
 // configuration - structure that contains configuration information from config variables
 type configuration struct {
-	DBDsn string
+	DBDsn      string
+	UpdateFees bool
 }
 
 var config *configuration
@@ -56,7 +57,8 @@ func LoadConfig(conf string) (*configuration, error) {
 	}
 
 	config = &configuration{
-		DBDsn: viper.GetString("DB_DSN"),
+		DBDsn:      viper.GetString("DB_DSN"),
+		UpdateFees: viper.GetBool("UPDATE_FEES"),
 	}
 
 	return config, nil
