@@ -35,6 +35,7 @@ Open Outcry's reliance on SQL also means that it can focus on business logic to 
 - GTC, FOK, IOK, GTD, GTT orders
 - Trading and payment accounts
 - Self-trade prevention
+- Configurable fees for deposits, withdrawals, transfers and trading
 
 ## Planned features
 
