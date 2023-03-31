@@ -1,6 +1,8 @@
 package services
 
 import (
+	"context"
+	"database/sql"
 	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
@@ -19,7 +21,12 @@ func ProcessTradeOrder(
 	timeInForce models.OrderTimeInForce,
 ) (models.TradeOrderId, error) {
 	var tradeOrderId string
-	err := db.Instance().QueryRow("SELECT process_trade_order($1, $2, $3, $4, $5, $6, $7, 0)",
+	tx, err := db.Instance().BeginTx(context.Background(), &sql.TxOptions{Isolation: sql.LevelSerializable})
+	if err != nil {
+		return "", err
+	}
+
+	err = tx.QueryRow("SELECT process_trade_order($1, $2, $3, $4, $5, $6, $7, 0)",
 		tradingAccountId,
 		instrumentName,
 		orderType,
@@ -30,20 +37,40 @@ func ProcessTradeOrder(
 	).Scan(&tradeOrderId)
 
 	if err != nil {
-		log.Error(err)
+		tx.Rollback()
 		return "", err
 	}
+
+	err = tx.Commit()
+	if err != nil {
+		tx.Rollback()
+		return "", err
+	}
+
 	return models.TradeOrderId(tradeOrderId), nil
 }
 
-func CancelTradeOrder(tradeOrderId models.TradeOrderId) {
-	res, err := db.Instance().Exec("SELECT cancel_trade_order($1)", tradeOrderId)
+func CancelTradeOrder(tradeOrderId models.TradeOrderId) error {
+	tx, err := db.Instance().BeginTx(context.Background(), &sql.TxOptions{Isolation: sql.LevelSerializable})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	res, err := tx.Exec("SELECT cancel_trade_order($1)", tradeOrderId)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
 	count, _ := res.RowsAffected()
 	if count != 1 {
 		log.Fatal(count)
 	}
-	return
+	return nil
 }
