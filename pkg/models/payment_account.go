@@ -37,7 +37,7 @@ const basePaymentAccountQuery = `
 
 func GetPaymentAccount(id PaymentAccountId) *PaymentAccount {
 	var res PaymentAccount
-	err := db.Instance().QueryRow(basePaymentAccountQuery + ` WHERE pa.pub_id = $1`, id).Scan(
+	err := db.Instance().QueryRow(basePaymentAccountQuery+` WHERE pa.pub_id = $1`, id).Scan(
 		&res.Id,
 		&res.AppEntityId,
 		&res.Amount,

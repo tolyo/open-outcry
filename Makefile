@@ -15,6 +15,12 @@ run: ## Start dev mode
 test:
 	go test ./... -v -cover
 
+lint:
+	@go fmt ./...
+	@go vet ./...
+	@staticcheck ./...
+
+
 DB_DSN:=$$(yq e '.DB_DSN' ./pkg/conf/dev.yaml)
 MIGRATE_OPTIONS=-allow-missing -dir="./pkg/db/migrations"
 

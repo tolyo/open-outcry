@@ -1,14 +1,9 @@
 package models
 
-// funcmodule AppEntityTest {
-//   use DataCase
+import "open-outcry/pkg/utils"
 
-//   describe "master entity" {
-//     test "expect master entity to exist" {
-//       assert.Equal(DBTestUtils.get_count("app_entity") == 1
-
-//       assert.Equal(db.QueryVal("SELECT (pub_id) FROM app_entity WHERE type = 'MASTER'") ==
-//                "MASTER"
-//     }
-//   }
-// }
+func (assert *ModelsTestSuite) TestMasterEntity() {
+	// expect master entity to exists
+	assert.Equal(1, utils.GetCount("app_entity"))
+	assert.Equal(AppEntityId("MASTER"), FindAppEntityExternalId("MASTER"))
+}

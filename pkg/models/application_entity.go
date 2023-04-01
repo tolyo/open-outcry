@@ -1,5 +1,7 @@
 package models
 
+import "open-outcry/pkg/db"
+
 // `app_entity.pub_id` db reference
 type AppEntityId string
 
@@ -22,6 +24,7 @@ type AppEntity struct {
 	ExternalId AppEntityExternalId
 }
 
-// func FindByExternalId(id AppEntityExternalId) AppEntityId {
-// 	db.QueryVal("SELECT pub_id FROM app_entity WHERE external_id = $1", id)
-// }
+func FindAppEntityExternalId(id AppEntityExternalId) AppEntityId {
+	res := db.QueryVal[string]("SELECT pub_id FROM app_entity WHERE external_id = $1", id)
+	return AppEntityId(res)
+}

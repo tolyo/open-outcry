@@ -22,48 +22,41 @@ func LoadFees(fees string) {
 	var feeList []Fee
 
 	r := csv.NewReader(strings.NewReader(fees))
-	for {
-		record, err := r.ReadAll()
-		// Stop at EOF.
-		if err == io.EOF {
-			break
-		}
+	record, err := r.ReadAll()
+	// Stop at EOF.
+	if err != io.EOF && err != nil {
+		panic(err)
+	}
 
-		if err != nil {
-			panic(err)
-		}
-
-		for i, line := range record {
-			if i > 0 { // omit header line
-				var rec Fee
-				for j, field := range line {
-					if j == 0 {
-						rec.Type = string(field)
-					} else if j == 1 {
-						rec.Currency = CurrencyName(field)
-					} else if j == 2 {
-						min, err := decimal.NewFromString(field)
-						if err == nil {
-							rec.Min = min
-						}
-					} else if j == 3 {
-						max, err := decimal.NewFromString(field)
-						if err == nil {
-							rec.Max = max
-						}
-					} else if j == 4 {
-						percentage, err := strconv.Atoi(field)
-						if err == nil {
-							rec.Percentage = percentage
-						}
+	for i, line := range record {
+		if i > 0 { // omit header line
+			var rec Fee
+			for j, field := range line {
+				if j == 0 {
+					rec.Type = string(field)
+				} else if j == 1 {
+					rec.Currency = CurrencyName(field)
+				} else if j == 2 {
+					min, err := decimal.NewFromString(field)
+					if err == nil {
+						rec.Min = min
+					}
+				} else if j == 3 {
+					max, err := decimal.NewFromString(field)
+					if err == nil {
+						rec.Max = max
+					}
+				} else if j == 4 {
+					percentage, err := strconv.Atoi(field)
+					if err == nil {
+						rec.Percentage = percentage
 					}
 				}
-				feeList = append(feeList, rec)
 			}
+			feeList = append(feeList, rec)
 		}
-
-		break
 	}
+
 	for _, val := range feeList {
 		CreateOrUpdateFee(val)
 	}
