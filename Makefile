@@ -13,7 +13,7 @@ run: ## Start dev mode
 	go run main.go
 
 test:
-	go test ./... -v -cover
+	go test ./... -v -cover -p 1
 
 lint:
 	@go fmt ./...

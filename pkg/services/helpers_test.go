@@ -17,7 +17,10 @@ func TestServiceTestSuite(t *testing.T) {
 }
 
 func (suite *ServiceTestSuite) SetupTest() {
-	db.SetupInstance()
+	err := db.SetupInstance()
+	if err != nil {
+		panic(err)
+	}
 	db.MigrateUp()
 }
 
