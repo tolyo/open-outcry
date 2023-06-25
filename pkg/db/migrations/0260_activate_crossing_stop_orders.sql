@@ -40,7 +40,7 @@ BEGIN
                 activated_var := TRUE;
             END LOOP;
 
-     <<stop_limit_loop>>
+    <<stop_limit_loop>>
         FOR matching_stop_limit_order_instance
             IN SELECT * FROM trade_order t
             INNER JOIN stop_order s

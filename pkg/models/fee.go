@@ -2,12 +2,13 @@ package models
 
 import (
 	"encoding/csv"
-	"github.com/shopspring/decimal"
-	log "github.com/sirupsen/logrus"
 	"io"
 	"open-outcry/pkg/db"
 	"strconv"
 	"strings"
+
+	"github.com/shopspring/decimal"
+	log "github.com/sirupsen/logrus"
 )
 
 type Fee struct {
@@ -65,10 +66,13 @@ func LoadFees(fees string) {
 
 func CreateOrUpdateFee(fee Fee) {
 	_, err := db.Instance().Exec(`
-		INSERT INTO fee(type, currency_name, min, max, percentage)  
-		VALUES ($1, $2, $3, $4, $5) 
-		ON CONFLICT (type, currency_name) 
-		DO UPDATE SET min = $3, max = $4, percentage = $5;
+		INSERT INTO fee(type, currency_name, min, max, percentage)
+		VALUES ($1, $2, $3, $4, $5)
+		ON CONFLICT (type, currency_name)
+		DO UPDATE SET
+			min = $3,
+		 	max = $4,
+		 	percentage = $5;
 	`, fee.Type, fee.Currency, fee.Min, fee.Max, fee.Percentage)
 
 	if err != nil {

@@ -2,6 +2,7 @@ package conf
 
 import (
 	"bytes"
+	"fmt"
 
 	log "github.com/sirupsen/logrus"
 
@@ -11,7 +12,7 @@ import (
 	_ "embed"
 )
 
-//go:embed dev.yaml
+//go:embed dev.env
 var dev string
 
 // EnvName type constraint for Environment types
@@ -43,7 +44,7 @@ func LoadConfig(conf string) (*configuration, error) {
 	envName = EnvName(conf)
 	switch envName {
 	case DEV:
-		viper.SetConfigType("yaml")
+		viper.SetConfigType("env")
 
 		err := viper.ReadConfig(bytes.NewBuffer([]byte(mapper[envName])))
 		if err != nil {
@@ -57,7 +58,14 @@ func LoadConfig(conf string) (*configuration, error) {
 	}
 
 	config = &configuration{
-		DBDsn:      viper.GetString("DB_DSN"),
+		DBDsn: fmt.Sprintf(
+			"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+			viper.GetString("POSTGRES_HOST"),
+			viper.GetString("POSTGRES_USER"),
+			viper.GetString("POSTGRES_PASSWORD"),
+			viper.GetString("POSTGRES_DB"),
+			viper.GetString("POSTGRES_PORT"),
+		),
 		UpdateFees: viper.GetBool("UPDATE_FEES"),
 	}
 
