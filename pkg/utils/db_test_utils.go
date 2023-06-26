@@ -13,11 +13,9 @@ func GetCount(tableName string) int {
 	return count
 }
 
-func DeteleAll(tableName string) error {
+func DeleteAll(tableName string) {
 	_, err := db.Instance().ExecContext(context.Background(), Format("DELETE FROM {{.}}", tableName))
 	if err != nil {
 		log.Fatal(err)
-		return err
 	}
-	return nil
 }

@@ -27,17 +27,16 @@ func (suite *ServiceTestSuite) SetupSuite() {
 }
 
 func (suite *ServiceTestSuite) TearDownTest() {
-	// remove all trades
-	utils.DeteleAll("stop_order")
-	utils.DeteleAll("trading_account_transfer")
-	utils.DeteleAll("trade")
-	utils.DeteleAll("trade_order")
-	utils.DeteleAll("price_level")
-	utils.DeteleAll("payment")
-	utils.DeteleAll("payment_account WHERE app_entity_id != 1")
-	utils.DeteleAll("trading_account")
-	utils.DeteleAll("app_entity WHERE pub_id != 'MASTER'")
-	// remove all users
+	utils.Each([]string{"stop_order",
+		"trading_account_transfer",
+		"trade",
+		"trade_order",
+		"price_level",
+		"payment",
+		"payment_account WHERE app_entity_id != 1",
+		"trading_account",
+		"app_entity WHERE pub_id != 'MASTER'",
+	}, utils.DeleteAll)
 }
 
 func (suite *ServiceTestSuite) TearDownAllSuite() {
