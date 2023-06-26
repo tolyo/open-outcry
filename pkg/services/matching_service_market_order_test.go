@@ -29,7 +29,7 @@ import (
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderSave() {
 	// when: a market order is sent to an empty matching unit
-	ProcessTradeOrder(Acc(), "BTC_EUR", models.Market, models.Sell, 0, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 100, "GTC")
 	// then: a matching unit should save the trade order but it should not be visible to the order book
 	assert.Equal(1, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -37,7 +37,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderSave() {
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderSave() {
 	// when: a market order is sent to an empty matching unit
-	ProcessTradeOrder(Acc(), "BTC_EUR", models.Market, models.Buy, 0, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Buy, 0, 100, "GTC")
 
 	// then: a matching unit should save the trade order but it should not be visible to the order book
 	assert.Equal(1, GetBuyBookOrderCount())
@@ -45,11 +45,10 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderSave() {
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingSellLimit() {
-	account := Acc()
 
 	// when: a market order is sent to an non empty matching unit
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Sell, 0, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 100, "GTC")
 
 	// then: a matching unit should save the trade order but it should not be visible to the order book
 	assert.Equal(2, GetSellBookOrderCount())
@@ -57,11 +56,10 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingSellLimit(
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingBuyLimit() {
-	account := Acc()
 
 	// when: a market order is sent to an non empty matching unit
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Buy, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Buy, 0, 10, "GTC")
 
 	// then: a matching unit should save the trade order but it should not be visible to the order book
 	assert.Equal(2, GetBuyBookOrderCount())
@@ -69,11 +67,9 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingBuyLimit() 
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingBuyLimit() {
-	account := Acc()
-	account2 := Acc2()
 	// when:
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 10, 100, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 100, "GTC")
 
 	// then:
 	assert.Equal(1, GetTradeCount())
@@ -85,11 +81,9 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingBuyLimit()
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingSellLimit() {
-	account := Acc()
-	account2 := Acc2()
 	// when:
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Buy, 0, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Buy, 0, 100, "GTC")
 	// then:
 	assert.Equal(1, GetTradeCount())
 	assert.Equal([]float64{10.0}, GetTradePrices())
@@ -100,14 +94,11 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingSellLimit()
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithMultipleExistingBuyLimits() {
-	account := Acc()
-	account2 := Acc2()
-
 	// when:
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 5, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 4, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 7, 10, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 30, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 5, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 4, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 7, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 30, "GTC")
 
 	// then:
 	assert.Equal(3, GetTradeCount())
@@ -119,14 +110,12 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithMultipleExistingBu
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithMultipleExistingSellLimits() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when:
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Sell, 5, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Sell, 4, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Sell, 7, 10, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Buy, 0, 160, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 5, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 4, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 7, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Buy, 0, 160, "GTC")
 
 	// then:
 	assert.Equal(3, GetTradeCount())
@@ -138,12 +127,10 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithMultipleExistingSel
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSell() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book {es not have outstanding limit orders
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 5, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 5, 10, "GTC")
 
 	// then: the trade settles at the incoming order’s limit price
 	assert.Equal(1, GetTradeCount())
@@ -155,12 +142,10 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSell()
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuy() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book {es not have outstanding limit orders
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Buy, 0, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Sell, 5, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Buy, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 5, 10, "GTC")
 
 	// then: the trade settles at the incoming order’s limit price
 	assert.Equal(1, GetTradeCount())
@@ -172,13 +157,11 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuy()
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAndBetterLimitSell() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book has a market and a limit order
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 5, 10, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 6, 20, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 5, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 6, 20, "GTC")
 
 	// then: the trade settles at the book order’s limit price as if market order did not exist
 	assert.Equal(2, GetTradeCount())
@@ -190,13 +173,11 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAndBetterLimitBuy() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book has a market and a limit order
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Buy, 5, 10, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Sell, 4, 20, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 5, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 4, 20, "GTC")
 
 	// then: the trade settles at the book order’s limit price as if market order did not exist
 	assert.Equal(2, GetTradeCount())
@@ -208,13 +189,11 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAn
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAndWorseLimitSell() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book has a market and a limit order
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 7, 10, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 6, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 7, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 6, 10, "GTC")
 
 	// then: the trade settles at the incoming order’s limit price
 	assert.Equal(1, GetTradeCount())
@@ -226,13 +205,11 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAndWorseLimitBuy() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book has a market and a limit order
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Buy, 4, 10, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Buy, 0, 100, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Sell, 5, 20, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 4, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Buy, 0, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 5, 20, "GTC")
 
 	// then: the trade settles at the incoming order’s limit price
 	assert.Equal(1, GetTradeCount())
@@ -244,12 +221,10 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAn
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellAndNoReferencePrice() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: there is not a trade with a reference price
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
 
 	// then: the trade settles at a reference price
 	assert.Equal(0, GetTradeCount())
@@ -261,12 +236,10 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndNoReferencePrice() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: there is not a trade with a reference price
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
 
 	// then: the trade settles at a reference price
 	assert.Equal(0, GetTradeCount())
@@ -278,13 +251,11 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuOrderWithExistingMarketSellAndLimitSell() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book has a market and a limit order
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 5, 10, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 5, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
 
 	// then: the trade settles at the book order’s limit price
 	assert.Equal(1, GetTradeCount())
@@ -296,13 +267,11 @@ func (assert *ServiceTestSuite) TestProcessMarketBuOrderWithExistingMarketSellAn
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndLimitBuy() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book has a market and a limit order
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Buy, 5, 10, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 5, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
 
 	// then: the trade settles at the book order’s limit price
 	assert.Equal(1, GetTradeCount())
@@ -314,14 +283,12 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellAnReferencePrice() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: there is a trade with a reference price
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
 
 	// then: the trade settles at a reference price
 	assert.Equal(2, GetTradeCount())
@@ -333,14 +300,12 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndReferencePrice() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book has a market and a limit order
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
 
 	// then: the trade settles at a reference price
 	assert.Equal(2, GetTradeCount())
@@ -352,14 +317,12 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAndReferencePrice() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: there is a trade with a reference price
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 6, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 6, 10, "GTC")
 
 	// then: the trade settles at a reference price
 	assert.Equal(2, GetTradeCount())
@@ -372,27 +335,25 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 
 // ---- TESTS BELOW REQUIRE VARIOUS HACKS TO SIMULATE TIMESTAMP INCREMENTS
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellAndMultipleReferencePrices() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: there is a trade with a reference price
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 4, 1, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 4, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 4, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 4, 1, "GTC")
 
 	db.Instance().Exec("UPDATE trade SET created_at = current_timestamp + interval '1 second' WHERE price = 4")
 
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 6, 1, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 6, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 6, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 6, 1, "GTC")
 
 	db.Instance().Exec("UPDATE trade SET created_at = current_timestamp + interval '2 second' WHERE price = 6")
 
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
 
 	db.Instance().Exec("UPDATE trade SET created_at = current_timestamp + interval '3 second' WHERE price = 5")
 
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
 
 	// then: the trade settles at last reference price
 	assert.Equal(4, GetTradeCount())
@@ -404,26 +365,24 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndMultipleReferencePrices() {
-	account := Acc()
-	account2 := Acc2()
 
 	// when: the opposite book has a market and a limit order
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 4, 1, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 4, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 4, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 4, 1, "GTC")
 
 	db.Instance().Exec("UPDATE trade SET created_at = current_timestamp + interval '1 second' WHERE price = 4")
 
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 6, 1, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 6, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 6, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 6, 1, "GTC")
 
 	db.Instance().Exec("UPDATE trade SET created_at = current_timestamp + interval '2 second' WHERE price = 6")
 
-	ProcessTradeOrder(account2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 5, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 5, 1, "GTC")
 	db.Instance().Exec("UPDATE trade SET created_at = current_timestamp + interval '3 second' WHERE price = 5")
 
-	ProcessTradeOrder(account2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
-	ProcessTradeOrder(account, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", models.Market, models.Buy, 0, 50, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 10, "GTC")
 
 	// then: the trade settles at last reference price
 	assert.Equal(4, GetTradeCount())

@@ -2,13 +2,14 @@ package main
 
 import (
 	_ "embed"
-	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/conf"
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
 	"open-outcry/pkg/services"
 	"os"
 	"sync"
+
+	log "github.com/sirupsen/logrus"
 )
 
 //go:embed fees.csv
@@ -29,8 +30,8 @@ func main() {
 	}
 
 	// sample code to generate 100 trades
-	tradingAccount1 := services.Acc()
-	tradingAccount2 := services.Acc2()
+	_, tradingAccount1 := services.Acc("test")
+	_, tradingAccount2 := services.Acc("test2")
 
 	var mu sync.Mutex
 	var wg sync.WaitGroup

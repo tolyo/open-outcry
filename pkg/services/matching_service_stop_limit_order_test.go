@@ -7,7 +7,7 @@ import (
 
 func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderSave() {
 	// when: a stop limit order is created
-	res, _ := ProcessTradeOrder(Acc(), "BTC_EUR", models.StopLimit, models.Sell, 10, 100, "GTC")
+	res, _ := ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Sell, 10, 100, "GTC")
 
 	// then:
 	assert.NotNil(res)
@@ -15,15 +15,15 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderSave() {
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal(100.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(GetAppEntityId(), "BTC").AmountReserved)
+	assert.Equal(100.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC").AmountReserved)
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderBuy() {
-	tradingAccount := Acc()
-	// tradingAccount2 := Acc2()
+
+	//
 
 	// when: a stop limit order is created
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Buy, 10, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Buy, 10, 100, "GTC")
 
 	// then:
 
@@ -32,17 +32,15 @@ func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderBuy() {
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal(1000.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(GetAppEntityId(), "EUR").AmountReserved)
+	assert.Equal(1000.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR").AmountReserved)
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivate() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
 	// then: the order becomes activated
 
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -52,13 +50,11 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivate() {
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivate() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
 
 	// then: the order becomes activated
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -68,13 +64,11 @@ func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivate() {
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderNonCrossing() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a non-crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 11, 1, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 11, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 11, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 11, 1, "GTC")
 
 	// then: the order remains deactivated
 	assert.Equal(1, utils.GetCount("stop_order"))
@@ -83,8 +77,8 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderNonCrossing() {
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
 	// when: a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 9, 1, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 9, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 9, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 9, 1, "GTC")
 
 	// then: it becomes activated
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -94,13 +88,11 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderNonCrossing() {
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderNonCrossing() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a non-crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 11, 1, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 11, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 11, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 11, 1, "GTC")
 
 	// then: the order remains deactivated
 	assert.Equal(1, utils.GetCount("stop_order"))
@@ -109,8 +101,8 @@ func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderNonCrossing() {
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
 	// when: a crossing trade occurs
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 9, 1, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 9, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 9, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 9, 1, "GTC")
 
 	// then: it becomes activated
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -120,13 +112,11 @@ func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderNonCrossing() {
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivateAndSettle() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
 
 	// then: the order becomes activated and settled
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -137,13 +127,11 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivateAndSettle() 
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivateAndSettle() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
 
 	// then: the order becomes activated and settled
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -153,13 +141,11 @@ func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivateAndSettle() {
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivateAndSettleOppositeSide() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
 
 	// then: the order becomes activated and settled
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -169,13 +155,11 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivateAndSettleOpp
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivateAndSettleOppositeSide() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
 
 	// then: the order becomes activated and settled
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -185,14 +169,12 @@ func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivateAndSettleOppo
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivateAndSettleBeforeWorsePriceOrders() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Sell, 10, 1, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 11, 1, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 11, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Sell, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 11, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 11, 3, "GTC")
 
 	// then: the order becomes activated and settled
 	assert.Equal([]float64{10.0, 10.0, 11.0}, GetTradePrices())
@@ -203,14 +185,12 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivateAndSettleBef
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivateAndSettleBeforeWorsePriceOrders() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Buy, 10, 1, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Buy, 9, 1, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 9, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Buy, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 9, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 9, 3, "GTC")
 	//
 	// then: the order becomes activated and settled
 	assert.Equal([]float64{10.0, 10.0, 9.0}, GetTradePrices())
@@ -221,13 +201,11 @@ func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivateAndSettleBefo
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivateByMarketAndSettle() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.Market, models.Sell, 0, 1, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
 
 	// then: the order becomes activated and settled
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -236,9 +214,9 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivateByMarketAndS
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.Market, models.Sell, 0, 1, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Sell, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 1, "GTC")
 
 	// then: the order becomes activated and settled
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -248,12 +226,11 @@ func (assert *ServiceTestSuite) TestCreateStopLimitSellOrderActivateByMarketAndS
 }
 
 func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivateByMarketAndSettle() {
-	tradingAccount := Acc()
-	tradingAccount2 := Acc2()
+
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.Market, models.Buy, 0, 10, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Buy, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
 	//
 	// then: the order becomes activated and settled
 	assert.Equal(0, utils.GetCount("stop_order"))
@@ -262,9 +239,9 @@ func (assert *ServiceTestSuite) TestCreateStopLimitBuyOrderActivateByMarketAndSe
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 	//
 	// when: a stop limit order is created and then a crossing trade occurs
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
-	ProcessTradeOrder(tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", models.Market, models.Buy, 0, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.StopLimit, models.Buy, 10, 2, "GTC")
+	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Buy, 0, 10, "GTC")
 	//
 	// then: the order becomes activated and settled
 	assert.Equal(0, utils.GetCount("stop_order"))

@@ -12,7 +12,7 @@ func Format(s string, v interface{}) string {
 	return b.String()
 }
 
-func Each[T comparable](list []T, fn func(T)) {
+func Each[T any](list []T, fn func(T)) {
 	for _, value := range list {
 		if fn != nil {
 			fn(value)
@@ -20,7 +20,7 @@ func Each[T comparable](list []T, fn func(T)) {
 	}
 }
 
-func Map[T, V comparable](list []T, fn func(T) V) []V {
+func Map[T, V any](list []T, fn func(T) V) []V {
 	res := make([]V, len(list))
 	for i, value := range list {
 		res[i] = fn(value)
@@ -28,7 +28,7 @@ func Map[T, V comparable](list []T, fn func(T) V) []V {
 	return res
 }
 
-func Filter[T comparable](list []T, fn func(T) bool) []T {
+func Filter[T any](list []T, fn func(T) bool) []T {
 	filteredList := make([]T, 0)
 	for _, value := range list {
 		if fn(value) {

@@ -3,6 +3,7 @@ package services
 import (
 	"open-outcry/pkg/conf"
 	"open-outcry/pkg/db"
+	"open-outcry/pkg/models"
 	"open-outcry/pkg/utils"
 	"testing"
 
@@ -11,6 +12,10 @@ import (
 
 type ServiceTestSuite struct {
 	suite.Suite
+	appEntity1      models.AppEntityId
+	tradingAccount1 models.TradingAccountId // seller
+	appEntity2      models.AppEntityId
+	tradingAccount2 models.TradingAccountId // buyer
 }
 
 func TestServiceTestSuite(t *testing.T) {
@@ -24,6 +29,8 @@ func (suite *ServiceTestSuite) SetupSuite() {
 		panic(err)
 	}
 	db.MigrateUp()
+	suite.appEntity1, suite.tradingAccount1 = Acc("test")
+	suite.appEntity2, suite.tradingAccount2 = Acc("test2")
 }
 
 func (suite *ServiceTestSuite) TearDownTest() {

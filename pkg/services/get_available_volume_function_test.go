@@ -13,7 +13,7 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeEmpty() {
 // if the order is on the sell side and order limit price is below or equal the query limit price.
 func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSingleOrder() {
 	// when given a new sell order
-	ProcessTradeOrder(Acc(), "BTC_EUR", "LIMIT", models.Sell, 10.00, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 100, "GTC")
 
 	// then expect the available volume to increase
 	assert.Equal(100.00, GetAvailableLimitVolume(models.Sell, 10.00))
@@ -24,9 +24,8 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSingleOrder() {
 
 func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSideMultipleOrdersSamePrice() {
 	// when given a new sell order
-	tradingAccount := Acc()
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
 
 	// then expect the available volume to increase
 	assert.Equal(200.0, GetAvailableLimitVolume(models.Sell, 10.00))
@@ -38,9 +37,8 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSideMultipleOrder
 
 func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSideMultipleOrdersDifferentPrices() {
 	// when given multiple new sell orders
-	tradingAccount := Acc()
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Sell, 9, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 9, 100, "GTC")
 
 	// then expect the available volume to increase
 	assert.Equal(200.0, GetAvailableLimitVolume(models.Sell, 10.00))
@@ -57,8 +55,7 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSideMultipleOrder
 // `
 func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeBuySideSingleOrder() {
 	// when given a new buy order
-	tradingAccount := Acc()
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
 
 	// then expect the available volume to increase
 	assert.Equal(10.0, GetAvailableLimitVolume(models.Buy, 10.00))
@@ -69,9 +66,8 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeBuySideSingleOrder() 
 
 func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeBuySideMultipleOrdersSamePrice() {
 	// when given 2 new buy orders
-	tradingAccount := Acc()
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
 
 	// then expect the available volume to increase
 	assert.Equal(20.0, GetAvailableLimitVolume(models.Buy, 10.00))
@@ -82,9 +78,8 @@ func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeBuySideMultipleOrders
 
 func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeBuySideMultipleOrdersDifferentPrices() {
 	// when given a new sell order
-	tradingAccount := Acc()
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
-	ProcessTradeOrder(tradingAccount, "BTC_EUR", "LIMIT", models.Buy, 9, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 9, 10, "GTC")
 
 	// then expect the available volume to increase
 	assert.Equal(10.0, GetAvailableLimitVolume(models.Buy, 10.00))
