@@ -3,9 +3,10 @@ package services
 import (
 	"context"
 	"database/sql"
-	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // Main entry point for processing an market order.
@@ -37,6 +38,7 @@ func ProcessTradeOrder(
 	).Scan(&tradeOrderId)
 
 	if err != nil {
+		log.Error(err)
 		tx.Rollback()
 		return "", err
 	}

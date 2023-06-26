@@ -12,11 +12,12 @@ import "open-outcry/pkg/models"
 // `
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderSaveWithInsufficientFunds() {
 	// given:
-	models.CreatePaymentAccount(assert.appEntity1, "BTC")
-	CreatePaymentDeposit(assert.appEntity1, 100, "BTC", "test", "Test")
-	tradingAccountId := models.FindTradingAccountByApplicationEntityId(assert.appEntity1).Id
+	appEntity1 := CreateAppEntity("test3")
+	models.CreatePaymentAccount(appEntity1, "BTC")
+	CreatePaymentDeposit(appEntity1, 100, "BTC", "test", "Test")
+	tradingAccountId := models.FindTradingAccountByApplicationEntityId(appEntity1).Id
 	ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-	CreatePaymentDeposit(assert.appEntity1, 100, "BTC", "test", "Test")
+	CreatePaymentDeposit(appEntity1, 100, "BTC", "test", "Test")
 
 	// when: a limit order is sent with insufficient funds
 	_, err := ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", models.Sell, 10, 101, "GTC")
@@ -27,10 +28,11 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderSaveWithInsufficientFun
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderSaveWithInsufficientFunds() {
 	// given:
-	CreatePaymentDeposit(assert.appEntity1, 100, "EUR", "test", "Test")
-	tradingAccountId := models.FindTradingAccountByApplicationEntityId(assert.appEntity1).Id
+	appEntity1 := CreateAppEntity("test3")
+	CreatePaymentDeposit(appEntity1, 100, "EUR", "test", "Test")
+	tradingAccountId := models.FindTradingAccountByApplicationEntityId(appEntity1).Id
 	ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
-	CreatePaymentDeposit(assert.appEntity1, 100, "EUR", "test", "Test")
+	CreatePaymentDeposit(appEntity1, 100, "EUR", "test", "Test")
 	// when: a limit order is sent with insufficient funds
 
 	// then: err
@@ -40,11 +42,12 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderSaveWithInsufficientFund
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderSaveWithInsufficientFunds() {
 	// given:
-	models.CreatePaymentAccount(assert.appEntity1, "BTC")
-	CreatePaymentDeposit(assert.appEntity1, 100, "BTC", "test", "Test")
-	tradingAccountId := models.FindTradingAccountByApplicationEntityId(assert.appEntity1).Id
+	appEntity1 := CreateAppEntity("test3")
+	models.CreatePaymentAccount(appEntity1, "BTC")
+	CreatePaymentDeposit(appEntity1, 100, "BTC", "test", "Test")
+	tradingAccountId := models.FindTradingAccountByApplicationEntityId(appEntity1).Id
 	ProcessTradeOrder(tradingAccountId, "BTC_EUR", models.Market, models.Sell, 0, 100, "GTC")
-	CreatePaymentDeposit(assert.appEntity1, 100, "BTC", "test", "Test")
+	CreatePaymentDeposit(appEntity1, 100, "BTC", "test", "Test")
 	// when: a market order is sent with insufficient funds
 
 	// then: err
@@ -54,10 +57,11 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderSaveWithInsufficientFu
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderSaveWithInsufficientFunds() {
 	// given:
-	CreatePaymentDeposit(assert.appEntity1, 100, "EUR", "test", "Test")
-	tradingAccountId := models.FindTradingAccountByApplicationEntityId(assert.appEntity1).Id
+	appEntity1 := CreateAppEntity("test3")
+	CreatePaymentDeposit(appEntity1, 100, "EUR", "test", "Test")
+	tradingAccountId := models.FindTradingAccountByApplicationEntityId(appEntity1).Id
 	ProcessTradeOrder(tradingAccountId, "BTC_EUR", models.Market, models.Buy, 0, 100, "GTC")
-	CreatePaymentDeposit(assert.appEntity1, 100, "EUR", "test", "Test")
+	CreatePaymentDeposit(appEntity1, 100, "EUR", "test", "Test")
 	// when: a market order is sent with insufficient funds
 	// then: exception is raised
 	_, err := ProcessTradeOrder(tradingAccountId, "BTC_EUR", models.Market, models.Buy, 0, 101, "GTC")

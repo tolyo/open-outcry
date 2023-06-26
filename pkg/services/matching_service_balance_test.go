@@ -7,22 +7,20 @@ import (
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderSaveWithReservedBalance() {
 	// given:
-	models.CreatePaymentAccount(assert.appEntity1, "BTC")
 	tradingAccountId := models.FindTradingAccountByApplicationEntityId(assert.appEntity1).Id
 	paymentAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC")
 
-	assert.Equal(0.0, paymentAccount.Amount)
+	assert.Equal(1000.0, paymentAccount.Amount)
+	assert.Equal(1000.0, paymentAccount.AmountAvailable)
 	assert.Equal(0.0, paymentAccount.AmountReserved)
-	assert.Equal(0.0, paymentAccount.AmountAvailable)
 
 	// when:
-	CreatePaymentDeposit(assert.appEntity1, 1000, "BTC", "Test", "Test")
 
 	// then:
 	paymentAccount = models.GetPaymentAccount(paymentAccount.Id)
 	assert.Equal(1000.0, paymentAccount.Amount)
-	assert.Equal(0.0, paymentAccount.AmountReserved)
 	assert.Equal(1000.0, paymentAccount.AmountAvailable)
+	assert.Equal(0.0, paymentAccount.AmountReserved)
 
 	// when: a limit order is sent to an empty matching unit
 	ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
@@ -48,18 +46,10 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderSaveWithReservedBalance(
 	tradingAccountId := models.FindTradingAccountByApplicationEntityId(assert.appEntity1).Id
 	paymentAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR")
 
-	assert.Equal(0.0, paymentAccount.Amount)
-	assert.Equal(0.0, paymentAccount.AmountReserved)
-	assert.Equal(0.0, paymentAccount.AmountAvailable)
-	// when:
-	CreatePaymentDeposit(assert.appEntity1, 1000, "EUR", "Test", "Test")
-
-	// then:
-	paymentAccount = models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR")
-
 	assert.Equal(1000.0, paymentAccount.Amount)
 	assert.Equal(0.0, paymentAccount.AmountReserved)
 	assert.Equal(1000.0, paymentAccount.AmountAvailable)
+	// when:
 
 	// when: a limit order is sent to an empty matching unit
 	ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
