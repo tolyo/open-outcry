@@ -1,6 +1,7 @@
 package services
 
 import (
+	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
 )
@@ -22,9 +23,12 @@ func CreatePaymentDepositCustomFee(appEntityId models.AppEntityId,
 	feeType any,
 ) models.PaymentId {
 	var id string
-	db.Instance().QueryRow(
+	err := db.Instance().QueryRow(
 		"SELECT process_payment('DEPOSIT', 'MASTER', $2, $3, $1, $4, $5, $6)",
 		appEntityId, amount, currency, reference, details, feeType,
 	).Scan(&id)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return models.PaymentId(id)
 }

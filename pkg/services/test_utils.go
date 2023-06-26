@@ -1,6 +1,7 @@
 package services
 
 import (
+	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
 )
@@ -25,7 +26,8 @@ func CreateTradingAccountId() models.TradingAccountId {
 func CreateTradingAccountId2() models.TradingAccountId {
 	appEntityId := CreateClient2()
 	models.CreatePaymentAccount(appEntityId, models.CurrencyName("BTC"))
-	CreatePaymentDeposit(appEntityId, 1000, "BTC", "Test", "Test")
+	id := CreatePaymentDeposit(appEntityId, 1000, "BTC", "Test", "Test")
+	log.Infof("%v", id)
 	CreatePaymentDeposit(appEntityId, 1000, "EUR", "Test", "Test")
 	tradingAccount := models.FindTradingAccountByApplicationEntityId(appEntityId)
 	return tradingAccount.Id

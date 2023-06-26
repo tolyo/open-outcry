@@ -87,9 +87,7 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderAgainstMatchingBuyOrder
 	// given: -- a seller
 	tradingAccount := Acc()
 	appEntityId := GetAppEntityId()
-
 	sellerDebitAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(appEntityId, "BTC")
-
 	sellerCreditAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(appEntityId, "EUR")
 
 	assert.Equal(1000.0, sellerDebitAccount.Amount)

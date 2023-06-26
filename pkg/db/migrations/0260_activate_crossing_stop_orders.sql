@@ -53,13 +53,13 @@ BEGIN
             LOOP
                 DELETE FROM stop_order
                 WHERE trade_order_id = matching_stop_limit_order_instance.id;
-                -- update order type 
+                -- update order type
                 UPDATE trade_order
                 SET order_type = 'LIMIT'::order_type
                 WHERE id = matching_stop_limit_order_instance.id
                 RETURNING * INTO matching_stop_limit_order_instance;
                 PERFORM create_book_order(matching_stop_limit_order_instance);
-                
+
                 activated_var := TRUE;
             END LOOP;
 

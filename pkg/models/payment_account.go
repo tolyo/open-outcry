@@ -1,8 +1,9 @@
 package models
 
 import (
-	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/db"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // `payment_account.pub_id` db reference
@@ -50,18 +51,6 @@ func GetPaymentAccount(id PaymentAccountId) *PaymentAccount {
 	}
 	return &res
 }
-
-// //   @spec find_all_by_app_entity(AppEntity.id()) [PaymentAccount.t()]
-// //   func find_all_by_app_entity(app_entity_id) {
-// //     app_entity_id
-// //     |> DB.query_list(
-// //        baseQuery +
-// //         `
-// //           WHERE ae.pub_id = $1
-// //         `
-// //     )
-// //     |> Enum.map(&from_atom(&1))
-//}
 
 func FindPaymentAccountByAppEntityIdAndCurrencyName(
 	appEntityId AppEntityId,

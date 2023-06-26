@@ -2,9 +2,10 @@ package db
 
 import (
 	"database/sql"
+	"open-outcry/pkg/conf"
+
 	_ "github.com/lib/pq"
 	log "github.com/sirupsen/logrus"
-	"open-outcry/pkg/conf"
 )
 
 var db *sql.DB

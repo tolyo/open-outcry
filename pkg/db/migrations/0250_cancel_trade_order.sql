@@ -9,10 +9,10 @@ CREATE OR REPLACE FUNCTION
 AS $$
 DECLARE
     instrument_instance instrument%ROWTYPE;
-    trade_order_instance trade_order%ROWTYPE; 
+    trade_order_instance trade_order%ROWTYPE;
     order_currency_var text;
 BEGIN
-    
+
     SELECT * FROM trade_order
     WHERE pub_id = trade_order_id_param
     -- allow cancellation only of active orders
@@ -60,17 +60,17 @@ BEGIN
     ELSE
         order_currency_var = instrument_instance.quote_currency;
     END IF;
-    
+
     UPDATE payment_account
     SET amount_reserved = amount_reserved - trade_order_instance.open_amount
-    WHERE currency_name = order_currency_var 
+    WHERE currency_name = order_currency_var
     AND app_entity_id = (
         SELECT app_entity_id FROM trading_account ta
         WHERE ta.id = trade_order_instance.trading_account_id
-    );     
+    );
 
     -- delete book order
-    DELETE FROM book_order WHERE trade_order_id = trade_order_instance.id; 
+    DELETE FROM book_order WHERE trade_order_id = trade_order_instance.id;
 END;
 $$;
 

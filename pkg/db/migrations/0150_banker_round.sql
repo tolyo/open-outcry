@@ -2,7 +2,7 @@
 -- +goose StatementBegin
 
 -- round-half-even aka Banker's rounding
-CREATE OR REPLACE FUNCTION 
+CREATE OR REPLACE FUNCTION
     banker_round(val NUMERIC, prec INTEGER)
     returns NUMERIC
 
@@ -13,7 +13,7 @@ DECLARE
     difference NUMERIC;
     even BOOLEAN;
 BEGIN
-    IF val IS NULL OR 
+    IF val IS NULL OR
     prec IS NULL THEN
         RAISE EXCEPTION 'param_cannot_be_null val: %, prec %', val, prec;
     END IF;

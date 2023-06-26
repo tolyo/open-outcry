@@ -30,13 +30,13 @@ BEGIN
         LOOP
             DELETE FROM stop_order
             WHERE trade_order_id = matching_stop_loss_order_instance.id;
-            -- update order type 
+            -- update order type
             UPDATE trade_order
             SET order_type = 'MARKET'::order_type,
                 price = 0.00
             WHERE id = matching_stop_loss_order_instance.id;
             PERFORM process_trade_order(
-                'VOID', 
+                'VOID',
                 (SELECT name FROM instrument WHERE id = instrument_id_param),
                 'MARKET',
                 order_side_param,
@@ -60,12 +60,12 @@ BEGIN
         LOOP
             DELETE FROM stop_order
             WHERE trade_order_id = matching_stop_limit_order_instance.id;
-            -- update order type 
+            -- update order type
             UPDATE trade_order
             SET order_type = 'LIMIT'::order_type
             WHERE id = matching_stop_limit_order_instance.id;
             PERFORM process_trade_order(
-                'VOID', 
+                'VOID',
                 (SELECT name FROM instrument WHERE id = instrument_id_param),
                 'LIMIT',
                 order_side_param,

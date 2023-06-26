@@ -30,13 +30,14 @@ BEGIN
         seller_order_id,
         buyer_order_id,
         taker_order_id
-    )    
-    VALUES (instrument_param.id,
-            price_param,
-            amount_param,
-            seller_trade_order_param.id,
-            buyer_trade_order_param.id,
-            taker_trade_order_param.id
+    )
+    VALUES (
+        instrument_param.id,
+        price_param,
+        amount_param,
+        seller_trade_order_param.id,
+        buyer_trade_order_param.id,
+        taker_trade_order_param.id
     )
     RETURNING * INTO trade_instance;
 
@@ -147,27 +148,26 @@ BEGIN
     );
 
     -- update open amounts
-    UPDATE trade_order 
+    UPDATE trade_order
     SET open_amount = open_amount - amount_param,
-        status = 
-            CASE open_amount - amount_param = 0 
+        status =
+            CASE open_amount - amount_param = 0
                 WHEN TRUE THEN 'FILLED'::trade_order_status
                 WHEN FALSE THEN 'PARTIALLY_FILLED'::trade_order_status
             END
     WHERE id = buyer_trade_order_param.id;
 
-    UPDATE trade_order 
+    UPDATE trade_order
     SET open_amount = open_amount - amount_param,
-        status = 
-            CASE open_amount - amount_param = 0 
+        status =
+            CASE open_amount - amount_param = 0
                 WHEN TRUE THEN 'FILLED'::trade_order_status
                 WHEN FALSE THEN 'PARTIALLY_FILLED'::trade_order_status
             END
     WHERE id = seller_trade_order_param.id;
-    
-    IF buyer_trade_order_param = taker_trade_order_param THEN
-        
-        IF seller_trade_order_param.order_type = 'LIMIT'::order_type THEN
+
+    IF buyer_trade_order_param = taker_trade_order_param
+    AND seller_trade_order_param.order_type = 'LIMIT'::order_type THEN
             PERFORM update_price_level(
                 instrument_param.id,
                 'SELL',
@@ -175,7 +175,6 @@ BEGIN
                 amount_param,
                 FALSE
             );
-        END IF;
     ELSE
         IF buyer_trade_order_param.order_type = 'LIMIT'::order_type THEN
             PERFORM update_price_level(

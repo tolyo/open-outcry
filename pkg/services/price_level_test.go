@@ -10,7 +10,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	// given:
 	tradingAccountId := Acc()
 	// when given a new saved limit order
-	ProcessTradeOrder(
+	_, err := ProcessTradeOrder(
 		tradingAccountId,
 		"BTC_EUR",
 		"LIMIT",
@@ -20,6 +20,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 		models.GTC,
 	)
 
+	assert.Nil(err)
 	// then a price level is created
 	assert.Equal(1, utils.GetCount("price_level"))
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))

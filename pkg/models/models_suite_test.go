@@ -1,17 +1,18 @@
 package models
 
 import (
-	"github.com/stretchr/testify/suite"
 	"open-outcry/pkg/conf"
 	"open-outcry/pkg/db"
 	"testing"
+
+	"github.com/stretchr/testify/suite"
 )
 
 type ModelsTestSuite struct {
 	suite.Suite
 }
 
-func TestServiceTestSuite(t *testing.T) {
+func TestModelSuite(t *testing.T) {
 	conf.LoadTestConfig()
 	suite.Run(t, &ModelsTestSuite{})
 }

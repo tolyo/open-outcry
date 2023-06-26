@@ -4,10 +4,10 @@
 CREATE OR REPLACE FUNCTION
   create_client(
     external_id_param text
-  )  
-  
+  )
+
   -- app_entity.pub_id
-  RETURNS TEXT 
+  RETURNS TEXT
 
 LANGUAGE 'plpgsql'
 AS $$
