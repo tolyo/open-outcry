@@ -7,25 +7,26 @@ import (
 
 func (assert *ServiceTestSuite) TestDepositPayment() {
 	// given a customer
-	assert.Equal(0, utils.GetCount("payment"))
+	utils.DeleteAll("payment")
+	appEntity1, _ := Acc("test3")
 
 	// when amount is deposited
-	CreatePaymentDeposit(assert.appEntity1, 10.00, "EUR", "BANK", "REF123")
+	CreatePaymentDeposit(appEntity1, 10.00, "EUR", "BANK", "REF123")
 
 	// then amount should increase and payment should be created
-	acc := models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR")
-	assert.Equal(10.00, acc.Amount)
-	assert.Equal(10.00, acc.AmountAvailable)
+	acc := models.FindPaymentAccountByAppEntityIdAndCurrencyName(appEntity1, "EUR")
+	assert.Equal(1010.00, acc.Amount)
+	assert.Equal(1010.00, acc.AmountAvailable)
 	assert.Equal(0.00, acc.AmountReserved)
-	assert.Equal(1, utils.GetCount("payment"))
+	assert.Equal(3, utils.GetCount("payment"))
 
 	// when amount is deposited
-	CreatePaymentDeposit(assert.appEntity1, 10.00, "EUR", "BANK", "REF125")
+	CreatePaymentDeposit(appEntity1, 10.00, "EUR", "BANK", "REF125")
 
 	// then amount should increase and payment should be created
-	acc = models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR")
-	assert.Equal(20.00, acc.Amount)
-	assert.Equal(20.00, acc.AmountAvailable)
+	acc = models.FindPaymentAccountByAppEntityIdAndCurrencyName(appEntity1, "EUR")
+	assert.Equal(1020.00, acc.Amount)
+	assert.Equal(1020.00, acc.AmountAvailable)
 	assert.Equal(0.00, acc.AmountReserved)
-	assert.Equal(2, utils.GetCount("payment"))
+	assert.Equal(4, utils.GetCount("payment"))
 }

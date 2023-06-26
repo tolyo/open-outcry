@@ -8,13 +8,12 @@ import (
 
 func GetCount(tableName string) int {
 	var count int
-	rows := db.Instance().QueryRow(Format("SELECT COUNT(*) FROM {{.}}", tableName))
-	rows.Scan(&count)
+	db.Instance().QueryRow("SELECT COUNT(*) FROM " + tableName).Scan(&count)
 	return count
 }
 
 func DeleteAll(tableName string) {
-	_, err := db.Instance().ExecContext(context.Background(), Format("DELETE FROM {{.}}", tableName))
+	_, err := db.Instance().ExecContext(context.Background(), "DELETE FROM "+tableName)
 	if err != nil {
 		log.Fatal(err)
 	}

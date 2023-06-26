@@ -29,6 +29,9 @@ func (suite *ServiceTestSuite) SetupSuite() {
 		panic(err)
 	}
 	db.MigrateUp()
+}
+
+func (suite *ServiceTestSuite) SetupTest() {
 	suite.appEntity1, suite.tradingAccount1 = Acc("test")
 	suite.appEntity2, suite.tradingAccount2 = Acc("test2")
 }
