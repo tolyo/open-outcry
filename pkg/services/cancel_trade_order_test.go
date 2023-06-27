@@ -2,29 +2,74 @@ package services
 
 import "open-outcry/pkg/models"
 
+type TestData struct {
+	side                     models.OrderSide
+	price                    float64
+	amount                   float64
+	expectedBtcReserveAmount float64
+	expectedEurReserveAmount float64
+}
+
+var testData = []TestData{
+	{
+		side:                     models.Sell,
+		price:                    10,
+		amount:                   100,
+		expectedEurReserveAmount: 0,
+		expectedBtcReserveAmount: 100,
+	},
+
+	{
+		side:                     models.Buy,
+		price:                    10,
+		amount:                   1,
+		expectedEurReserveAmount: 10,
+		expectedBtcReserveAmount: 0,
+	},
+}
+
 func (assert *ServiceTestSuite) TestCancelTradeOrder() {
-	// given: an existing trade limit order
-	tradeOrder, _ := ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
 
-	assert.Equal(1, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{
-		{Price: 10, Volume: 100},
-	}, GetVolumes("BTC_EUR", models.Sell))
+	for _, data := range testData {
+		// given: an existing trade limit order
+		tradeOrder, err := ProcessTradeOrder(assert.tradingAccount1,
+			"BTC_EUR",
+			"LIMIT",
+			data.side,
+			models.OrderPrice(data.price),
+			data.amount,
+			"GTC",
+		)
+		assert.Nil(err)
+		assert.Equal(1, GetBookOrderCount(data.side))
+		assert.Equal(
+			[]PriceVolume{{Price: data.price, Volume: data.amount}},
+			GetVolumes("BTC_EUR", data.side),
+		)
 
-	// when: order is cancelled
-	CancelTradeOrder(tradeOrder)
+		res := models.GetTradeOrder(tradeOrder)
+		assert.Equal(models.Open, res.Status)
+		assert.Equal(data.expectedBtcReserveAmount,
+			models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC").AmountReserved)
+		assert.Equal(data.expectedEurReserveAmount,
+			models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR").AmountReserved)
 
-	// then: it is removed from the order book
-	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+		// when: order is cancelled
+		CancelTradeOrder(tradeOrder)
 
-	// and: its status is cancelled
-	res := models.GetTradeOrder(tradeOrder)
-	assert.Equal(models.Cancelled, res.Status)
-	assert.Equal(0.00,
-		models.FindPaymentAccountByAppEntityIdAndCurrencyName(
-			assert.appEntity1, "BTC").AmountReserved,
-	)
+		// then: it is removed from the order book
+		assert.Equal(0, GetBookOrderCount(data.side))
+		assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", data.side))
+
+		// and: its status is cancelled
+		res = models.GetTradeOrder(tradeOrder)
+		assert.Equal(models.Cancelled, res.Status)
+		assert.Equal(0.00,
+			models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC").AmountReserved)
+		assert.Equal(0.00,
+			models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR").AmountReserved)
+	}
+
 }
 
 func (assert *ServiceTestSuite) TestCancelTradeOrderWithMultipleOrders() {

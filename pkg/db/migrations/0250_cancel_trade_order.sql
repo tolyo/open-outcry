@@ -11,6 +11,7 @@ DECLARE
     instrument_instance instrument%ROWTYPE;
     trade_order_instance trade_order%ROWTYPE;
     order_currency_var text;
+    update_amount_var NUMERIC;
 BEGIN
 
     SELECT * FROM trade_order
@@ -57,12 +58,14 @@ BEGIN
     -- release funds
     IF trade_order_instance.side = 'SELL'::order_side THEN
         order_currency_var = instrument_instance.base_currency;
+        update_amount_var = trade_order_instance.open_amount;
     ELSE
         order_currency_var = instrument_instance.quote_currency;
+        update_amount_var = trade_order_instance.open_amount * trade_order_instance.price;
     END IF;
 
     UPDATE payment_account
-    SET amount_reserved = amount_reserved - trade_order_instance.open_amount
+    SET amount_reserved = amount_reserved - update_amount_var
     WHERE currency_name = order_currency_var
     AND app_entity_id = (
         SELECT app_entity_id FROM trading_account ta

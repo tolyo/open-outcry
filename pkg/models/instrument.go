@@ -19,33 +19,3 @@ type Instrument struct {
 	QuoteCurrency InstrumentQuoteCurrency
 	Active        bool
 }
-
-// func CreateInstrument(name InstrumentName, quote_currency CurrencyName) InstrumentId {
-// 	db.QueryVal(`
-//       INSERT INTO instrument(
-//         name,
-//         quote_currency
-//       ) VALUES (
-//         $1,
-//         $2
-//       )
-//       RETURNING pub_id;
-//     `, name, quote_currency)
-// }
-
-// func CreateFxInstrument(name InstrumentName, base_currency CurrencyName, quote_currency CurrencyName) InstrumentId {
-// 	db.QueryVal(`
-//       INSERT INTO instrument(
-//         name,
-//         base_currency,
-//         quote_currency,
-//         fx_instrument
-//       ) VALUES (
-//         $1,
-//         $2,
-//         $3,
-//         TRUE
-//       )
-//       RETURNING pub_id;
-//     `, name, base_currency, quote_currency)
-// }

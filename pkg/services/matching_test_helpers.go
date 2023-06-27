@@ -3,31 +3,29 @@ package services
 import (
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
+	"open-outcry/pkg/utils"
 
 	log "github.com/sirupsen/logrus"
 )
 
-func GetSellBookOrderCount() int {
-	return db.QueryVal[int](
+func GetBookOrderCount(side models.OrderSide) int {
+	return db.QueryVal[int](utils.Format(
 		`
 		SELECT COUNT(*)
 		FROM trade_order t
 		    INNER JOIN book_order b
 			ON t.id = b.trade_order_id
-		WHERE t.side = 'SELL'
-		`,
-	)
+		WHERE t.side = '{{.}}'
+		`, side,
+	))
 }
+
+func GetSellBookOrderCount() int {
+	return GetBookOrderCount(models.Sell)
+}
+
 func GetBuyBookOrderCount() int {
-	return db.QueryVal[int](
-		`
-		SELECT COUNT(*)
-		FROM trade_order t
-		    INNER JOIN book_order b
-			ON t.id = b.trade_order_id
-		WHERE t.side = 'BUY'
-		`,
-	)
+	return GetBookOrderCount(models.Buy)
 }
 
 func GetTradeCount() int {
