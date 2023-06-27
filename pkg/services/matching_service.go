@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Main entry point for processing an market order.
+// Main entry point for processing a trade order.
 //   - For BUY side, the amount must be alocated in quote currency.
 //   - For SELL side the amount must be allocared in base currency
 func ProcessTradeOrder(

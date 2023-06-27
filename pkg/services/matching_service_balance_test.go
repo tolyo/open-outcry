@@ -1,112 +1,130 @@
 package services
 
 import (
-	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
+	"open-outcry/pkg/utils"
 )
 
-func (assert *ServiceTestSuite) TestProcessLimitSellOrderSaveWithReservedBalance() {
-	// given:
-	tradingAccountId := models.FindTradingAccountByApplicationEntityId(assert.appEntity1).Id
-	paymentAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC")
-
-	assert.Equal(1000.0, paymentAccount.Amount)
-	assert.Equal(1000.0, paymentAccount.AmountAvailable)
-	assert.Equal(0.0, paymentAccount.AmountReserved)
-
-	// when:
-
-	// then:
-	paymentAccount = models.GetPaymentAccount(paymentAccount.Id)
-	assert.Equal(1000.0, paymentAccount.Amount)
-	assert.Equal(1000.0, paymentAccount.AmountAvailable)
-	assert.Equal(0.0, paymentAccount.AmountReserved)
-
-	// when: a limit order is sent to an empty matching unit
-	ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-
-	// then: reseved balance to the account should be increased
-	paymentAccount = models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC")
-	assert.Equal(1000.0, paymentAccount.Amount)
-	assert.Equal(100.0, paymentAccount.AmountReserved)
-	assert.Equal(900.0, paymentAccount.AmountAvailable)
-
-	// when: another limit order is sent to an empty matching unit
-	ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-
-	// then: reseved balance to the account should be increased
-	paymentAccount = models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC")
-	assert.Equal(1000.0, paymentAccount.Amount)
-	assert.Equal(200.0, paymentAccount.AmountReserved)
-	assert.Equal(800.0, paymentAccount.AmountAvailable)
+type testcase struct {
+	currency       models.CurrencyName
+	orders         []models.TradeOrder
+	expectedStates []models.PaymentAccount
 }
 
-func (assert *ServiceTestSuite) TestProcessLimitBuyOrderSaveWithReservedBalance() {
-	// given:
-	tradingAccountId := models.FindTradingAccountByApplicationEntityId(assert.appEntity1).Id
-	paymentAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR")
+var testcases = []testcase{
+	{
+		currency: "BTC",
+		orders: []models.TradeOrder{
+			{Side: models.Sell, Price: 10, Amount: 100},
+		},
+		expectedStates: []models.PaymentAccount{
+			{Amount: 1000.0, AmountAvailable: 1000.0, AmountReserved: 0},
+			{Amount: 1000.0, AmountAvailable: 900.0, AmountReserved: 100.00},
+			{Amount: 1000.0, AmountAvailable: 800.0, AmountReserved: 200.00},
+		},
+	},
+	{
+		currency: "EUR",
+		orders: []models.TradeOrder{
+			{Side: models.Buy, Price: 10, Amount: 10},
+		},
+		expectedStates: []models.PaymentAccount{
+			{Amount: 1000.0, AmountAvailable: 1000.0, AmountReserved: 0},
+			{Amount: 1000.0, AmountAvailable: 900.0, AmountReserved: 100.00},
+			{Amount: 1000.0, AmountAvailable: 800.0, AmountReserved: 200.00},
+		},
+	},
+}
 
-	assert.Equal(1000.0, paymentAccount.Amount)
-	assert.Equal(0.0, paymentAccount.AmountReserved)
-	assert.Equal(1000.0, paymentAccount.AmountAvailable)
-	// when:
+func (assert *ServiceTestSuite) TestProcessLimitOrderReservedBalance() {
+	for _, c := range testcases {
+		// given:
+		helper := func(expectedState models.PaymentAccount) {
+			var paymentAccount = models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, c.currency)
+			assert.Equal(expectedState.Amount, paymentAccount.Amount)
+			assert.Equal(expectedState.AmountAvailable, paymentAccount.AmountAvailable)
+			assert.Equal(expectedState.AmountReserved, paymentAccount.AmountReserved)
+		}
+		// then:
+		helper(c.expectedStates[0])
+		// when: a limit order is sent to an empty matching unit
+		ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", c.orders[0].Side, c.orders[0].Price, c.orders[0].Amount, "GTC")
+		// then: reseved balance to the account should be increased
+		helper(c.expectedStates[1])
+		// when: another limit order is sent to an empty matching unit
+		ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", c.orders[0].Side, c.orders[0].Price, c.orders[0].Amount, "GTC")
+		helper(c.expectedStates[2])
+	}
+}
 
-	// when: a limit order is sent to an empty matching unit
-	ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
+var testCases2 = []testcase{
+	{
+		orders: []models.TradeOrder{
+			{Side: models.Sell, Price: 10, Amount: 10},
+			{Side: models.Buy, Price: 10, Amount: 10},
+		},
+		expectedStates: []models.PaymentAccount{
+			// seller
+			{Amount: 1000.0, AmountAvailable: 1000.0, AmountReserved: 0}, //debit
+			{Amount: 1000.0, AmountAvailable: 1000.0, AmountReserved: 0}, //credit
+			// buyer
+			{Amount: 1000.0, AmountAvailable: 1000.0, AmountReserved: 0}, //debit
+			{Amount: 1000.0, AmountAvailable: 1000.0, AmountReserved: 0}, //credit
 
-	// then: reseved balance to the account should be increased
-	paymentAccount = models.GetPaymentAccount(paymentAccount.Id)
-	assert.Equal(1000.0, paymentAccount.Amount)
-	assert.Equal(100.0, paymentAccount.AmountReserved)
-	assert.Equal(900.0, paymentAccount.AmountAvailable)
+			// seller
+			{Amount: 1000.0, AmountAvailable: 990.0, AmountReserved: 10.00}, //debit
+			{Amount: 1000.0, AmountAvailable: 1000.0, AmountReserved: 0},    //credit
 
-	// when: another limit order is sent to an empty matching unit
-	ProcessTradeOrder(tradingAccountId, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
+			// buyer
+			{Amount: 1000.0, AmountAvailable: 1000.0, AmountReserved: 0}, //debit
+			{Amount: 1000.0, AmountAvailable: 1000.0, AmountReserved: 0}, //credit
 
-	// then: reseved balance to the account should be increased
-	paymentAccount = models.GetPaymentAccount(paymentAccount.Id)
-
-	assert.Equal(1000.0, paymentAccount.Amount)
-	assert.Equal(200.0, paymentAccount.AmountReserved)
-	assert.Equal(800.0, paymentAccount.AmountAvailable)
+			// seller
+			{Amount: 990.0, AmountAvailable: 990.0, AmountReserved: 0},   //debit
+			{Amount: 1100.0, AmountAvailable: 1100.0, AmountReserved: 0}, //credit
+			// buyer
+			{Amount: 900.0, AmountAvailable: 900.0, AmountReserved: 0},   //debit
+			{Amount: 1010.0, AmountAvailable: 1010.0, AmountReserved: 0}, //credit
+		},
+	},
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderAgainstMatchingBuyOrderWithFundsTransfer() {
-	// given: -- a seller
-	sellerDebitAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC")
-	sellerCreditAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR")
+	for _, c := range testCases2 {
+		helper := func(accounts []models.PaymentAccount) {
+			var sellerDebitAccount = models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC")
+			var sellerCreditAccount = models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR")
+			var buyerDebitAccount = models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity2, "EUR")
+			var buyerCreditAccount = models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity2, "BTC")
+			assert.Equal(accounts[0].Amount, sellerDebitAccount.Amount)
+			assert.Equal(accounts[0].AmountAvailable, sellerDebitAccount.AmountAvailable)
+			assert.Equal(accounts[0].AmountReserved, sellerDebitAccount.AmountReserved)
 
-	assert.Equal(1000.0, sellerDebitAccount.Amount)
-	assert.Equal(1000.0, sellerCreditAccount.Amount)
+			assert.Equal(accounts[1].Amount, sellerCreditAccount.Amount)
+			assert.Equal(accounts[1].AmountAvailable, sellerCreditAccount.AmountAvailable)
+			assert.Equal(accounts[1].AmountReserved, sellerCreditAccount.AmountReserved)
 
-	buyerDebitAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity2, "EUR")
-	buyerCreditAccount := models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity2, "BTC")
+			assert.Equal(accounts[2].Amount, buyerDebitAccount.Amount)
+			assert.Equal(accounts[2].AmountAvailable, buyerDebitAccount.AmountAvailable)
+			assert.Equal(accounts[2].AmountReserved, buyerDebitAccount.AmountReserved)
 
-	assert.Equal(1000.0, buyerDebitAccount.Amount)
+			assert.Equal(accounts[3].Amount, buyerCreditAccount.Amount)
+			assert.Equal(accounts[3].AmountAvailable, buyerCreditAccount.AmountAvailable)
+			assert.Equal(accounts[3].AmountReserved, buyerCreditAccount.AmountReserved)
 
-	// when: a trade is executed
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 10, "GTC")
-	assert.Equal(0, GetTradeCount())
-	assert.Equal(10.0, models.GetPaymentAccount(sellerDebitAccount.Id).AmountReserved)
-	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
-	assert.Equal(1, GetTradeCount())
+		}
+		// given: -- a seller and a buyer
+		helper(c.expectedStates[0:4])
 
-	// then: 4 payments are executed in addition to 4 deposits
-	assert.Equal(8, db.QueryVal[int]("SELECT COUNT(*) FROM payment"))
+		ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", c.orders[0].Side, c.orders[0].Price, c.orders[0].Amount, "GTC")
+		assert.Equal(0, GetTradeCount())
+		helper(c.expectedStates[4:8])
+		// when: a trade is executed
+		ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", c.orders[1].Side, c.orders[1].Price, c.orders[1].Amount, "GTC")
+		assert.Equal(1, GetTradeCount())
+		// then: 4 payments are executed in addition to 4 deposits
+		assert.Equal(8, utils.GetCount("payment"))
+		helper(c.expectedStates[8:12])
 
-	// and: seller debit balance should decrease for by 10  BTC of seller but reserved balance should be released
-	assert.Equal(990.00, models.GetPaymentAccount(sellerDebitAccount.Id).Amount)
-	assert.Equal(0.0, models.GetPaymentAccount(sellerDebitAccount.Id).AmountReserved)
-
-	// and: seller credit balance should increase by 100 EUR
-	assert.Equal(1100.0, models.GetPaymentAccount(sellerCreditAccount.Id).Amount)
-	assert.Equal(0.0, models.GetPaymentAccount(sellerCreditAccount.Id).AmountReserved)
-
-	// and: buy debit balance should decrease by 100 EUR but reserve balance should be released
-	assert.Equal(900.0, models.GetPaymentAccount(buyerDebitAccount.Id).Amount)
-	assert.Equal(0.0, models.GetPaymentAccount(buyerDebitAccount.Id).AmountReserved)
-
-	// and: buy debit balance should increase by 10 BTC
-	assert.Equal(1010.0, models.GetPaymentAccount(buyerCreditAccount.Id).Amount)
-	assert.Equal(0.0, models.GetPaymentAccount(buyerCreditAccount.Id).AmountReserved)
+	}
 }

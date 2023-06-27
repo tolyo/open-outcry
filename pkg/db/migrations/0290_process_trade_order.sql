@@ -60,14 +60,14 @@ BEGIN
         order_currency_var = instrument_instance.quote_currency;
     END IF;
 
-    SELECT precision 
-    FROM currency 
-    WHERE name = instrument_instance.base_currency 
+    SELECT precision
+    FROM currency
+    WHERE name = instrument_instance.base_currency
     INTO base_currency_precision;
 
-    SELECT precision 
-    FROM currency 
-    WHERE name = instrument_instance.quote_currency 
+    SELECT precision
+    FROM currency
+    WHERE name = instrument_instance.quote_currency
     INTO quote_currency_precision;
 
     IF NOT FOUND THEN
@@ -82,7 +82,7 @@ BEGIN
         WHERE app_entity.id = trading_account_instance.app_entity_id
         AND currency_name = order_currency_var
         INTO payment_account_instance;
-        
+
         IF NOT FOUND THEN
             RAISE EXCEPTION 'payment_account_instance_not_found';
         END IF;
@@ -93,7 +93,7 @@ BEGIN
         IF side_param = 'SELL' OR (side_param = 'BUY' and order_type_param = 'MARKET') THEN
             -- check sufficiency of funds
             IF payment_account_instance.amount - payment_account_instance.amount_reserved < amount_param THEN
-                RAISE EXCEPTION 'insufficient_funds available: % required %', 
+                RAISE EXCEPTION 'insufficient_funds available: % required %',
                     payment_account_instance.amount - payment_account_instance.amount_reserved,
                     amount_param;
             END IF;
@@ -106,7 +106,7 @@ BEGIN
             -- check sufficiency of funds
             IF payment_account_instance.amount - payment_account_instance.amount_reserved < banker_round(amount_param * price_param, base_currency_precision)
             THEN
-                RAISE EXCEPTION 'insufficient_funds available: % required: %', 
+                RAISE EXCEPTION 'insufficient_funds available: % required: %',
                         payment_account_instance.amount - payment_account_instance.amount_reserved,
                         amount_param * price_param;
             END IF;
@@ -120,17 +120,17 @@ BEGIN
 
         -- create trade order
         INSERT INTO trade_order (
-            trading_account_id, 
-            instrument_id, 
-            order_type, 
-            side, 
-            price, 
+            trading_account_id,
+            instrument_id,
+            order_type,
+            side,
+            price,
             amount,
             open_amount,
             time_in_force
         )
         VALUES (
-            trading_account_instance.id, 
+            trading_account_instance.id,
             instrument_instance.id,
             order_type_param::order_type,
             side_param,
@@ -140,7 +140,7 @@ BEGIN
             time_in_force_param::order_time_in_force
         )
         RETURNING * INTO taker_trade_order_instance;
-    
+
     ELSE
 
         SELECT * FROM trade_order
@@ -157,7 +157,7 @@ BEGIN
         INSERT INTO stop_order (
             trade_order_id,
             price
-        ) 
+        )
         VALUES (
             taker_trade_order_instance.id,
             price_param
@@ -170,12 +170,12 @@ BEGIN
     <<matching_loop>>
     LOOP
         -- check if order can be filled
-        total_available_volume_var = 
-            get_available_market_volume(instrument_instance.id, opposite_side_var) 
+        total_available_volume_var =
+            get_available_market_volume(instrument_instance.id, opposite_side_var)
             + get_available_limit_volume(instrument_instance.id, opposite_side_var, price_param)
             - get_potential_self_trade_volume(instrument_instance.id, opposite_side_var, trading_account_instance.id, price_param);
 
-        IF taker_trade_order_instance.time_in_force = 'FOK'::order_time_in_force 
+        IF taker_trade_order_instance.time_in_force = 'FOK'::order_time_in_force
         AND total_available_volume_var < amount_param THEN
             UPDATE trade_order
             SET status = 'REJECTED'::trade_order_status
@@ -185,7 +185,7 @@ BEGIN
             IF side_param = 'SELL' OR
                (side_param = 'BUY' AND order_type_param = 'MARKET') THEN
                 -- release reserved  amount
-                UPDATE payment_account 
+                UPDATE payment_account
                 SET amount_reserved = round(amount_reserved - amount_param, quote_currency_precision)
                 WHERE id = payment_account_instance.id;
             ELSE
@@ -194,22 +194,22 @@ BEGIN
                 SET amount_reserved = amount_reserved - banker_round(amount_param * price_param, base_currency_precision)
                 WHERE id = payment_account_instance.id;
             END IF;
-            
+
             RETURN taker_trade_order_instance.pub_id;
         END IF;
 
         -- execute market order trades
         <<market_matching_loop>>
-        FOR maker_book_order_instance 
+        FOR maker_book_order_instance
             IN SELECT * FROM trade_order t
             INNER JOIN book_order b
                 ON b.trade_order_id = t.id
-            WHERE t.instrument_id = instrument_instance.id 
+            WHERE t.instrument_id = instrument_instance.id
             AND t.trading_account_id != trading_account_instance.id
             AND t.side = opposite_side_var
             AND t.order_type = 'MARKET'::order_type
             ORDER BY t.created_at ASC
-            
+
             LOOP
                 trade_price_var = get_trade_price(
                     side_param::order_side,
@@ -225,9 +225,9 @@ BEGIN
 
                     IF side_param = 'SELL' THEN
                         -- market buy in quote currency
-                        trade_amount_var = 
+                        trade_amount_var =
                             banker_round(maker_book_order_instance.open_amount / trade_price_var, quote_currency_precision);
-                        book_order_volume_var = 
+                        book_order_volume_var =
                             maker_book_order_instance.open_amount - banker_round(trade_amount_var * trade_price_var, quote_currency_precision);
 
                         -- incoming order leftover
@@ -286,8 +286,8 @@ BEGIN
 
                     -- activate crossing stop orders
                     trigger_loop_restart = activate_crossing_stop_orders(
-                        instrument_instance.id, 
-                        opposite_side_var::order_side, 
+                        instrument_instance.id,
+                        opposite_side_var::order_side,
                         trade_price_var
                     );
 
@@ -299,21 +299,20 @@ BEGIN
                     IF amount_param = 0 THEN
                         EXIT market_matching_loop;
                     END IF;
-                
                 ELSE
                     exit market_matching_loop;
                 END IF;
             END LOOP;
-        
+
             -- process limit orders
             IF amount_param > 0 THEN
                 -- execute trades for amount
                 <<limit_matching_loop>>
                 FOR book_order_instance
                     IN SELECT * FROM get_crossing_limit_orders(
-                        instrument_instance.id, 
-                        opposite_side_var, 
-                        price_param, 
+                        instrument_instance.id,
+                        opposite_side_var,
+                        price_param,
                         trading_account_instance.id
                     )
                     LOOP
@@ -334,13 +333,13 @@ BEGIN
                         IF side_param = 'BUY' AND order_type_param = 'MARKET' THEN
                             -- market buy in quote currency
                             trade_amount_var = banker_round(amount_param / maker_book_order_instance.price, quote_currency_precision);
-                            
+
                             -- ensure to trade at available book order amount
                             IF maker_book_order_instance.open_amount < trade_amount_var THEN
                                 trade_amount_var = maker_book_order_instance.open_amount;
                                 book_order_volume_var = 0;
                             ELSE
-                                book_order_volume_var = 
+                                book_order_volume_var =
                                     maker_book_order_instance.open_amount - trade_amount_var;
                             END IF;
                             -- incoming order leftover
@@ -348,21 +347,20 @@ BEGIN
                         ELSE
                             IF maker_book_order_instance.open_amount < amount_param THEN
                                 trade_amount_var = maker_book_order_instance.open_amount;
-                            ELSE 
+                            ELSE
                                 trade_amount_var = amount_param;
                             END IF;
 
                             book_order_volume_var = maker_book_order_instance.open_amount - trade_amount_var;
-            
                             -- incoming order leftover
                             amount_param = amount_param - trade_amount_var;
                         END IF;
-                        
+
                         IF book_order_volume_var = 0 THEN
                             DELETE FROM book_order
                             WHERE id = book_order_instance.id;
                         END IF;
-                        
+
                         IF side_param = 'SELL' THEN
                             PERFORM create_trade(
                                 instrument_instance,
@@ -385,8 +383,8 @@ BEGIN
 
                         -- activate crossing stop orders
                         trigger_loop_restart = activate_crossing_stop_orders(
-                            instrument_instance.id, 
-                            opposite_side_var::order_side, 
+                            instrument_instance.id,
+                            opposite_side_var::order_side,
                             trade_price_var
                         );
 
@@ -400,14 +398,14 @@ BEGIN
                         END IF;
                     END LOOP;
             END IF;
-            
+
             IF trigger_loop_restart IS TRUE THEN
                 trigger_loop_restart := FALSE;
-            ELSE 
-                EXIT matching_loop;  
+            ELSE
+                EXIT matching_loop;
             END IF;
     END LOOP;
-    
+
 
     -- in case there anything remains in the open amount, persist it in the order book
     IF amount_param > 0 THEN
@@ -429,21 +427,22 @@ BEGIN
             -- reserve required amount
             IF side_param = 'SELL' OR (side_param = 'BUY' and order_type_param = 'MARKET') THEN
                 -- release reserved  amount
-                UPDATE payment_account 
+                UPDATE payment_account
                 SET amount_reserved = amount_reserved - amount_param
                 WHERE id = payment_account_instance.id;
             ELSE
                 -- release reserved amount
                 UPDATE payment_account
-                SET amount_reserved = amount_reserved - banker_round(amount_param * price_param, base_currency_precision)
+                SET amount_reserved =
+                    amount_reserved - banker_round(amount_param * price_param, base_currency_precision)
                 WHERE id = payment_account_instance.id;
             END IF;
-        ELSE 
+        ELSE
             -- ensure an update order gets passed
             SELECT * FROM trade_order
             WHERE id = taker_trade_order_instance.id
             INTO taker_trade_order_instance;
-            
+
             -- save orderbook_order
             PERFORM create_book_order(
                 taker_trade_order_instance
@@ -452,7 +451,7 @@ BEGIN
     END IF;
 
     PERFORM process_crossing_stop_orders(instrument_instance.id, side_param::order_side, trade_price_var);
- 
+
     RETURN taker_trade_order_instance.pub_id;
 END;
 $$;
