@@ -24,7 +24,7 @@ const basePaymentAccountQuery = `
 	  ae.pub_id,
 	  pa.amount,
 	  pa.amount_reserved,
-	  pa.amount - pa.amount_reserved,      
+	  pa.amount - pa.amount_reserved,
 	  c.name
 
 	FROM payment_account AS pa
