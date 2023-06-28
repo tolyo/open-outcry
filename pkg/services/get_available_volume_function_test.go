@@ -2,91 +2,136 @@ package services
 
 import "open-outcry/pkg/models"
 
+var volumeCases = []MatchingServiceTestCase{
+	// Test for available volume on the sell side. Available volume should increase
+	// if the order is on the sell side and order limit price is below or equal the query limit price.
+	{steps: []TestStep{
+		{
+			expectedState: AppState{orderBookStates: OrderBook{
+				sellSide: []models.PriceLevel{
+					{Price: 10.00, Volume: 0.0}, {Price: 10.00, Volume: 20.0},
+				},
+				buySide: []models.PriceLevel{
+					{Price: 10.00, Volume: 0.0},
+				},
+			}},
+		},
+		{
+			orders: []models.TradeOrder{
+				{Side: models.Sell, Type: models.Limit, Price: 10, Amount: 100, TimeInForce: models.GTC},
+			},
+			expectedState: AppState{orderBookStates: OrderBook{
+				sellSide: []models.PriceLevel{
+					{Price: 10.00, Volume: 100.0},
+					{Price: 11.00, Volume: 100.0},
+					{Price: 9.00, Volume: 0.0},
+				},
+				buySide: []models.PriceLevel{
+					{Price: 10.00, Volume: 0.0},
+					{Price: 11.00, Volume: 0.0},
+					{Price: 9.00, Volume: 0.0},
+				},
+			}},
+		},
+
+		{
+			orders: []models.TradeOrder{
+				{Side: models.Sell, Type: models.Limit, Price: 10, Amount: 100, TimeInForce: models.GTC},
+			},
+			expectedState: AppState{orderBookStates: OrderBook{
+				sellSide: []models.PriceLevel{
+					{Price: 10.00, Volume: 200.0},
+					{Price: 11.00, Volume: 200.0},
+					{Price: 9.00, Volume: 0.0},
+				},
+				buySide: []models.PriceLevel{
+					{Price: 10.00, Volume: 0.0},
+					{Price: 11.00, Volume: 0.0},
+					{Price: 9.00, Volume: 0.0},
+				},
+			}},
+		},
+
+		{
+			orders: []models.TradeOrder{
+				{Side: models.Sell, Type: models.Limit, Price: 9, Amount: 100, TimeInForce: models.GTC},
+			},
+			expectedState: AppState{orderBookStates: OrderBook{
+				sellSide: []models.PriceLevel{
+					{Price: 10.00, Volume: 300.0},
+					{Price: 11.00, Volume: 300.0},
+					{Price: 9.00, Volume: 100.0},
+					{Price: 8.00, Volume: 0.0},
+				},
+				buySide: []models.PriceLevel{
+					{Price: 10.00, Volume: 0.0},
+					{Price: 11.00, Volume: 0.0},
+					{Price: 9.00, Volume: 0.0},
+					{Price: 8.00, Volume: 0.0},
+				},
+			}},
+		},
+	}},
+
+	{steps: []TestStep{
+		{
+			orders: []models.TradeOrder{
+				{Side: models.Buy, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
+			},
+			expectedState: AppState{orderBookStates: OrderBook{
+				sellSide: []models.PriceLevel{
+					{Price: 10.00, Volume: 0.0},
+					{Price: 11.00, Volume: 0.0},
+					{Price: 9.00, Volume: 0.0},
+				},
+				buySide: []models.PriceLevel{
+					{Price: 10.00, Volume: 10.0},
+					{Price: 11.00, Volume: 0.0},
+					{Price: 9.00, Volume: 10.0},
+				},
+			}},
+		},
+
+		{
+			orders: []models.TradeOrder{
+				{Side: models.Buy, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
+			},
+			expectedState: AppState{orderBookStates: OrderBook{
+				sellSide: []models.PriceLevel{
+					{Price: 10.00, Volume: 0.0},
+					{Price: 11.00, Volume: 0.0},
+					{Price: 9.00, Volume: 0.0},
+				},
+				buySide: []models.PriceLevel{
+					{Price: 10.00, Volume: 20.0},
+					{Price: 11.00, Volume: 0.0},
+					{Price: 9.00, Volume: 20.0},
+				},
+			}},
+		},
+
+		{
+			orders: []models.TradeOrder{
+				{Side: models.Buy, Type: models.Limit, Price: 9, Amount: 10, TimeInForce: models.GTC},
+			},
+			expectedState: AppState{orderBookStates: OrderBook{
+				sellSide: []models.PriceLevel{
+					{Price: 10.00, Volume: 0.0},
+					{Price: 11.00, Volume: 0.0},
+					{Price: 9.00, Volume: 0.0},
+				},
+				buySide: []models.PriceLevel{
+					{Price: 10.00, Volume: 20.0},
+					{Price: 10.001, Volume: 0.0},
+					{Price: 11.00, Volume: 0.0},
+					{Price: 9.00, Volume: 30.0},
+					{Price: 9.99, Volume: 20.0},
+				},
+			}},
+		},
+	}},
+}
+
 func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeEmpty() {
-	// expect return none
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Sell, 10.00))
-	// expect return none
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Buy, 10.00))
-}
-
-// Test for available volume on the sell side. Available volume should increase
-// if the order is on the sell side and order limit price is below or equal the query limit price.
-func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSingleOrder() {
-	// when given a new sell order
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 100, "GTC")
-
-	// then expect the available volume to increase
-	assert.Equal(100.00, GetAvailableLimitVolume(models.Sell, 10.00))
-	assert.Equal(100.0, GetAvailableLimitVolume(models.Sell, 11.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Sell, 9.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Buy, 10.00))
-}
-
-func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSideMultipleOrdersSamePrice() {
-	// when given a new sell order
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-
-	// then expect the available volume to increase
-	assert.Equal(200.0, GetAvailableLimitVolume(models.Sell, 10.00))
-	assert.Equal(200.0, GetAvailableLimitVolume(models.Sell, 11.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Sell, 9.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Buy, 10.00))
-
-}
-
-func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeSellSideMultipleOrdersDifferentPrices() {
-	// when given multiple new sell orders
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 9, 100, "GTC")
-
-	// then expect the available volume to increase
-	assert.Equal(200.0, GetAvailableLimitVolume(models.Sell, 10.00))
-	assert.Equal(100.0, GetAvailableLimitVolume(models.Sell, 9.00))
-	assert.Equal(200.0, GetAvailableLimitVolume(models.Sell, 11.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Sell, 8.99))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Buy, 10.00))
-}
-
-//	Test for available volume on the buy side. Available volume should increase
-//	if the order is on the buy side and order limit price is above
-//	or equal the query limit price.
-//
-// `
-func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeBuySideSingleOrder() {
-	// when given a new buy order
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
-
-	// then expect the available volume to increase
-	assert.Equal(10.0, GetAvailableLimitVolume(models.Buy, 10.00))
-	assert.Equal(10.0, GetAvailableLimitVolume(models.Buy, 9.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Buy, 11.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Sell, 10.00))
-}
-
-func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeBuySideMultipleOrdersSamePrice() {
-	// when given 2 new buy orders
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
-
-	// then expect the available volume to increase
-	assert.Equal(20.0, GetAvailableLimitVolume(models.Buy, 10.00))
-	assert.Equal(20.0, GetAvailableLimitVolume(models.Buy, 9.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Buy, 11.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Sell, 10.00))
-}
-
-func (assert *ServiceTestSuite) TestGetAvailableLimitVolumeBuySideMultipleOrdersDifferentPrices() {
-	// when given a new sell order
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 10, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 9, 10, "GTC")
-
-	// then expect the available volume to increase
-	assert.Equal(10.0, GetAvailableLimitVolume(models.Buy, 10.00))
-	assert.Equal(20.0, GetAvailableLimitVolume(models.Buy, 9.00))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Buy, 11.00))
-	assert.Equal(10.0, GetAvailableLimitVolume(models.Buy, 9.99))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Buy, 10.000001))
-	assert.Equal(0.0, GetAvailableLimitVolume(models.Sell, 10.00))
-
+	RunTestCases(assert, volumeCases)
 }

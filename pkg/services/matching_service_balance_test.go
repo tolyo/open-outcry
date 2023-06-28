@@ -6,11 +6,17 @@ import (
 	"reflect"
 )
 
+type OrderBook struct {
+	sellSide []models.PriceLevel
+	buySide  []models.PriceLevel
+}
+
 // AppState represents the expected payment account state for both test entities
 type AppState struct {
-	entity1    []models.PaymentAccount
-	entity2    []models.PaymentAccount
-	tradeCount int
+	entity1         []models.PaymentAccount
+	entity2         []models.PaymentAccount
+	tradeCount      int
+	orderBookStates OrderBook
 }
 
 // TestStep is a representation of initial and final account states with orders to be executed in between
@@ -148,7 +154,11 @@ var testcases = []MatchingServiceTestCase{
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitOrderReservedBalance() {
-	for _, td := range testcases {
+	RunTestCases(assert, testcases)
+}
+
+func RunTestCases(assert *ServiceTestSuite, cases []MatchingServiceTestCase) {
+	for _, td := range cases {
 		assert.TearDownTest()
 		assert.SetupTest()
 
@@ -165,6 +175,15 @@ func (assert *ServiceTestSuite) TestProcessLimitOrderReservedBalance() {
 				})
 				if fieldExists(expectedState, "tradeCount") {
 					assert.Equal(expectedState.tradeCount, GetTradeCount())
+				}
+
+				if fieldExists(expectedState, "orderBookStates") {
+					utils.Each(expectedState.orderBookStates.buySide, func(level models.PriceLevel) {
+						assert.Equal(level.Volume, GetAvailableLimitVolume(models.Buy, models.OrderPrice(level.Price)))
+					})
+					utils.Each(expectedState.orderBookStates.sellSide, func(level models.PriceLevel) {
+						assert.Equal(level.Volume, GetAvailableLimitVolume(models.Sell, models.OrderPrice(level.Price)))
+					})
 				}
 			}
 			// then:
