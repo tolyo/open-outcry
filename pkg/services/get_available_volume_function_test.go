@@ -9,7 +9,7 @@ var volumeCases = []MatchingServiceTestCase{
 		{
 			expectedState: AppState{orderBookStates: OrderBook{
 				sellSide: []models.PriceLevel{
-					{Price: 10.00, Volume: 0.0}, {Price: 10.00, Volume: 20.0},
+					{Price: 10.00, Volume: 0.0},
 				},
 				buySide: []models.PriceLevel{
 					{Price: 10.00, Volume: 0.0},

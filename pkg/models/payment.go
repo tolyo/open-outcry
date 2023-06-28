@@ -24,7 +24,7 @@ type PaymentExternaReferenceNumber string
 type Payment struct {
 	Id                      string
 	Number                  string
-	Type                    string
+	Type                    PaymentType
 	Amount                  string
 	Currency                CurrencyName
 	SenderAccountId         string
