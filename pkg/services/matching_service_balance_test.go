@@ -6,31 +6,6 @@ import (
 	"reflect"
 )
 
-type OrderBook struct {
-	sellSide []models.PriceLevel
-	buySide  []models.PriceLevel
-}
-
-// AppState represents the expected payment account state for both test entities
-type AppState struct {
-	entity1         []models.PaymentAccount
-	entity2         []models.PaymentAccount
-	tradeCount      int
-	orderBookStates OrderBook
-}
-
-// TestStep is a representation of initial and final account states with orders to be executed in between
-type TestStep struct {
-	initialState  AppState
-	orders        []models.TradeOrder
-	expectedState AppState
-}
-
-// MatchingServiceTestCase represents a series of steps that need to be taken within each test case
-type MatchingServiceTestCase struct {
-	steps []TestStep
-}
-
 var testcases = []MatchingServiceTestCase{
 	{steps: []TestStep{
 		// Expectations:
