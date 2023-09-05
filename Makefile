@@ -3,7 +3,7 @@
 .PHONY: help
 
 setup:
-	npm install
+	npm i
 
 build: ## Installs and compiles dependencies
 	go build -v ./...
@@ -41,6 +41,14 @@ build-api: ## Build OpenAPI
  		-t json \
  		-r openapi/openapi.yaml
 
+generate-api: ## Generate server bindings
+	npx @openapitools/openapi-generator-cli generate \
+		-i openapi/openapi.yaml \
+		-g go-server \
+		-o pkg/rest \
+		--additional-properties=packageName=api \
+		--additional-properties=sourceFolder=api
+
 help:
 	grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
-	| sed -n 's/^\(.*\): \(.*\)##\(.*\)/\1\3/p' 
+	| sed -n 's/^\(.*\): \(.*\)##\(.*\)/\1\3/p'

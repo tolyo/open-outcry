@@ -1,0 +1,211 @@
+openapi: 3.0.2
+info:
+  description: "# Introduction\nThis API is {cumented in **OpenAPI 3.0 format**.\n\
+    \nThis API the following operations:\n* Retrieve a list of available instruments\
+    \ \n* Retrieve a list of executed trades\n\n\n# Basics\n* API calls have to be\
+    \ secured with HTTPS.\n* All data has to be submitted UTF-8 encoded.\n* The reply\
+    \ is sent JSON encoded.\n"
+  title: OPEN OUTCRY API
+  version: 1.0.0
+servers:
+- url: https://your.public.url
+security:
+- basicAuth: []
+paths:
+  /currencies: {}
+  /instruments:
+    get:
+      description: Returns list of available instruments
+      operationId: getInstruments
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstrumentList'
+          description: instruments list
+        "500":
+          description: Error
+      summary: instrument list
+      tags:
+      - instruments
+  /order_books/{instrument_name}:
+    get:
+      description: Return an order book for an instrument
+      operationId: getOrderBook
+      parameters:
+      - in: path
+        name: instrument_name
+        required: true
+        schema:
+          $ref: '#/components/schemas/InstrumentName'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderBook'
+          description: order book
+        "500":
+          description: Error
+      summary: get order books
+      tags:
+      - order_books
+  /trades:
+    get:
+      description: Returns list of user's trades
+      operationId: getTrades
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeList'
+          description: trades list
+        "500":
+          description: Error
+      summary: trades list
+      tags:
+      - trades
+  /trade_orders:
+    get:
+      description: Returns list of user's active trade orders
+      operationId: getTradeOrders
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeOrderList'
+          description: trades orders list
+        "500":
+          description: Error
+      summary: trade order list
+      tags:
+      - trade_order
+components:
+  schemas:
+    InstrumentList:
+      items:
+        $ref: '#/components/schemas/Instrument'
+      type: array
+    Instrument:
+      example:
+        base_currency: USD
+        name: name
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        quote_currency: USD
+        enabled: true
+      properties:
+        id:
+          format: uuid
+          type: string
+        name:
+          description: "Ticker-like name of the instrument. For monetary instruments,\
+            \ a currency pair is used."
+          type: string
+        base_currency:
+          description: ISO 4217 Currency symbol
+          example: USD
+          type: string
+        quote_currency:
+          description: ISO 4217 Currency symbol
+          example: USD
+          type: string
+        enabled:
+          description: Availability for trading
+          type: boolean
+      type: object
+    InstrumentName:
+      description: "Ticker-like name of the instrument. For monetary instruments,\
+        \ a currency pair is used."
+      type: string
+    OrderBook:
+      example:
+        sell:
+        - volume: 6.027456183070403
+          price: 0.8008281904610115
+        - volume: 6.027456183070403
+          price: 0.8008281904610115
+        buy:
+        - volume: 6.027456183070403
+          price: 0.8008281904610115
+        - volume: 6.027456183070403
+          price: 0.8008281904610115
+      properties:
+        sell:
+          items:
+            $ref: '#/components/schemas/PriceVolume'
+          type: array
+        buy:
+          items:
+            $ref: '#/components/schemas/PriceVolume'
+          type: array
+      type: object
+    PriceVolume:
+      example:
+        volume: 6.027456183070403
+        price: 0.8008281904610115
+      properties:
+        price:
+          type: number
+        volume:
+          type: number
+      type: object
+    TradeList:
+      description: List of executed trades
+      items:
+        $ref: '#/components/schemas/Trade'
+      type: array
+    Trade:
+      description: Execute trade
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          format: uuid
+          type: string
+      type: object
+    TradeOrderList:
+      items:
+        $ref: '#/components/schemas/TradeOrder'
+      type: array
+    TradeOrder:
+      example:
+        side: ""
+        instrument: instrument
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        timeInForce: ""
+        status: ""
+      properties:
+        id:
+          format: uuid
+          type: string
+        instrument:
+          description: "Ticker-like name of the instrument. For monetary instruments,\
+            \ a currency pair is used."
+          type: string
+        side:
+          type: enum - SELL - BUY
+        timeInForce:
+          type: enum - GTC - IOC - FOK - GTD - GTT
+        status:
+          type: enum - OPEN - REJECTED - CANCELLED
+      type: object
+    TradeOrderSide:
+      type: enum - SELL - BUY
+    TradeOrderTimeInForce:
+      type: enum - GTC - IOC - FOK - GTD - GTT
+    TradeOrderStatus:
+      type: enum - OPEN - REJECTED - CANCELLED
+    Id:
+      format: uuid
+      type: string
+    CurrencyName:
+      description: ISO 4217 Currency symbol
+      example: USD
+      type: string
+  securitySchemes:
+    basicAuth:
+      scheme: basic
+      type: http

@@ -1,10 +1,7 @@
 {
     "private": true,
-    "scripts": {
-    },
-    "dependencies": {
-    },
+    "scripts": {},
     "devDependencies": {
-      "swagger-cli": "^4.0.4"
+        "@openapitools/openapi-generator-cli": "^2.7.0"
     }
 }
