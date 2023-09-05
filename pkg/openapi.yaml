@@ -28,12 +28,12 @@ components:
       scheme: basic
 paths:
   /currencies:
-    $ref: ./paths/currencies_list.yaml
+    $ref: ./rest/api/currencies_list.yaml
   /instruments:
-    $ref: paths/instruments_list.yaml
+    $ref: ./rest/api/instruments_list.yaml
   /order_books/{instrument_name}:
-    $ref: paths/order_books.yaml
+    $ref: ./rest/api/order_books.yaml
   /trades:
-    $ref: paths/trades_list.yaml
+    $ref: ./rest/api/trades_list.yaml
   /trade_orders:
-    $ref: paths/trade_orders_list.yaml
+    $ref: ./rest/api/trade_orders_list.yaml

@@ -39,15 +39,14 @@ db-rebuild: ## Reset the database
 	$(MAKE) db-downgrade
 	$(MAKE) db-update
 
-build-api: ## Build OpenAPI
-	node node_modules/swagger-cli/swagger-cli.js bundle --dereference \
- 		-o pkg/static/docs/api/openapi.json \
- 		-t json \
- 		-r openapi/openapi.yaml
+validate-api: ## Validate api
+	npx @openapitools/openapi-generator-cli validate \
+		-i pkg/openapi.yaml \
+		--recommend
 
-generate-api: ## Generate server bindings
+generate-api: ## Generate server bindings, move model files, fix imports
 	npx @openapitools/openapi-generator-cli generate \
-		-i openapi/openapi.yaml \
+		-i pkg/openapi.yaml \
 		-g go-server \
 		-o pkg/rest \
 		--additional-properties=packageName=api \
