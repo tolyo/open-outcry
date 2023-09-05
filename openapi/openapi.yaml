@@ -1,20 +1,19 @@
-openapi: 3.0.2
+openapi: 3.1.0
 info:
   description: |
     # Introduction
-    This API is {cumented in **OpenAPI 3.0 format**.
+    This API is documented in **OpenAPI 3.0 format**.
 
     This API the following operations:
-    * Retrieve a list of available instruments 
+    * Retrieve a list of available instruments
     * Retrieve a list of executed trades
-    
-    
+
     # Basics
     * API calls have to be secured with HTTPS.
     * All data has to be submitted UTF-8 encoded.
     * The reply is sent JSON encoded.
 
-    
+
   version: 1.0.0
   title: OPEN OUTCRY API
 
@@ -29,7 +28,7 @@ components:
       scheme: basic
 paths:
   /currencies:
-    $ref: paths/currencies_list.yaml
+    $ref: ./paths/currencies_list.yaml
   /instruments:
     $ref: paths/instruments_list.yaml
   /order_books/{instrument_name}:

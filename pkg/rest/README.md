@@ -1,12 +1,11 @@
 # Go API Server for api
 
 # Introduction
-This API is {cumented in **OpenAPI 3.0 format**.
+This API is documented in **OpenAPI 3.0 format**.
 
 This API the following operations:
-* Retrieve a list of available instruments 
+* Retrieve a list of available instruments
 * Retrieve a list of executed trades
-
 
 # Basics
 * API calls have to be secured with HTTPS.
@@ -25,7 +24,7 @@ To see how to make this your own, look here:
 [README](https://openapi-generator.tech)
 
 - API version: 1.0.0
-- Build date: 2023-09-05T19:06:15.448226+03:00[Europe/Riga]
+- Build date: 2023-09-05T22:09:37.812488+03:00[Europe/Riga]
 
 
 ### Running the server

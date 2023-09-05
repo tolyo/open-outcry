@@ -2,6 +2,7 @@ package db
 
 import (
 	"embed"
+
 	"github.com/pressly/goose/v3"
 )
 

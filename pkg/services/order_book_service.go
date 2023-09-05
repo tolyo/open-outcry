@@ -1,9 +1,10 @@
 package services
 
 import (
-	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type PriceVolume struct {

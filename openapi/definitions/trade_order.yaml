@@ -2,12 +2,14 @@ components:
   schemas:
 
     TradeOrderSide:
-      type: enum
+      type: string
+      enum:
         - SELL
         - BUY
 
     TradeOrderTimeInForce:
-      type: enum
+      type: string
+      enum:
         - GTC
         - IOC
         - FOK
@@ -15,7 +17,8 @@ components:
         - GTT
 
     TradeOrderStatus:
-      type: enum
+      type: string
+      enum:
         - OPEN
         - REJECTED
         - CANCELLED

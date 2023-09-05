@@ -1,17 +1,15 @@
-paths:
-  /:
-    get:
-      tags:
-        - currencies
-      summary: currencies list
-      description: Returns list of available currencies
-      operationId: getCurrencies
-      responses:
-        "200":
-          description: currencies list
-          content:
-            application/json:
-              schema:
-                $ref: ../definitions/currency.yaml#/components/schemas/CurrencyList
-        "500":
-          description: Error
+get:
+  tags:
+    - currencies
+  summary: currencies list
+  description: Returns list of available currencies
+  operationId: getCurrencies
+  responses:
+    "200":
+      description: currencies list
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/currency.yaml#/components/schemas/CurrencyList
+    "500":
+      description: Error

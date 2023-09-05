@@ -1,10 +1,17 @@
-openapi: 3.0.2
+openapi: 3.1.0
 info:
-  description: "# Introduction\nThis API is {cumented in **OpenAPI 3.0 format**.\n\
-    \nThis API the following operations:\n* Retrieve a list of available instruments\
-    \ \n* Retrieve a list of executed trades\n\n\n# Basics\n* API calls have to be\
-    \ secured with HTTPS.\n* All data has to be submitted UTF-8 encoded.\n* The reply\
-    \ is sent JSON encoded.\n"
+  description: |
+    # Introduction
+    This API is documented in **OpenAPI 3.0 format**.
+
+    This API the following operations:
+    * Retrieve a list of available instruments
+    * Retrieve a list of executed trades
+
+    # Basics
+    * API calls have to be secured with HTTPS.
+    * All data has to be submitted UTF-8 encoded.
+    * The reply is sent JSON encoded.
   title: OPEN OUTCRY API
   version: 1.0.0
 servers:
@@ -12,7 +19,31 @@ servers:
 security:
 - basicAuth: []
 paths:
-  /currencies: {}
+  /currencies:
+    get:
+      description: Returns list of available currencies
+      operationId: getCurrencies
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                description: List of currencies supported by app
+                items:
+                  description: Currency of payment account
+                  properties:
+                    name:
+                      description: ISO 4217 Currency symbol
+                      example: USD
+                    precision:
+                      description: Currency precision as number of decimal points
+                      example: 2
+          description: currencies list
+        "500":
+          description: Error
+      summary: currencies list
+      tags:
+      - currencies
   /instruments:
     get:
       description: Returns list of available instruments
@@ -22,7 +53,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InstrumentList'
+                items:
+                  properties:
+                    id:
+                      format: uuid
+                    name:
+                      description: "Ticker-like name of the instrument. For monetary\
+                        \ instruments, a currency pair is used."
+                    base_currency:
+                      description: ISO 4217 Currency symbol
+                      example: USD
+                    quote_currency:
+                      description: ISO 4217 Currency symbol
+                      example: USD
+                    enabled:
+                      description: Availability for trading
           description: instruments list
         "500":
           description: Error
@@ -34,17 +79,20 @@ paths:
       description: Return an order book for an instrument
       operationId: getOrderBook
       parameters:
-      - in: path
+      - explode: false
+        in: path
         name: instrument_name
         required: true
         schema:
-          $ref: '#/components/schemas/InstrumentName'
+          description: "Ticker-like name of the instrument. For monetary instruments,\
+            \ a currency pair is used."
+        style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderBook'
+                $ref: '#/components/schemas/getOrderBook_200_response'
           description: order book
         "500":
           description: Error
@@ -60,7 +108,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeList'
+                description: List of executed trades
+                items:
+                  description: Execute trade
+                  properties:
+                    id:
+                      format: uuid
           description: trades list
         "500":
           description: Error
@@ -76,7 +129,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeOrderList'
+                items:
+                  properties:
+                    id:
+                      format: uuid
+                    instrument:
+                      description: "Ticker-like name of the instrument. For monetary\
+                        \ instruments, a currency pair is used."
+                    side:
+                      enum:
+                      - SELL
+                      - BUY
+                    timeInForce:
+                      enum:
+                      - GTC
+                      - IOC
+                      - FOK
+                      - GTD
+                      - GTT
+                    status:
+                      enum:
+                      - OPEN
+                      - REJECTED
+                      - CANCELLED
           description: trades orders list
         "500":
           description: Error
@@ -85,126 +160,21 @@ paths:
       - trade_order
 components:
   schemas:
-    InstrumentList:
-      items:
-        $ref: '#/components/schemas/Instrument'
-      type: array
-    Instrument:
+    getOrderBook_200_response:
       example:
-        base_currency: USD
-        name: name
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        quote_currency: USD
-        enabled: true
-      properties:
-        id:
-          format: uuid
-          type: string
-        name:
-          description: "Ticker-like name of the instrument. For monetary instruments,\
-            \ a currency pair is used."
-          type: string
-        base_currency:
-          description: ISO 4217 Currency symbol
-          example: USD
-          type: string
-        quote_currency:
-          description: ISO 4217 Currency symbol
-          example: USD
-          type: string
-        enabled:
-          description: Availability for trading
-          type: boolean
-      type: object
-    InstrumentName:
-      description: "Ticker-like name of the instrument. For monetary instruments,\
-        \ a currency pair is used."
-      type: string
-    OrderBook:
-      example:
-        sell:
-        - volume: 6.027456183070403
-          price: 0.8008281904610115
-        - volume: 6.027456183070403
-          price: 0.8008281904610115
-        buy:
-        - volume: 6.027456183070403
-          price: 0.8008281904610115
-        - volume: 6.027456183070403
-          price: 0.8008281904610115
+        sell: ""
+        buy: ""
       properties:
         sell:
           items:
-            $ref: '#/components/schemas/PriceVolume'
-          type: array
+            properties:
+              price: {}
+              volume: {}
         buy:
           items:
-            $ref: '#/components/schemas/PriceVolume'
-          type: array
-      type: object
-    PriceVolume:
-      example:
-        volume: 6.027456183070403
-        price: 0.8008281904610115
-      properties:
-        price:
-          type: number
-        volume:
-          type: number
-      type: object
-    TradeList:
-      description: List of executed trades
-      items:
-        $ref: '#/components/schemas/Trade'
-      type: array
-    Trade:
-      description: Execute trade
-      example:
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-      properties:
-        id:
-          format: uuid
-          type: string
-      type: object
-    TradeOrderList:
-      items:
-        $ref: '#/components/schemas/TradeOrder'
-      type: array
-    TradeOrder:
-      example:
-        side: ""
-        instrument: instrument
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        timeInForce: ""
-        status: ""
-      properties:
-        id:
-          format: uuid
-          type: string
-        instrument:
-          description: "Ticker-like name of the instrument. For monetary instruments,\
-            \ a currency pair is used."
-          type: string
-        side:
-          type: enum - SELL - BUY
-        timeInForce:
-          type: enum - GTC - IOC - FOK - GTD - GTT
-        status:
-          type: enum - OPEN - REJECTED - CANCELLED
-      type: object
-    TradeOrderSide:
-      type: enum - SELL - BUY
-    TradeOrderTimeInForce:
-      type: enum - GTC - IOC - FOK - GTD - GTT
-    TradeOrderStatus:
-      type: enum - OPEN - REJECTED - CANCELLED
-    Id:
-      format: uuid
-      type: string
-    CurrencyName:
-      description: ISO 4217 Currency symbol
-      example: USD
-      type: string
+            properties:
+              price: {}
+              volume: {}
   securitySchemes:
     basicAuth:
       scheme: basic

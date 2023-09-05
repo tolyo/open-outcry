@@ -1,6 +1,7 @@
-Dockerfile
 README.md
 api/api.go
+api/api_currencies.go
+api/api_currencies_service.go
 api/api_instruments.go
 api/api_instruments_service.go
 api/api_order_books.go
@@ -13,12 +14,5 @@ api/error.go
 api/helpers.go
 api/impl.go
 api/logger.go
-api/model_instrument.go
-api/model_order_book.go
-api/model_price_volume.go
-api/model_trade.go
-api/model_trade_order.go
+api/model_get_order_book_200_response.go
 api/openapi.yaml
-api/routers.go
-go.mod
-main.go

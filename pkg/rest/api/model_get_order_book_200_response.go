@@ -9,17 +9,18 @@
 
 package api
 
-// Trade - Execute trade
-type Trade struct {
-	Id string `json:"id,omitempty"`
+type GetOrderBook200Response struct {
+	Sell *interface{} `json:"sell,omitempty"`
+
+	Buy *interface{} `json:"buy,omitempty"`
 }
 
-// AssertTradeRequired checks if the required fields are not zero-ed
-func AssertTradeRequired(obj Trade) error {
+// AssertGetOrderBook200ResponseRequired checks if the required fields are not zero-ed
+func AssertGetOrderBook200ResponseRequired(obj GetOrderBook200Response) error {
 	return nil
 }
 
-// AssertTradeConstraints checks if the values respects the defined constraints
-func AssertTradeConstraints(obj Trade) error {
+// AssertGetOrderBook200ResponseConstraints checks if the values respects the defined constraints
+func AssertGetOrderBook200ResponseConstraints(obj GetOrderBook200Response) error {
 	return nil
 }
