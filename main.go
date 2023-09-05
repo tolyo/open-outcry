@@ -17,7 +17,12 @@ var fees string
 
 func main() {
 
-	conf.LoadConfig("DEV")
+	envVarValue := os.Getenv("ENV")
+	if envVarValue == "" {
+		envVarValue = "DEV"
+	}
+
+	conf.LoadConfig(envVarValue)
 	log.SetOutput(os.Stdout)
 	db.SetupInstance()
 

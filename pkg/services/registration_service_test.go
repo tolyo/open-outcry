@@ -1,9 +1,10 @@
 package services
 
 import (
-	"github.com/google/uuid"
 	"open-outcry/pkg/models"
 	"open-outcry/pkg/utils"
+
+	"github.com/google/uuid"
 )
 
 func (assert *ServiceTestSuite) TestCreateAppEntity() {
