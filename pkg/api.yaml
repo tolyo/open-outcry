@@ -12,189 +12,203 @@ info:
     * API calls have to be secured with HTTPS.
     * All data has to be submitted UTF-8 encoded.
     * The reply is sent JSON encoded.
-  title: OPEN OUTCRY API
   version: 1.0.0
+  title: OPEN OUTCRY API
 servers:
-- url: https://your.public.url
+  - url: https://your.public.url
 security:
-- basicAuth: []
+  - basicAuth: []
 paths:
   /currencies:
     get:
+      tags:
+        - currencies
+      summary: currencies list
       description: Returns list of available currencies
       operationId: getCurrencies
       responses:
-        "200":
+        '200':
+          description: currencies list
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CurrencyList'
-          description: currencies list
-        "500":
+        '500':
           description: Error
-      summary: currencies list
-      tags:
-      - currencies
   /instruments:
     get:
+      tags:
+        - instruments
+      summary: instrument list
       description: Returns list of available instruments
       operationId: getInstruments
       responses:
-        "200":
+        '200':
+          description: instruments list
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/InstrumentList'
-          description: instruments list
-        "500":
+        '500':
           description: Error
-      summary: instrument list
-      tags:
-      - instruments
   /order_books/{instrument_name}:
     get:
+      tags:
+        - order_books
+      summary: get order books
       description: Return an order book for an instrument
       operationId: getOrderBook
       parameters:
-      - explode: false
-        in: path
-        name: instrument_name
-        required: true
-        schema:
-          $ref: '#/components/schemas/InstrumentName'
-        style: simple
+        - in: path
+          name: instrument_name
+          required: true
+          schema:
+            $ref: '#/components/schemas/InstrumentName'
       responses:
-        "200":
+        '200':
+          description: order book
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderBook'
-          description: order book
-        "500":
+        '500':
           description: Error
-      summary: get order books
-      tags:
-      - order_books
   /trades:
     get:
+      tags:
+        - trades
+      summary: trades list
       description: Returns list of user's trades
       operationId: getTrades
       responses:
-        "200":
+        '200':
+          description: trades list
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TradeList'
-          description: trades list
-        "500":
+        '500':
           description: Error
-      summary: trades list
-      tags:
-      - trades
   /trade_orders:
     get:
+      tags:
+        - trade_order
+      summary: trade order list
       description: Returns list of user's active trade orders
       operationId: getTradeOrders
       responses:
-        "200":
+        '200':
+          description: trades orders list
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TradeOrderList'
-          description: trades orders list
-        "500":
+        '500':
           description: Error
-      summary: trade order list
-      tags:
-      - trade_order
 components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
   schemas:
     CurrencyName:
+      type: string
       description: ISO 4217 Currency symbol
       example: USD
     Currency:
+      type: object
       description: Currency of payment account
       properties:
         name:
-          description: ISO 4217 Currency symbol
-          example: USD
+          $ref: '#/components/schemas/CurrencyName'
         precision:
+          type: integer
           description: Currency precision as number of decimal points
           example: 2
     CurrencyList:
+      type: array
       description: List of currencies supported by app
       items:
         $ref: '#/components/schemas/Currency'
     Id:
+      type: string
       format: uuid
     InstrumentName:
-      description: "Ticker-like name of the instrument. For monetary instruments,\
-        \ a currency pair is used."
+      type: string
+      description: Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
     Instrument:
+      type: object
       properties:
         id:
-          format: uuid
+          $ref: '#/components/schemas/Id'
         name:
-          description: "Ticker-like name of the instrument. For monetary instruments,\
-            \ a currency pair is used."
+          $ref: '#/components/schemas/InstrumentName'
         base_currency:
-          description: ISO 4217 Currency symbol
-          example: USD
+          $ref: '#/components/schemas/CurrencyName'
         quote_currency:
-          description: ISO 4217 Currency symbol
-          example: USD
+          $ref: '#/components/schemas/CurrencyName'
         enabled:
+          type: boolean
           description: Availability for trading
     InstrumentList:
+      type: array
       items:
         $ref: '#/components/schemas/Instrument'
     PriceVolume:
+      type: object
       properties:
-        price: {}
-        volume: {}
+        price:
+          type: number
+        volume:
+          type: number
     OrderBook:
-      example:
-        sell: ""
-        buy: ""
+      type: object
       properties:
         sell:
+          type: array
           items:
             $ref: '#/components/schemas/PriceVolume'
         buy:
+          type: array
           items:
             $ref: '#/components/schemas/PriceVolume'
     Trade:
+      type: object
       description: Execute trade
       properties:
         id:
-          format: uuid
+          $ref: '#/components/schemas/Id'
     TradeList:
+      type: array
       description: List of executed trades
       items:
         $ref: '#/components/schemas/Trade'
     TradeOrderSide:
+      type: string
       enum:
-      - SELL
-      - BUY
+        - SELL
+        - BUY
     TradeOrderTimeInForce:
+      type: string
       enum:
-      - GTC
-      - IOC
-      - FOK
-      - GTD
-      - GTT
+        - GTC
+        - IOC
+        - FOK
+        - GTD
+        - GTT
     TradeOrderStatus:
+      type: string
       enum:
-      - OPEN
-      - REJECTED
-      - CANCELLED
+        - OPEN
+        - REJECTED
+        - CANCELLED
     TradeOrder:
+      type: object
       properties:
         id:
-          format: uuid
+          $ref: '#/components/schemas/Id'
         instrument:
-          description: "Ticker-like name of the instrument. For monetary instruments,\
-            \ a currency pair is used."
+          $ref: '#/components/schemas/InstrumentName'
         side:
           $ref: '#/components/schemas/TradeOrderSide'
         timeInForce:
@@ -202,9 +216,6 @@ components:
         status:
           $ref: '#/components/schemas/TradeOrderStatus'
     TradeOrderList:
+      type: array
       items:
         $ref: '#/components/schemas/TradeOrder'
-  securitySchemes:
-    basicAuth:
-      scheme: basic
-      type: http

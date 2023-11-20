@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.20 AS build
+FROM golang:1.21 AS build
 
 # Set the working directory
 WORKDIR /app

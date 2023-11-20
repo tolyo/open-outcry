@@ -29,30 +29,39 @@ DBDSN:="host=$(POSTGRES_HOST) user=$(POSTGRES_USER) password=$(POSTGRES_PASSWORD
 MIGRATE_OPTIONS=-allow-missing -dir="./pkg/db/migrations"
 
 db-update: ## Migrate down on database
-	goose -v $(MIGRATE_OPTIONS) postgres $(DBDSN) up
+	@goose -v $(MIGRATE_OPTIONS) postgres $(DBDSN) up
 
 db-downgrade: ## Migrate up on database
-	echo "$(MIGRATE_OPTIONS)"
-	goose -v $(MIGRATE_OPTIONS) postgres $(DBDSN) reset
+	@goose -v $(MIGRATE_OPTIONS) postgres $(DBDSN) reset
 
 db-rebuild: ## Reset the database
-	$(MAKE) db-downgrade
-	$(MAKE) db-update
+	@make db-downgrade
+	@make db-update
 
 validate-api: ## Validate api
 	npx @openapitools/openapi-generator-cli validate \
 		-i pkg/openapi.yaml \
 		--recommend
 
+bundle-api:
+	@npx @redocly/cli bundle \
+		pkg/api/openapi.yaml \
+		--output ./pkg/api.yaml \
+
+validate-api:
+	@npx @redocly/cli lint \
+		./pkg/api.yaml \
+		--format=checkstyle
+
 generate-api: ## Generate server bindings, move model files, fix imports
 	npx @openapitools/openapi-generator-cli generate \
-		-i pkg/openapi.yaml \
+		-i pkg/api.yaml \
 		-g go-server \
 		-o pkg/rest \
 		--additional-properties=packageName=api \
 		--additional-properties=sourceFolder=api \
 		--additional-properties=outputAsLibrary=true
-	$(MAKE) lint
+	@make lint
 
 help:
 	grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \

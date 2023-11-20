@@ -391,5 +391,4 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
-	//  }
 }

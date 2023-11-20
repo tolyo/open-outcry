@@ -10,6 +10,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../../models/instrument.yaml#/components/schemas/InstrumentList
+            $ref: ../models/instrument.yaml#/components/schemas/InstrumentList
     "500":
       description: Error
