@@ -19,18 +19,18 @@ type PaymentAmount decimal.Decimal
 
 type PaymentDetails string
 
-type PaymentExternaReferenceNumber string
+type PaymentExternalReferenceNumber string
 
 type Payment struct {
 	Id                      string
 	Number                  string
 	Type                    PaymentType
-	Amount                  string
+	Amount                  PaymentAmount
 	Currency                CurrencyName
-	SenderAccountId         string
-	BeneficiaryAccountId    string
-	Details                 string
-	ExternalReferenceNumber string
+	SenderAccountId         PaymentAccountId
+	BeneficiaryAccountId    PaymentAccountId
+	Details                 PaymentDetails
+	ExternalReferenceNumber PaymentExternalReferenceNumber
 	Status                  string
 	DebitBalanceAmount      string
 	CreditBalanceAmount     string

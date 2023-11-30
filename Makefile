@@ -13,6 +13,7 @@ build: ## Installs and compiles dependencies
 	go build -v ./...
 
 run: ## Start dev mode
+	make db-up
 	go run main.go
 
 test:
@@ -28,15 +29,15 @@ include ./pkg/conf/dev.env
 DBDSN:="host=$(POSTGRES_HOST) user=$(POSTGRES_USER) password=$(POSTGRES_PASSWORD) dbname=$(POSTGRES_DB) port=$(POSTGRES_PORT) sslmode=disable"
 MIGRATE_OPTIONS=-allow-missing -dir="./pkg/db/migrations"
 
-db-update: ## Migrate down on database
-	@goose -v $(MIGRATE_OPTIONS) postgres $(DBDSN) up
+db-up: ## Migrate down on database
+	goose -v $(MIGRATE_OPTIONS) postgres $(DBDSN) up
 
-db-downgrade: ## Migrate up on database
-	@goose -v $(MIGRATE_OPTIONS) postgres $(DBDSN) reset
+db-down: ## Migrate up on database
+	goose -v $(MIGRATE_OPTIONS) postgres $(DBDSN) reset
 
 db-rebuild: ## Reset the database
-	@make db-downgrade
-	@make db-update
+	make db-down
+	make db-up
 
 validate-api: ## Validate api
 	npx @openapitools/openapi-generator-cli validate \
@@ -44,12 +45,12 @@ validate-api: ## Validate api
 		--recommend
 
 bundle-api:
-	@npx @redocly/cli bundle \
+	npx @redocly/cli bundle \
 		pkg/api/openapi.yaml \
 		--output ./pkg/api.yaml \
 
 validate-api:
-	@npx @redocly/cli lint \
+	npx @redocly/cli lint \
 		./pkg/api.yaml \
 		--format=checkstyle
 
@@ -61,7 +62,7 @@ generate-api: ## Generate server bindings, move model files, fix imports
 		--additional-properties=packageName=api \
 		--additional-properties=sourceFolder=api \
 		--additional-properties=outputAsLibrary=true
-	@make lint
+	make lint
 
 help:
 	grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \

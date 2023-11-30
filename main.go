@@ -26,10 +26,6 @@ func main() {
 	log.SetOutput(os.Stdout)
 	db.SetupInstance()
 
-	if err := db.MigrateUp(); err != nil {
-		log.Fatal(err)
-	}
-
 	if conf.Get().UpdateFees {
 		models.LoadFees(fees)
 	}
