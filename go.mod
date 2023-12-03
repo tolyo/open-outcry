@@ -12,6 +12,8 @@ require (
 	github.com/stretchr/testify v1.8.4
 )
 
+require github.com/jmoiron/sqlx v1.3.5 // indirect
+
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect

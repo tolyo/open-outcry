@@ -1,19 +1,20 @@
 package db
 
 import (
-	"database/sql"
 	"open-outcry/pkg/conf"
+
+	"github.com/jmoiron/sqlx"
 
 	_ "github.com/lib/pq"
 	log "github.com/sirupsen/logrus"
 )
 
-var db *sql.DB
+var db *sqlx.DB
 
 // SetupInstance - Initializes the database
 func SetupInstance() error {
 	var err error
-	db, err = sql.Open("postgres", conf.Get().DBDsn)
+	db, err = sqlx.Connect("postgres", conf.Get().DBDsn)
 	if err != nil {
 		return err
 	}
@@ -21,7 +22,7 @@ func SetupInstance() error {
 }
 
 // Instance gets database instance, initialized via SetupInstance func
-func Instance() *sql.DB {
+func Instance() *sqlx.DB {
 	return db
 }
 
