@@ -58,3 +58,9 @@ func AssertRecurseValueRequired[T any](value reflect.Value, callback func(T) err
 	}
 	return nil
 }
+
+// NewInterface creates a new empty interface with a given value.
+func NewInterface(value interface{}) *interface{} {
+	v := value
+	return &v
+}

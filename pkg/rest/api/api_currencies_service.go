@@ -11,8 +11,8 @@ package api
 
 import (
 	"context"
-	"errors"
 	"net/http"
+	"open-outcry/pkg/models"
 )
 
 // CurrenciesAPIService is a service that implements the logic for the CurrenciesAPIServicer
@@ -28,14 +28,15 @@ func NewCurrenciesAPIService() CurrenciesAPIServicer {
 
 // GetCurrencies - currencies list
 func (s *CurrenciesAPIService) GetCurrencies(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetCurrencies with the required logic for this service method.
-	// Add api_currencies_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+	currencies := models.GetCurrencies()
+	res := make([]Currency, 0)
+	for _, v := range currencies {
+		cur := Currency{
+			Name:      NewInterface(v.Name),
+			Precision: NewInterface(v.Precision),
+		}
+		res = append(res, cur)
+	}
 
-	// TODO: Uncomment the next line to return response Response(200, interface{}{}) or use other options such as http.Ok ...
-	// return Response(200, interface{}{}), nil
-
-	// TODO: Uncomment the next line to return response Response(500, {}) or use other options such as http.Ok ...
-	// return Response(500, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetCurrencies method not implemented")
+	return Response(http.StatusOK, res), nil
 }

@@ -15,7 +15,7 @@ info:
   version: 1.0.0
   title: OPEN OUTCRY API
 servers:
-  - url: https://your.public.url
+  - url: http://localhost:4000
 security:
   - basicAuth: []
 paths:

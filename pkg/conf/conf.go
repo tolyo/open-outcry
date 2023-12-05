@@ -34,6 +34,7 @@ var mapper = map[EnvName]string{
 type configuration struct {
 	DBDsn      string
 	UpdateFees bool
+	RestPort   string
 }
 
 var config *configuration
@@ -67,6 +68,7 @@ func LoadConfig(conf string) (*configuration, error) {
 			viper.GetString("POSTGRES_PORT"),
 		),
 		UpdateFees: viper.GetBool("UPDATE_FEES"),
+		RestPort:   viper.GetString("REST_PORT"),
 	}
 
 	return config, nil
