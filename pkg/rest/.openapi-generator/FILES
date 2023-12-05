@@ -1,7 +1,6 @@
 README.md
 api/api.go
 api/api_currencies.go
-api/api_currencies_service.go
 api/api_instruments.go
 api/api_instruments_service.go
 api/api_order_books.go
@@ -11,7 +10,6 @@ api/api_trade_order_service.go
 api/api_trades.go
 api/api_trades_service.go
 api/error.go
-api/helpers.go
 api/impl.go
 api/logger.go
 api/model_currency.go
