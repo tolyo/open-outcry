@@ -2,6 +2,7 @@ package db
 
 import (
 	"open-outcry/pkg/conf"
+	"reflect"
 
 	"github.com/jmoiron/sqlx"
 
@@ -26,23 +27,43 @@ func Instance() *sqlx.DB {
 	return db
 }
 
-func QueryVal[T comparable](query string, args ...any) T {
+func QueryVal[T interface{}](query string, args ...any) T {
 	var val T
-	db.QueryRow(query, args...).Scan(&val)
+	kind := reflect.ValueOf(val)
+	if kind.Kind() == reflect.Struct {
+		err := db.Get(val, query, args...)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		db.QueryRow(query, args...).Scan(&val)
+	}
 	return val
 }
 
-func QueryList[T comparable](query string, args ...any) []T {
-	rows, err := Instance().Query(query, args...)
+func QueryList[T interface{}](query string, args ...any) []T {
+	var val T
+	kind := reflect.ValueOf(val)
+	if kind.Kind() == reflect.Struct {
+		res := make([]T, 0)
+		err := db.Select(&res, query, args...)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return res
+	} else {
+		res := make([]T, 0)
 
-	if err != nil {
-		log.Fatal(err)
+		rows, err := Instance().Query(query, args...)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for rows.Next() {
+			var item T
+			rows.Scan(&item)
+			res = append(res, item)
+		}
+		return res
 	}
-	res := make([]T, 0)
-	for rows.Next() {
-		var item T
-		rows.Scan(&item)
-		res = append(res, item)
-	}
-	return res
+
 }

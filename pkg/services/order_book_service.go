@@ -3,8 +3,6 @@ package services
 import (
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type PriceVolume struct {
@@ -31,7 +29,7 @@ func GetVolumes(instrumentName models.InstrumentName, side models.OrderSide) []P
 	case models.Buy:
 		orderBy = "DESC"
 	}
-	rows, err := db.Instance().Query(`
+	res := db.QueryList[PriceVolume](`
 		SELECT price, volume
 		FROM price_level
 		WHERE side = $2
@@ -41,15 +39,5 @@ func GetVolumes(instrumentName models.InstrumentName, side models.OrderSide) []P
 		instrumentName,
 		side,
 	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	res := make([]PriceVolume, 0)
-	for rows.Next() {
-		var priceVolume PriceVolume
-		rows.Scan(&priceVolume.Price, &priceVolume.Volume)
-		res = append(res, priceVolume)
-	}
 	return res
 }
