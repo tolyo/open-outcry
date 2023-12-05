@@ -17,7 +17,7 @@ func TestModelSuite(t *testing.T) {
 	suite.Run(t, &ModelsTestSuite{})
 }
 
-func (suite *ModelsTestSuite) SetupTest() {
+func (assert *ModelsTestSuite) SetupTest() {
 	err := db.SetupInstance()
 	if err != nil {
 		panic(err)
@@ -25,7 +25,7 @@ func (suite *ModelsTestSuite) SetupTest() {
 	db.MigrateUp()
 }
 
-func (suite *ModelsTestSuite) TearDownTest() {
+func (assert *ModelsTestSuite) TearDownTest() {
 	db.MigrateDown()
 	db.Instance().Close()
 }
