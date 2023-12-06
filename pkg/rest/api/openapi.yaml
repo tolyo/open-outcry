@@ -16,8 +16,13 @@ info:
   version: 1.0.0
 servers:
 - url: http://localhost:4000
-security:
-- basicAuth: []
+tags:
+- description: User facing resources for management by a specific user of their accounts
+  name: user
+- description: Public facing resources pertaining to exchange in general
+  name: public
+- description: Admin facing resources for exchange management
+  name: admin
 paths:
   /currencies:
     get:
@@ -29,12 +34,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CurrencyList'
-          description: currencies list
-        "500":
+          description: Success
+        "404":
           description: Error
-      summary: currencies list
+      summary: Currencies list
       tags:
-      - currencies
+      - public
+  /fxinstruments:
+    get:
+      description: Returns list of available fx instruments
+      operationId: getFxInstruments
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FxInstrumentList'
+          description: Success
+        "404":
+          description: Not found
+      summary: Fx instrument list
+      tags:
+      - public
   /instruments:
     get:
       description: Returns list of available instruments
@@ -45,15 +66,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InstrumentList'
-          description: instruments list
-        "500":
-          description: Error
-      summary: instrument list
+          description: Success
+        "404":
+          description: Not found
+      summary: Instrument list
       tags:
-      - instruments
+      - public
   /order_books/{instrument_name}:
     get:
-      description: Return an order book for an instrument
+      description: Returns an order book for an specific instrument
       operationId: getOrderBook
       parameters:
       - explode: false
@@ -70,44 +91,223 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrderBook'
           description: order book
-        "500":
-          description: Error
-      summary: get order books
+        "404":
+          description: Order book not found for instrument
+      summary: Get order book
       tags:
-      - order_books
-  /trades:
+      - public
+  /book_orders/{trading_account_id}:
     get:
-      description: Returns list of user's trades
-      operationId: getTrades
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TradeList'
-          description: trades list
-        "500":
-          description: Error
-      summary: trades list
-      tags:
-      - trades
-  /trade_orders:
-    get:
-      description: Returns list of user's active trade orders
-      operationId: getTradeOrders
+      description: Returns list of user's trade orders currently on the order book
+      operationId: getBookOrders
+      parameters:
+      - $ref: '#/components/parameters/TradingAccountId'
       responses:
         "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TradeOrderList'
-          description: trades orders list
-        "500":
+          description: Success
+        "404":
           description: Error
-      summary: trade order list
+      summary: Get book orders
       tags:
-      - trade_order
+      - user
+  /payment-accounts/{app_entity_id}:
+    get:
+      description: Returns list of user's payment accounts
+      operationId: getPaymentAccounts
+      parameters:
+      - explode: false
+        in: path
+        name: app_entity_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAccountList'
+          description: Success
+        "404":
+          description: Error
+      summary: Get payment accounts
+      tags:
+      - user
+  /trades/{trading_account_id}/id/{trade_id}:
+    get:
+      description: Returns a trade by id
+      operationId: getTradeById
+      parameters:
+      - $ref: '#/components/parameters/TradingAccountId'
+      - $ref: '#/components/parameters/TradeId'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trade'
+          description: Success
+        "404":
+          description: Error
+      summary: Get trade
+      tags:
+      - user
+  /trades/{trading_account_id}:
+    get:
+      description: Returns list of entity's trades
+      operationId: getTrades
+      parameters:
+      - $ref: '#/components/parameters/TradingAccountId'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeList'
+          description: Success
+        "404":
+          description: Error
+      summary: Trades list
+      tags:
+      - user
+  /trade_orders/{trading_account_id}:
+    get:
+      description: Returns list of user's trade orders
+      operationId: getTradeOrders
+      parameters:
+      - $ref: '#/components/parameters/TradingAccountId'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeOrderList'
+          description: Success
+        "404":
+          description: Error
+      summary: Get trade orders
+      tags:
+      - user
+    post:
+      description: Creates a trade order
+      operationId: createTrade
+      parameters:
+      - $ref: '#/components/parameters/TradingAccountId'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeOrder'
+          description: Success
+        "404":
+          description: Error
+      summary: Create trade order
+      tags:
+      - users
+  /apps/{app_entity_id}:
+    get:
+      description: Return registered user by external id
+      operationId: getAppEntity
+      parameters:
+      - explode: false
+        in: path
+        name: app_entity_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppEntity'
+          description: Success
+        "404":
+          description: Error
+      summary: Get application entity
+      tags:
+      - admin
+  /apps:
+    get:
+      description: Return a list of registered users
+      operationId: getAppEntities
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppEntityList'
+          description: Success
+        "404":
+          description: Error
+      summary: Get application entities
+      tags:
+      - admin
+  /apps/payments/{payment_id}:
+    post:
+      description: Returns payment information
+      operationId: getAdminPaymentById
+      parameters:
+      - explode: false
+        in: path
+        name: payment_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: Success
+        "404":
+          description: Error
+      summary: Get payment
+      tags:
+      - admin
+  /apps/payments:
+    post:
+      description: Creates a payment on user's account
+      operationId: createAdminPayment
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: Success
+        "404":
+          description: Error
+      summary: Create admin payment
+      tags:
+      - admin
 components:
+  parameters:
+    TradingAccountId:
+      explode: false
+      in: path
+      name: trading_account_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
+      style: simple
+    TradeId:
+      explode: false
+      in: path
+      name: trade_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
+      style: simple
   schemas:
     CurrencyName:
       description: ISO 4217 Currency symbol
@@ -123,35 +323,71 @@ components:
           example: 2
     CurrencyList:
       description: List of currencies supported by app
-      items:
-        $ref: '#/components/schemas/Currency'
+      example:
+        data:
+        - name: USD
+          precision: 2
+        - name: BTC
+          precision: 5
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Currency'
     Id:
+      example: 29b6e916-0d74-41c3-b004-eb8373bca606
       format: uuid
     InstrumentName:
       description: "Ticker-like name of the instrument. For monetary instruments,\
         \ a currency pair is used."
-    Instrument:
+      example: BTC-EUR
+    InstrumentAvailability:
+      description: Availability for trading
+      example: true
+    FxInstrument:
       properties:
         id:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
         name:
           description: "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
-        base_currency:
-          description: ISO 4217 Currency symbol
-          example: USD
+          example: BTC-EUR
         quote_currency:
           description: ISO 4217 Currency symbol
           example: USD
         enabled:
           description: Availability for trading
+          example: true
+        base_currency:
+          description: ISO 4217 Currency symbol
+          example: USD
+    FxInstrumentList:
+      items:
+        $ref: '#/components/schemas/FxInstrument'
+    Instrument:
+      properties:
+        id:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
+          format: uuid
+        name:
+          description: "Ticker-like name of the instrument. For monetary instruments,\
+            \ a currency pair is used."
+          example: BTC-EUR
+        quote_currency:
+          description: ISO 4217 Currency symbol
+          example: USD
+        enabled:
+          description: Availability for trading
+          example: true
     InstrumentList:
       items:
         $ref: '#/components/schemas/Instrument'
     PriceVolume:
       properties:
-        price: {}
-        volume: {}
+        price:
+          example: 120
+        volume:
+          example: 80
     OrderBook:
       example:
         sell: ""
@@ -163,15 +399,6 @@ components:
         buy:
           items:
             $ref: '#/components/schemas/PriceVolume'
-    Trade:
-      description: Execute trade
-      properties:
-        id:
-          format: uuid
-    TradeList:
-      description: List of executed trades
-      items:
-        $ref: '#/components/schemas/Trade'
     TradeOrderSide:
       enum:
       - SELL
@@ -189,12 +416,20 @@ components:
       - REJECTED
       - CANCELLED
     TradeOrder:
+      example:
+        side: null
+        instrument: BTC-EUR
+        id: 29b6e916-0d74-41c3-b004-eb8373bca606
+        timeInForce: null
+        status: null
       properties:
         id:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
         instrument:
           description: "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
+          example: BTC-EUR
         side:
           $ref: '#/components/schemas/TradeOrderSide'
         timeInForce:
@@ -204,7 +439,129 @@ components:
     TradeOrderList:
       items:
         $ref: '#/components/schemas/TradeOrder'
-  securitySchemes:
-    basicAuth:
-      scheme: basic
-      type: http
+    MoneyAmount:
+      example: "100.50"
+      format: decimal
+    PaymentAccount:
+      description: Payment account available to user
+      properties:
+        id:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
+          format: uuid
+        currency:
+          description: ISO 4217 Currency symbol
+          example: USD
+        amount:
+          example: "100.50"
+          format: decimal
+        amountReserved:
+          example: "100.50"
+          format: decimal
+        amountAvailable:
+          example: "100.50"
+          format: decimal
+    PaymentAccountList:
+      description: List of payment accounts available to user
+      example:
+        data:
+        - name: USD
+          precision: 2
+        - name: BTC
+          precision: 5
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PaymentAccount'
+    Trade:
+      description: Executed trade
+      example:
+        id: 29b6e916-0d74-41c3-b004-eb8373bca606
+      properties:
+        id:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
+          format: uuid
+    TradeList:
+      description: List of executed trades
+      items:
+        $ref: '#/components/schemas/Trade'
+    AppEntityExternalId:
+      description: External id
+    AppEntity:
+      description: Registered user
+      example:
+        external_id: ""
+        id: 29b6e916-0d74-41c3-b004-eb8373bca606
+      properties:
+        id:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
+          format: uuid
+        external_id:
+          description: External id
+    AppEntityList:
+      description: List of registered users
+      items:
+        $ref: '#/components/schemas/AppEntity'
+    PaymentType:
+      enum:
+      - DEPOSIT
+      - WITHDRAWAL
+      - TRANSFER
+      - INSTRUMENT_BUY
+      - INSTRUMENT_SELL
+      - CHARGE
+    PaymentDetails:
+      example: Bank deposit Bank REF123456
+    PaymentExternalReferenceNumber:
+      example: REF123456
+    Payment:
+      example:
+        amount: "100.50"
+        debitBalanceAmount: "100.50"
+        creditBalanceAmount: "100.50"
+        currency: USD
+        beneficiaryAccountId: 29b6e916-0d74-41c3-b004-eb8373bca606
+        details: Bank deposit Bank REF123456
+        externalReferenceNumber: REF123456
+        id: 29b6e916-0d74-41c3-b004-eb8373bca606
+        type: null
+        senderAccountId: 29b6e916-0d74-41c3-b004-eb8373bca606
+        status: ""
+      properties:
+        id:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
+          format: uuid
+        type:
+          $ref: '#/components/schemas/PaymentType'
+        amount:
+          example: "100.50"
+          format: decimal
+        currency:
+          description: ISO 4217 Currency symbol
+          example: USD
+        senderAccountId:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
+          format: uuid
+        beneficiaryAccountId:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
+          format: uuid
+        details:
+          example: Bank deposit Bank REF123456
+        externalReferenceNumber:
+          example: REF123456
+        status: {}
+        debitBalanceAmount:
+          example: "100.50"
+          format: decimal
+        creditBalanceAmount:
+          example: "100.50"
+          format: decimal
+      required:
+      - amount
+      - beneficiaryAccountId
+      - currency
+      - details
+      - externalReferenceNumber
+      - id
+      - senderAccountId
+      - status
+      - type

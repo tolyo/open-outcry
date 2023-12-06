@@ -11,5 +11,5 @@ get:
         application/json:
           schema:
             $ref: '../../models/currency.yaml#/components/schemas/CurrencyList'
-    "500":
+    "404":
       description: Error

@@ -14,77 +14,82 @@ import (
 	"net/http"
 )
 
-// CurrenciesAPIRouter defines the required methods for binding the api requests to a responses for the CurrenciesAPI
-// The CurrenciesAPIRouter implementation should parse necessary information from the http request,
-// pass the data to a CurrenciesAPIServicer to perform the required actions, then write the service results to the http response.
-type CurrenciesAPIRouter interface {
+// AdminAPIRouter defines the required methods for binding the api requests to a responses for the AdminAPI
+// The AdminAPIRouter implementation should parse necessary information from the http request,
+// pass the data to a AdminAPIServicer to perform the required actions, then write the service results to the http response.
+type AdminAPIRouter interface {
+	CreateAdminPayment(http.ResponseWriter, *http.Request)
+	GetAdminPaymentById(http.ResponseWriter, *http.Request)
+	GetAppEntities(http.ResponseWriter, *http.Request)
+	GetAppEntity(http.ResponseWriter, *http.Request)
+}
+
+// PublicAPIRouter defines the required methods for binding the api requests to a responses for the PublicAPI
+// The PublicAPIRouter implementation should parse necessary information from the http request,
+// pass the data to a PublicAPIServicer to perform the required actions, then write the service results to the http response.
+type PublicAPIRouter interface {
 	GetCurrencies(http.ResponseWriter, *http.Request)
-}
-
-// InstrumentsAPIRouter defines the required methods for binding the api requests to a responses for the InstrumentsAPI
-// The InstrumentsAPIRouter implementation should parse necessary information from the http request,
-// pass the data to a InstrumentsAPIServicer to perform the required actions, then write the service results to the http response.
-type InstrumentsAPIRouter interface {
+	GetFxInstruments(http.ResponseWriter, *http.Request)
 	GetInstruments(http.ResponseWriter, *http.Request)
-}
-
-// OrderBooksAPIRouter defines the required methods for binding the api requests to a responses for the OrderBooksAPI
-// The OrderBooksAPIRouter implementation should parse necessary information from the http request,
-// pass the data to a OrderBooksAPIServicer to perform the required actions, then write the service results to the http response.
-type OrderBooksAPIRouter interface {
 	GetOrderBook(http.ResponseWriter, *http.Request)
 }
 
-// TradeOrderAPIRouter defines the required methods for binding the api requests to a responses for the TradeOrderAPI
-// The TradeOrderAPIRouter implementation should parse necessary information from the http request,
-// pass the data to a TradeOrderAPIServicer to perform the required actions, then write the service results to the http response.
-type TradeOrderAPIRouter interface {
+// UserAPIRouter defines the required methods for binding the api requests to a responses for the UserAPI
+// The UserAPIRouter implementation should parse necessary information from the http request,
+// pass the data to a UserAPIServicer to perform the required actions, then write the service results to the http response.
+type UserAPIRouter interface {
+	GetBookOrders(http.ResponseWriter, *http.Request)
+	GetPaymentAccounts(http.ResponseWriter, *http.Request)
+	GetTradeById(http.ResponseWriter, *http.Request)
 	GetTradeOrders(http.ResponseWriter, *http.Request)
-}
-
-// TradesAPIRouter defines the required methods for binding the api requests to a responses for the TradesAPI
-// The TradesAPIRouter implementation should parse necessary information from the http request,
-// pass the data to a TradesAPIServicer to perform the required actions, then write the service results to the http response.
-type TradesAPIRouter interface {
 	GetTrades(http.ResponseWriter, *http.Request)
 }
 
-// CurrenciesAPIServicer defines the api actions for the CurrenciesAPI service
+// UsersAPIRouter defines the required methods for binding the api requests to a responses for the UsersAPI
+// The UsersAPIRouter implementation should parse necessary information from the http request,
+// pass the data to a UsersAPIServicer to perform the required actions, then write the service results to the http response.
+type UsersAPIRouter interface {
+	CreateTrade(http.ResponseWriter, *http.Request)
+}
+
+// AdminAPIServicer defines the api actions for the AdminAPI service
 // This interface intended to stay up to date with the openapi yaml used to generate it,
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
-type CurrenciesAPIServicer interface {
+type AdminAPIServicer interface {
+	CreateAdminPayment(context.Context) (ImplResponse, error)
+	GetAdminPaymentById(context.Context, interface{}) (ImplResponse, error)
+	GetAppEntities(context.Context) (ImplResponse, error)
+	GetAppEntity(context.Context, interface{}) (ImplResponse, error)
+}
+
+// PublicAPIServicer defines the api actions for the PublicAPI service
+// This interface intended to stay up to date with the openapi yaml used to generate it,
+// while the service implementation can be ignored with the .openapi-generator-ignore file
+// and updated with the logic required for the API.
+type PublicAPIServicer interface {
 	GetCurrencies(context.Context) (ImplResponse, error)
-}
-
-// InstrumentsAPIServicer defines the api actions for the InstrumentsAPI service
-// This interface intended to stay up to date with the openapi yaml used to generate it,
-// while the service implementation can be ignored with the .openapi-generator-ignore file
-// and updated with the logic required for the API.
-type InstrumentsAPIServicer interface {
+	GetFxInstruments(context.Context) (ImplResponse, error)
 	GetInstruments(context.Context) (ImplResponse, error)
-}
-
-// OrderBooksAPIServicer defines the api actions for the OrderBooksAPI service
-// This interface intended to stay up to date with the openapi yaml used to generate it,
-// while the service implementation can be ignored with the .openapi-generator-ignore file
-// and updated with the logic required for the API.
-type OrderBooksAPIServicer interface {
 	GetOrderBook(context.Context, interface{}) (ImplResponse, error)
 }
 
-// TradeOrderAPIServicer defines the api actions for the TradeOrderAPI service
+// UserAPIServicer defines the api actions for the UserAPI service
 // This interface intended to stay up to date with the openapi yaml used to generate it,
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
-type TradeOrderAPIServicer interface {
-	GetTradeOrders(context.Context) (ImplResponse, error)
+type UserAPIServicer interface {
+	GetBookOrders(context.Context, interface{}) (ImplResponse, error)
+	GetPaymentAccounts(context.Context, interface{}) (ImplResponse, error)
+	GetTradeById(context.Context, interface{}, interface{}) (ImplResponse, error)
+	GetTradeOrders(context.Context, interface{}) (ImplResponse, error)
+	GetTrades(context.Context, interface{}) (ImplResponse, error)
 }
 
-// TradesAPIServicer defines the api actions for the TradesAPI service
+// UsersAPIServicer defines the api actions for the UsersAPI service
 // This interface intended to stay up to date with the openapi yaml used to generate it,
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
-type TradesAPIServicer interface {
-	GetTrades(context.Context) (ImplResponse, error)
+type UsersAPIServicer interface {
+	CreateTrade(context.Context, interface{}) (ImplResponse, error)
 }

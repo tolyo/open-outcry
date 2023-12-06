@@ -1,0 +1,22 @@
+get:
+  tags:
+    - user
+  summary: Get payment accounts
+  description: Returns list of user's payment accounts
+  operationId: getPaymentAccounts
+  parameters:
+    - in: path
+      name: app_entity_id
+      required: true
+      schema:
+        $ref: '../../models/app_entity.yaml#/components/schemas/AppEntityId'
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/payment_account.yaml#/components/schemas/PaymentAccountList'
+    "404":
+      description: Error

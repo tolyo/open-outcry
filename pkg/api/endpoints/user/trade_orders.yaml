@@ -2,7 +2,7 @@ get:
   tags:
     - user
   summary: Get trade orders
-  description: Returns list of user's active trade orders
+  description: Returns list of user's trade orders
   operationId: getTradeOrders
   parameters:
     - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
@@ -14,7 +14,7 @@ get:
         application/json:
           schema:
             $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrderList'
-    "500":
+    "404":
       description: Error
 
 post:
@@ -33,5 +33,5 @@ post:
         application/json:
           schema:
             $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrder'
-    "500":
+    "404":
       description: Error

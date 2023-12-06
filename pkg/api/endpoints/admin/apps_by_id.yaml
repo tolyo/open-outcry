@@ -6,14 +6,14 @@ get:
   operationId: getAppEntity
   parameters:
     - in: path
-      name: external_id
+      name: app_entity_id
       required: true
       schema:
-        $ref: '../../models/app_entity.yaml#/components/schemas/AppEntityExternalId'
+        $ref: '../../models/app_entity.yaml#/components/schemas/AppEntityId'
 
   responses:
     "200":
-      description: List of registered users
+      description: Success
       content:
         application/json:
           schema:

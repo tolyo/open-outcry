@@ -20,11 +20,8 @@ info:
 servers:
   - url: http://localhost:4000
 
-components:
-  securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
+# This API has no security
+security: []
 
 tags:
   - name: user
@@ -48,11 +45,13 @@ paths:
     $ref: ./endpoints/public/order_books_by_instrument_name.yaml
 
   # USER OPERATIONS
-  /trades/{trading_account_id}:
-    $ref: ./endpoints/user/trades.yaml
+  /book_orders/{trading_account_id}:
+    $ref: ./endpoints/user/book_orders.yaml
+  /payment-accounts/{app_entity_id}:
+    $ref: ./endpoints/user/payment_accounts.yaml
   /trades/{trading_account_id}/id/{trade_id}:
-    $ref: ./endpoints/user/trades.yaml
-  /trades:
+    $ref: ./endpoints/user/trades_by_id.yaml
+  /trades/{trading_account_id}:
     $ref: ./endpoints/user/trades.yaml
   /trade_orders/{trading_account_id}:
     $ref: ./endpoints/user/trade_orders.yaml
@@ -62,3 +61,9 @@ paths:
     $ref: ./endpoints/admin/apps_by_id.yaml
   /apps:
     $ref: ./endpoints/admin/apps.yaml
+  #  /apps/auctions: TODO
+  #    $ref: ./endpoints/admin/auctions.yaml
+  /apps/payments/{payment_id}:
+    $ref: ./endpoints/admin/payments_by_id.yaml
+  /apps/payments:
+    $ref: ./endpoints/admin/payments.yaml

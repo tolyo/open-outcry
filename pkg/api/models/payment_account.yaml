@@ -24,4 +24,8 @@ components:
         currency:
           $ref: './currency.yaml#/components/schemas/CurrencyName'
         amount:
-          $
+          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+        amountReserved:
+          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+        amountAvailable:
+          $ref: './shared.yaml#/components/schemas/MoneyAmount'

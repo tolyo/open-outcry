@@ -23,7 +23,6 @@ type PaymentExternalReferenceNumber string
 
 type Payment struct {
 	Id                      string
-	Number                  string
 	Type                    PaymentType
 	Amount                  PaymentAmount
 	Currency                CurrencyName
@@ -34,4 +33,5 @@ type Payment struct {
 	Status                  string
 	DebitBalanceAmount      string
 	CreditBalanceAmount     string
+	CreatedAt               string
 }

@@ -1,0 +1,22 @@
+post:
+  tags:
+    - admin
+  summary: Get payment
+  description: Returns payment information
+  operationId: getAdminPaymentById
+  parameters:
+    - in: path
+      name: payment_id
+      required: true
+      schema:
+        $ref: '../../models/payment.yaml#/components/schemas/PaymentId'
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/payment.yaml#/components/schemas/Payment'
+    "404":
+      description: Error

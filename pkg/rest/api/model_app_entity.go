@@ -9,17 +9,20 @@
 
 package api
 
-// Trade - Executed trade
-type Trade struct {
+// AppEntity - Registered user
+type AppEntity struct {
 	Id *interface{} `json:"id,omitempty"`
+
+	// External id
+	ExternalId *interface{} `json:"external_id,omitempty"`
 }
 
-// AssertTradeRequired checks if the required fields are not zero-ed
-func AssertTradeRequired(obj Trade) error {
+// AssertAppEntityRequired checks if the required fields are not zero-ed
+func AssertAppEntityRequired(obj AppEntity) error {
 	return nil
 }
 
-// AssertTradeConstraints checks if the values respects the defined constraints
-func AssertTradeConstraints(obj Trade) error {
+// AssertAppEntityConstraints checks if the values respects the defined constraints
+func AssertAppEntityConstraints(obj AppEntity) error {
 	return nil
 }

@@ -1,0 +1,16 @@
+post:
+  tags:
+    - admin
+  summary: Create admin payment
+  description: Creates a payment on user's account
+  operationId: createAdminPayment
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/payment.yaml#/components/schemas/Payment'
+    "404":
+      description: Error

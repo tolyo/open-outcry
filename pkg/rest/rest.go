@@ -8,7 +8,7 @@ import (
 
 func NewServer() http.Server {
 	router := api.NewRouter(
-		api.NewCurrenciesAPIController(api.NewCurrenciesAPIService()),
+		api.NewPublicAPIController(api.NewPublicAPIService()),
 	)
 	return http.Server{
 		Addr:    ":" + conf.Get().RestPort,

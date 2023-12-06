@@ -9,17 +9,17 @@
 
 package api
 
-// Trade - Executed trade
-type Trade struct {
-	Id *interface{} `json:"id,omitempty"`
+// PaymentAccountList - List of payment accounts available to user
+type PaymentAccountList struct {
+	Data *interface{} `json:"data,omitempty"`
 }
 
-// AssertTradeRequired checks if the required fields are not zero-ed
-func AssertTradeRequired(obj Trade) error {
+// AssertPaymentAccountListRequired checks if the required fields are not zero-ed
+func AssertPaymentAccountListRequired(obj PaymentAccountList) error {
 	return nil
 }
 
-// AssertTradeConstraints checks if the values respects the defined constraints
-func AssertTradeConstraints(obj Trade) error {
+// AssertPaymentAccountListConstraints checks if the values respects the defined constraints
+func AssertPaymentAccountListConstraints(obj PaymentAccountList) error {
 	return nil
 }

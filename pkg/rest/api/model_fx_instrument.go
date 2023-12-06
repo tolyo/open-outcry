@@ -9,7 +9,7 @@
 
 package api
 
-type Instrument struct {
+type FxInstrument struct {
 	Id *interface{} `json:"id,omitempty"`
 
 	// Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
@@ -20,14 +20,17 @@ type Instrument struct {
 
 	// Availability for trading
 	Enabled *interface{} `json:"enabled,omitempty"`
+
+	// ISO 4217 Currency symbol
+	BaseCurrency *interface{} `json:"base_currency,omitempty"`
 }
 
-// AssertInstrumentRequired checks if the required fields are not zero-ed
-func AssertInstrumentRequired(obj Instrument) error {
+// AssertFxInstrumentRequired checks if the required fields are not zero-ed
+func AssertFxInstrumentRequired(obj FxInstrument) error {
 	return nil
 }
 
-// AssertInstrumentConstraints checks if the values respects the defined constraints
-func AssertInstrumentConstraints(obj Instrument) error {
+// AssertFxInstrumentConstraints checks if the values respects the defined constraints
+func AssertFxInstrumentConstraints(obj FxInstrument) error {
 	return nil
 }

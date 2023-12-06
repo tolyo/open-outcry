@@ -1,17 +1,18 @@
 get:
   tags:
     - user
-  summary: Trades list
-  description: Returns list of entity's trades
-  operationId: getTrades
+  summary: Get book orders
+  description: Returns list of user's trade orders currently on the order book
+  operationId: getBookOrders
   parameters:
     - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
+
   responses:
     "200":
       description: Success
       content:
         application/json:
           schema:
-            $ref: '../../models/trade.yaml#/components/schemas/TradeList'
+            $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrderList'
     "404":
       description: Error

@@ -5,6 +5,11 @@ components:
       format: uuid
       example: 29b6e916-0d74-41c3-b004-eb8373bca606
 
+    MoneyAmount:
+      type: string
+      format: decimal
+      example: "100.50"
+
   parameters:
     PaginationPage:
       name: page

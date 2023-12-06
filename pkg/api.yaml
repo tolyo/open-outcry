@@ -16,6 +16,7 @@ info:
   title: OPEN OUTCRY API
 servers:
   - url: http://localhost:4000
+security: []
 tags:
   - name: user
     description: User facing resources for management by a specific user of their accounts
@@ -38,7 +39,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CurrencyList'
-        '500':
+        '404':
           description: Error
   /fxinstruments:
     get:
@@ -94,69 +95,89 @@ paths:
                 $ref: '#/components/schemas/OrderBook'
         '404':
           description: Order book not found for instrument
-  /trades/{trading_account_id}:
+  /book_orders/{trading_account_id}:
     get:
       tags:
         - user
-      summary: trades list
-      description: Returns list of entity's trades
-      operationId: getTrades
+      summary: Get book orders
+      description: Returns list of user's trade orders currently on the order book
+      operationId: getBookOrders
       parameters:
         - $ref: '#/components/parameters/TradingAccountId'
-        - $ref: '#/components/parameters/TradeId'
       responses:
         '200':
-          description: trades list
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeList'
-        '500':
+                $ref: '#/components/schemas/TradeOrderList'
+        '404':
+          description: Error
+  /payment-accounts/{app_entity_id}:
+    get:
+      tags:
+        - user
+      summary: Get payment accounts
+      description: Returns list of user's payment accounts
+      operationId: getPaymentAccounts
+      parameters:
+        - in: path
+          name: app_entity_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/Id'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAccountList'
+        '404':
           description: Error
   /trades/{trading_account_id}/id/{trade_id}:
     get:
       tags:
         - user
-      summary: trades list
-      description: Returns list of entity's trades
-      operationId: getTrades
+      summary: Get trade
+      description: Returns a trade by id
+      operationId: getTradeById
       parameters:
         - $ref: '#/components/parameters/TradingAccountId'
         - $ref: '#/components/parameters/TradeId'
       responses:
         '200':
-          description: trades list
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeList'
-        '500':
+                $ref: '#/components/schemas/Trade'
+        '404':
           description: Error
-  /trades:
+  /trades/{trading_account_id}:
     get:
       tags:
         - user
-      summary: trades list
+      summary: Trades list
       description: Returns list of entity's trades
       operationId: getTrades
       parameters:
         - $ref: '#/components/parameters/TradingAccountId'
-        - $ref: '#/components/parameters/TradeId'
       responses:
         '200':
-          description: trades list
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TradeList'
-        '500':
+        '404':
           description: Error
   /trade_orders/{trading_account_id}:
     get:
       tags:
         - user
       summary: Get trade orders
-      description: Returns list of user's active trade orders
+      description: Returns list of user's trade orders
       operationId: getTradeOrders
       parameters:
         - $ref: '#/components/parameters/TradingAccountId'
@@ -167,7 +188,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TradeOrderList'
-        '500':
+        '404':
           description: Error
     post:
       tags:
@@ -184,7 +205,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TradeOrder'
-        '500':
+        '404':
           description: Error
   /apps/{app_entity_id}:
     get:
@@ -195,13 +216,13 @@ paths:
       operationId: getAppEntity
       parameters:
         - in: path
-          name: external_id
+          name: app_entity_id
           required: true
           schema:
-            $ref: '#/components/schemas/AppEntityExternalId'
+            $ref: '#/components/schemas/Id'
       responses:
         '200':
-          description: List of registered users
+          description: Success
           content:
             application/json:
               schema:
@@ -217,18 +238,52 @@ paths:
       operationId: getAppEntities
       responses:
         '200':
-          description: List of registered users
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppEntityList'
-        '500':
+        '404':
+          description: Error
+  /apps/payments/{payment_id}:
+    post:
+      tags:
+        - admin
+      summary: Get payment
+      description: Returns payment information
+      operationId: getAdminPaymentById
+      parameters:
+        - in: path
+          name: payment_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/Id'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          description: Error
+  /apps/payments:
+    post:
+      tags:
+        - admin
+      summary: Create admin payment
+      description: Creates a payment on user's account
+      operationId: createAdminPayment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
           description: Error
 components:
-  securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
   schemas:
     CurrencyName:
       type: string
@@ -322,17 +377,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PriceVolume'
-    Trade:
-      type: object
-      description: Executed trade
-      properties:
-        id:
-          $ref: '#/components/schemas/Id'
-    TradeList:
-      type: array
-      description: List of executed trades
-      items:
-        $ref: '#/components/schemas/Trade'
     TradeOrderSide:
       type: string
       enum:
@@ -369,6 +413,49 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/TradeOrder'
+    MoneyAmount:
+      type: string
+      format: decimal
+      example: '100.50'
+    PaymentAccount:
+      type: object
+      description: Payment account available to user
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        currency:
+          $ref: '#/components/schemas/CurrencyName'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        amountReserved:
+          $ref: '#/components/schemas/MoneyAmount'
+        amountAvailable:
+          $ref: '#/components/schemas/MoneyAmount'
+    PaymentAccountList:
+      type: object
+      description: List of payment accounts available to user
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentAccount'
+      example:
+        data:
+          - name: USD
+            precision: 2
+          - name: BTC
+            precision: 5
+    Trade:
+      type: object
+      description: Executed trade
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+    TradeList:
+      type: array
+      description: List of executed trades
+      items:
+        $ref: '#/components/schemas/Trade'
     AppEntityExternalId:
       type: string
       description: External id
@@ -385,6 +472,56 @@ components:
       description: List of registered users
       items:
         $ref: '#/components/schemas/AppEntity'
+    PaymentType:
+      type: string
+      enum:
+        - DEPOSIT
+        - WITHDRAWAL
+        - TRANSFER
+        - INSTRUMENT_BUY
+        - INSTRUMENT_SELL
+        - CHARGE
+    PaymentDetails:
+      type: string
+      example: Bank deposit Bank REF123456
+    PaymentExternalReferenceNumber:
+      type: string
+      example: REF123456
+    Payment:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        type:
+          $ref: '#/components/schemas/PaymentType'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        currency:
+          $ref: '#/components/schemas/CurrencyName'
+        senderAccountId:
+          $ref: '#/components/schemas/Id'
+        beneficiaryAccountId:
+          $ref: '#/components/schemas/Id'
+        details:
+          $ref: '#/components/schemas/PaymentDetails'
+        externalReferenceNumber:
+          $ref: '#/components/schemas/PaymentExternalReferenceNumber'
+        status:
+          type: string
+        debitBalanceAmount:
+          $ref: '#/components/schemas/MoneyAmount'
+        creditBalanceAmount:
+          $ref: '#/components/schemas/MoneyAmount'
+      required:
+        - id
+        - type
+        - amount
+        - currency
+        - senderAccountId
+        - beneficiaryAccountId
+        - details
+        - externalReferenceNumber
+        - status
   parameters:
     TradingAccountId:
       name: trading_account_id
