@@ -1,13 +1,13 @@
 package services
 
 import (
+	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
-	"open-outcry/pkg/utils"
 )
 
 func (assert *ServiceTestSuite) TestDepositPayment() {
 	// given a customer
-	utils.DeleteAll("payment")
+	db.DeleteAll("payment")
 	appEntity1, _ := Acc("test3")
 
 	// when amount is deposited
@@ -18,7 +18,7 @@ func (assert *ServiceTestSuite) TestDepositPayment() {
 	assert.Equal(1010.00, acc.Amount)
 	assert.Equal(1010.00, acc.AmountAvailable)
 	assert.Equal(0.00, acc.AmountReserved)
-	assert.Equal(3, utils.GetCount("payment"))
+	assert.Equal(3, db.GetCount("payment"))
 
 	// when amount is deposited
 	CreatePaymentDeposit(appEntity1, 10.00, "EUR", "BANK", "REF125")
@@ -28,5 +28,5 @@ func (assert *ServiceTestSuite) TestDepositPayment() {
 	assert.Equal(1020.00, acc.Amount)
 	assert.Equal(1020.00, acc.AmountAvailable)
 	assert.Equal(0.00, acc.AmountReserved)
-	assert.Equal(4, utils.GetCount("payment"))
+	assert.Equal(4, db.GetCount("payment"))
 }

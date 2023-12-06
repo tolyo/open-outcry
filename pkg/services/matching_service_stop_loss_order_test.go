@@ -1,8 +1,8 @@
 package services
 
 import (
+	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
-	"open-outcry/pkg/utils"
 )
 
 func (assert *ServiceTestSuite) TestCreateStopLossSellOrderSave() {
@@ -12,7 +12,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderSave() {
 
 	// then:
 	assert.NotNil(res)
-	assert.Equal(1, utils.GetCount("stop_order"))
+	assert.Equal(1, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
@@ -26,7 +26,7 @@ func (assert *ServiceTestSuite) TestCreateStoLossBuyOrderBuy() {
 
 	// then:
 	assert.NotNil(res)
-	assert.Equal(1, utils.GetCount("stop_order"))
+	assert.Equal(1, db.GetCount("stop_order"))
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal(1000.00, models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR").AmountReserved)
@@ -43,7 +43,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderActivate() {
 	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
 
 	// then: the order becomes activated as a market order which is invisible to the order book
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(1, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
@@ -61,7 +61,7 @@ func (assert *ServiceTestSuite) TestCreateStopLosBuyOrderActivate() {
 	assert.Equal(20.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR").AmountReserved)
 
 	// then: the order becomes activated as a market order which is invisible to the order book
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 
@@ -76,7 +76,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderNonCrossing() {
 	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 11, 1, "GTC")
 
 	// then: the order remains deactivated
-	assert.Equal(1, utils.GetCount("stop_order"))
+	assert.Equal(1, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
@@ -85,7 +85,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderNonCrossing() {
 	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 9, 1, "GTC")
 
 	// then: it becomes activated
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(1, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
@@ -98,7 +98,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossBuyOrderNonCrossing() {
 	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 11, 1, "GTC")
 
 	// then: the order remains deactivated
-	assert.Equal(1, utils.GetCount("stop_order"))
+	assert.Equal(1, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
@@ -107,7 +107,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossBuyOrderNonCrossing() {
 	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 9, 1, "GTC")
 
 	// then: it becomes activated
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
@@ -120,7 +120,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderActivateAndSettle() {
 	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
 
 	// then: the order becomes activated and settled
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -134,7 +134,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossBuyOrderActivateAndSettle() {
 	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
 
 	// then: the order becomes activated and settled
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -148,7 +148,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderActivateAndSettleOppo
 	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10, 1, "GTC")
 
 	// then: the order becomes activated and settled
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -162,7 +162,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossBuyOrderActivateAndSettleOppos
 	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10, 1, "GTC")
 
 	// then: the order becomes activated and settled
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -178,7 +178,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderActivateAndSettleBefo
 
 	// then: the order becomes activated and settled at last trade price which is 10
 	assert.Equal([]float64{10.0, 10.0, 11.0}, GetTradePrices())
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -194,7 +194,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossBuyOrderActivateAndSettleBefor
 
 	// then: the order becomes activated and settled
 	assert.Equal([]float64{10.0, 10.0, 9.0}, GetTradePrices())
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -208,7 +208,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderActivateByMarketAndSe
 	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 3, "GTC")
 
 	// then: the order becomes activated and settled
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -219,7 +219,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossSellOrderActivateByMarketAndSe
 	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 1, "GTC")
 
 	// then: the order becomes activated and settled
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -233,7 +233,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossBuyOrderActivateByMarketAndSet
 	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Sell, 10, 3, "GTC")
 
 	// then: the order becomes activated and settled
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
@@ -244,7 +244,7 @@ func (assert *ServiceTestSuite) TestCreateStopLossBuyOrderActivateByMarketAndSet
 	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Buy, 0, 10, "GTC")
 
 	// then: the order becomes activated and settled
-	assert.Equal(0, utils.GetCount("stop_order"))
+	assert.Equal(0, db.GetCount("stop_order"))
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))

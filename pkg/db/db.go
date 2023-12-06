@@ -1,6 +1,8 @@
 package db
 
 import (
+	"context"
+	log2 "log"
 	"open-outcry/pkg/conf"
 	"reflect"
 
@@ -66,4 +68,15 @@ func QueryList[T interface{}](query string, args ...any) []T {
 		return res
 	}
 
+}
+
+func GetCount(tableName string) int {
+	return QueryVal[int]("SELECT COUNT(*) FROM " + tableName)
+}
+
+func DeleteAll(tableName string) {
+	_, err := Instance().ExecContext(context.Background(), "DELETE FROM "+tableName)
+	if err != nil {
+		log2.Fatal(err)
+	}
 }

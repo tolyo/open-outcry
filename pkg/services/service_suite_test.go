@@ -46,7 +46,7 @@ func (suite *ServiceTestSuite) TearDownTest() {
 		"payment_account WHERE app_entity_id != 1",
 		"trading_account",
 		"app_entity WHERE pub_id != 'MASTER'",
-	}, utils.DeleteAll)
+	}, db.DeleteAll)
 }
 
 func (suite *ServiceTestSuite) TearDownAllSuite() {

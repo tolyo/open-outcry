@@ -3,7 +3,6 @@ package services
 import (
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
-	"open-outcry/pkg/utils"
 )
 
 func (assert *ServiceTestSuite) TestCreatePriceLevel() {
@@ -21,7 +20,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 
 	assert.Nil(err)
 	// then a price level is created
-	assert.Equal(1, utils.GetCount("price_level"))
+	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 
 	// when give another order for smaller amount
@@ -35,7 +34,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	)
 
 	// then price level is updated
-	assert.Equal(1, utils.GetCount("price_level"))
+	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(15.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 
 	// when give another order for different price
@@ -48,7 +47,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	)
 
 	// then another price level is created
-	assert.Equal(2, utils.GetCount("price_level"))
+	assert.Equal(2, db.GetCount("price_level"))
 }
 
 func (assert *ServiceTestSuite) TestCancelWithSingle() {
@@ -65,14 +64,14 @@ func (assert *ServiceTestSuite) TestCancelWithSingle() {
 	)
 
 	// then a price level is created
-	assert.Equal(1, utils.GetCount("price_level"))
+	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 
 	// when the order is deleted
 	CancelTradeOrder(id)
 
 	// then price level is deleted also
-	assert.Equal(0, utils.GetCount("price_level"))
+	assert.Equal(0, db.GetCount("price_level"))
 }
 
 func (assert *ServiceTestSuite) TestCancelWithTwoOrdersOfSameSize() {
@@ -99,14 +98,14 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersOfSameSize() {
 	)
 
 	// then a price level is created
-	assert.Equal(1, utils.GetCount("price_level"))
+	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(20.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 
 	// when the order is deleted
 	CancelTradeOrder(id)
 
 	// then price level updated
-	assert.Equal(1, utils.GetCount("price_level"))
+	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 }
 
@@ -134,12 +133,12 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersWithDiffPrice() {
 	)
 
 	// then a price level is created
-	assert.Equal(2, utils.GetCount("price_level"))
+	assert.Equal(2, db.GetCount("price_level"))
 
 	// when the order is deleted
 	CancelTradeOrder(id)
 
 	// then price levels are updated
-	assert.Equal(1, utils.GetCount("price_level"))
+	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 }
