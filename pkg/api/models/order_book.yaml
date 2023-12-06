@@ -5,8 +5,10 @@ components:
       properties:
         price:
           type: number
+          example: 120.00
         volume:
           type: number
+          example: 80
 
     OrderBook:
       type: object

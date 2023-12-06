@@ -24,14 +24,14 @@ BEGIN
 
     payment_instance_pub_id_var = create_payment(type_param, from_customer_id_param, amount_param, currency_param, to_customer_id_param, reference_param, details_param);
 
-    -- create fee paymen fee
+    -- create fee payment fee
     IF fee_type_param IS NOT NULL THEN
         SELECT * FROM fee
         WHERE type = fee_type_param AND currency_name = currency_param
         INTO fee_instance;
 
         IF FOUND THEN
-            -- priority is given to percentange
+            -- priority is given to percentage
             IF fee_instance.percentage IS NOT NULL THEN
                 fee_amount_var = banker_round(amount_param * fee_instance.percentage / 100,  currency_instance.precision);
             END IF;

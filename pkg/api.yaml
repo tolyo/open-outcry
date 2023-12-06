@@ -16,47 +16,68 @@ info:
   title: OPEN OUTCRY API
 servers:
   - url: http://localhost:4000
-security:
-  - basicAuth: []
+tags:
+  - name: user
+    description: User facing resources for management by a specific user of their accounts
+  - name: public
+    description: Public facing resources pertaining to exchange in general
+  - name: admin
+    description: Admin facing resources for exchange management
 paths:
   /currencies:
     get:
       tags:
-        - currencies
-      summary: currencies list
+        - public
+      summary: Currencies list
       description: Returns list of available currencies
       operationId: getCurrencies
       responses:
         '200':
-          description: currencies list
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CurrencyList'
         '500':
           description: Error
+  /fxinstruments:
+    get:
+      tags:
+        - public
+      summary: Fx instrument list
+      description: Returns list of available fx instruments
+      operationId: getFxInstruments
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FxInstrumentList'
+        '404':
+          description: Not found
   /instruments:
     get:
       tags:
-        - instruments
-      summary: instrument list
+        - public
+      summary: Instrument list
       description: Returns list of available instruments
       operationId: getInstruments
       responses:
         '200':
-          description: instruments list
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/InstrumentList'
-        '500':
-          description: Error
+        '404':
+          description: Not found
   /order_books/{instrument_name}:
     get:
       tags:
-        - order_books
-      summary: get order books
-      description: Return an order book for an instrument
+        - public
+      summary: Get order book
+      description: Returns an order book for an specific instrument
       operationId: getOrderBook
       parameters:
         - in: path
@@ -71,15 +92,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderBook'
-        '500':
-          description: Error
-  /trades:
+        '404':
+          description: Order book not found for instrument
+  /trades/{trading_account_id}:
     get:
       tags:
-        - trades
+        - user
       summary: trades list
-      description: Returns list of user's trades
+      description: Returns list of entity's trades
       operationId: getTrades
+      parameters:
+        - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: '#/components/parameters/TradeId'
       responses:
         '200':
           description: trades list
@@ -89,20 +113,115 @@ paths:
                 $ref: '#/components/schemas/TradeList'
         '500':
           description: Error
-  /trade_orders:
+  /trades/{trading_account_id}/id/{trade_id}:
     get:
       tags:
-        - trade_order
-      summary: trade order list
-      description: Returns list of user's active trade orders
-      operationId: getTradeOrders
+        - user
+      summary: trades list
+      description: Returns list of entity's trades
+      operationId: getTrades
+      parameters:
+        - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: '#/components/parameters/TradeId'
       responses:
         '200':
-          description: trades orders list
+          description: trades list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeList'
+        '500':
+          description: Error
+  /trades:
+    get:
+      tags:
+        - user
+      summary: trades list
+      description: Returns list of entity's trades
+      operationId: getTrades
+      parameters:
+        - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: '#/components/parameters/TradeId'
+      responses:
+        '200':
+          description: trades list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeList'
+        '500':
+          description: Error
+  /trade_orders/{trading_account_id}:
+    get:
+      tags:
+        - user
+      summary: Get trade orders
+      description: Returns list of user's active trade orders
+      operationId: getTradeOrders
+      parameters:
+        - $ref: '#/components/parameters/TradingAccountId'
+      responses:
+        '200':
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TradeOrderList'
+        '500':
+          description: Error
+    post:
+      tags:
+        - users
+      summary: Create trade order
+      description: Creates a trade order
+      operationId: createTrade
+      parameters:
+        - $ref: '#/components/parameters/TradingAccountId'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeOrder'
+        '500':
+          description: Error
+  /apps/{app_entity_id}:
+    get:
+      tags:
+        - admin
+      summary: Get application entity
+      description: Return registered user by external id
+      operationId: getAppEntity
+      parameters:
+        - in: path
+          name: external_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AppEntityExternalId'
+      responses:
+        '200':
+          description: List of registered users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppEntity'
+        '404':
+          description: Error
+  /apps:
+    get:
+      tags:
+        - admin
+      summary: Get application entities
+      description: Return a list of registered users
+      operationId: getAppEntities
+      responses:
+        '200':
+          description: List of registered users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppEntityList'
         '500':
           description: Error
 components:
@@ -126,16 +245,48 @@ components:
           description: Currency precision as number of decimal points
           example: 2
     CurrencyList:
-      type: array
+      type: object
       description: List of currencies supported by app
-      items:
-        $ref: '#/components/schemas/Currency'
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Currency'
+      example:
+        data:
+          - name: USD
+            precision: 2
+          - name: BTC
+            precision: 5
     Id:
       type: string
       format: uuid
+      example: 29b6e916-0d74-41c3-b004-eb8373bca606
     InstrumentName:
       type: string
       description: Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
+      example: BTC-EUR
+    InstrumentAvailability:
+      type: boolean
+      description: Availability for trading
+      example: true
+    FxInstrument:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          $ref: '#/components/schemas/InstrumentName'
+        quote_currency:
+          $ref: '#/components/schemas/CurrencyName'
+        enabled:
+          $ref: '#/components/schemas/InstrumentAvailability'
+        base_currency:
+          $ref: '#/components/schemas/CurrencyName'
+    FxInstrumentList:
+      type: array
+      items:
+        $ref: '#/components/schemas/FxInstrument'
     Instrument:
       type: object
       properties:
@@ -143,13 +294,10 @@ components:
           $ref: '#/components/schemas/Id'
         name:
           $ref: '#/components/schemas/InstrumentName'
-        base_currency:
-          $ref: '#/components/schemas/CurrencyName'
         quote_currency:
           $ref: '#/components/schemas/CurrencyName'
         enabled:
-          type: boolean
-          description: Availability for trading
+          $ref: '#/components/schemas/InstrumentAvailability'
     InstrumentList:
       type: array
       items:
@@ -159,8 +307,10 @@ components:
       properties:
         price:
           type: number
+          example: 120
         volume:
           type: number
+          example: 80
     OrderBook:
       type: object
       properties:
@@ -174,7 +324,7 @@ components:
             $ref: '#/components/schemas/PriceVolume'
     Trade:
       type: object
-      description: Execute trade
+      description: Executed trade
       properties:
         id:
           $ref: '#/components/schemas/Id'
@@ -219,3 +369,32 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/TradeOrder'
+    AppEntityExternalId:
+      type: string
+      description: External id
+    AppEntity:
+      type: object
+      description: Registered user
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        external_id:
+          $ref: '#/components/schemas/AppEntityExternalId'
+    AppEntityList:
+      type: array
+      description: List of registered users
+      items:
+        $ref: '#/components/schemas/AppEntity'
+  parameters:
+    TradingAccountId:
+      name: trading_account_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
+    TradeId:
+      name: trade_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'

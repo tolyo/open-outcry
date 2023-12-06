@@ -1,0 +1,27 @@
+components:
+  schemas:
+    PaymentAccountList:
+      type: object
+      description: List of payment accounts available to user
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentAccount'
+      example:
+        data:
+          - name: USD
+            precision: 2
+          - name: BTC
+            precision: 5
+
+    PaymentAccount:
+      type: object
+      description: Payment account available to user
+      properties:
+        id:
+          $ref: './shared.yaml#/components/schemas/Id'
+        currency:
+          $ref: './currency.yaml#/components/schemas/CurrencyName'
+        amount:
+          $

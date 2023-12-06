@@ -1,0 +1,18 @@
+get:
+  tags:
+    - user
+  summary: trades list
+  description: Returns list of entity's trades
+  operationId: getTrades
+  parameters:
+    - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
+    - $ref: '../../models/trade.yaml#/components/parameters/TradeId'
+  responses:
+    "200":
+      description: trades list
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/trade.yaml#/components/schemas/TradeList'
+    "500":
+      description: Error

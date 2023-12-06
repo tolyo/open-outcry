@@ -1,5 +1,4 @@
 -- +goose Up
-
 CREATE TABLE trade_order(
     id                  BIGSERIAL PRIMARY KEY,
     pub_id              TEXT default uuid_generate_v4() UNIQUE NOT NULL,

@@ -1,4 +1,3 @@
-
 -- +goose Up
 CREATE TABLE trade (
     id              BIGSERIAL PRIMARY KEY,
@@ -14,5 +13,4 @@ CREATE TABLE trade (
 );
 
 -- +goose Down
-
 DROP TABLE trade;

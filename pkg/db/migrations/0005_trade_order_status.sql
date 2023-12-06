@@ -1,6 +1,4 @@
-
 -- +goose Up
-
 -- Model of states that a trade order can undergo during its
 -- lifecycle. Transitional states hold funds in `payment_account.amount_reserved`
 -- Final states should release all reserved funds.

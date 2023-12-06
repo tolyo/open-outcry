@@ -1,5 +1,4 @@
 -- +goose Up
-
 -- for non monetary instruments, instruments must be credited directly to trading account
 CREATE TABLE trading_account_instrument (
     id                      BIGSERIAL PRIMARY KEY,

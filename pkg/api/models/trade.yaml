@@ -8,7 +8,15 @@ components:
 
     Trade:
       type: object
-      description: Execute trade
+      description: Executed trade
       properties:
         id:
           $ref: './shared.yaml#/components/schemas/Id'
+
+  parameters:
+    TradeId:
+      name: trade_id
+      in: path
+      required: true
+      schema:
+        $ref: './shared.yaml#/components/schemas/Id'

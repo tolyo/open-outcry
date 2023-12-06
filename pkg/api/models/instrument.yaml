@@ -5,9 +5,20 @@ components:
       items:
         $ref: '#/components/schemas/Instrument'
 
+    FxInstrumentList:
+      type: array
+      items:
+        $ref: '#/components/schemas/FxInstrument'
+
     InstrumentName:
       type: string
       description: Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
+      example: BTC-EUR
+
+    InstrumentAvailability:
+      type: boolean
+      description: Availability for trading
+      example: true
 
     Instrument:
       type: object
@@ -16,12 +27,23 @@ components:
           $ref: './shared.yaml#/components/schemas/Id'
         name:
           $ref: '#/components/schemas/InstrumentName'
-        base_currency:
-          $ref: './currency.yaml#/components/schemas/CurrencyName'
         quote_currency:
           $ref: './currency.yaml#/components/schemas/CurrencyName'
         enabled:
-          type: boolean
-          description: Availability for trading
+          $ref: '#/components/schemas/InstrumentAvailability'
+
+    FxInstrument:
+      type: object
+      properties:
+        id:
+          $ref: './shared.yaml#/components/schemas/Id'
+        name:
+          $ref: '#/components/schemas/InstrumentName'
+        quote_currency:
+          $ref: './currency.yaml#/components/schemas/CurrencyName'
+        enabled:
+          $ref: '#/components/schemas/InstrumentAvailability'
+        base_currency:
+          $ref: './currency.yaml#/components/schemas/CurrencyName'
 
 

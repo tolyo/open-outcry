@@ -1,5 +1,4 @@
 -- +goose Up
-
 -- Trading account belonging to application entity
 CREATE TABLE trading_account (
     id                      BIGSERIAL PRIMARY KEY,

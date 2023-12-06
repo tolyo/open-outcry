@@ -1,0 +1,16 @@
+get:
+  tags:
+    - admin
+  summary: Get application entities
+  description: Return a list of registered users
+  operationId: getAppEntities
+
+  responses:
+    "200":
+      description: List of registered users
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/app_entity.yaml#/components/schemas/AppEntityList'
+    "500":
+      description: Error

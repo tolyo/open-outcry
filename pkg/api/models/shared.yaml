@@ -3,3 +3,23 @@ components:
     Id:
       type: string
       format: uuid
+      example: 29b6e916-0d74-41c3-b004-eb8373bca606
+
+  parameters:
+    PaginationPage:
+      name: page
+      in: query
+      description: The page number to retrieve.
+      schema:
+        type: integer
+        default: 1
+        example: 2
+    PaginationLimit:
+      name: limit
+      in: query
+      description: The number of days per page.
+      schema:
+        type: integer
+        default: 10
+        maximum: 100
+        example: 15

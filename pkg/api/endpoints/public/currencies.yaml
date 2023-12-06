@@ -1,15 +1,15 @@
 get:
   tags:
-    - currencies
-  summary: currencies list
+    - public
+  summary: Currencies list
   description: Returns list of available currencies
   operationId: getCurrencies
   responses:
     "200":
-      description: currencies list
+      description: Success
       content:
         application/json:
           schema:
-            $ref: ../models/currency.yaml#/components/schemas/CurrencyList
+            $ref: '../../models/currency.yaml#/components/schemas/CurrencyList'
     "500":
       description: Error

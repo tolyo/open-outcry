@@ -11,7 +11,7 @@ type Currency struct {
 	Precision CurrencyPrecision
 }
 
-// GetCurrencies returns a list of available currencies
+// GetCurrencies return
 func GetCurrencies() []Currency {
 	res := db.QueryList[Currency](`SELECT * FROM currency`)
 	return res

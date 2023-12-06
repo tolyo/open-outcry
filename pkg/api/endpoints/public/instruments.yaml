@@ -1,0 +1,15 @@
+get:
+  tags:
+    - public
+  summary: Instrument list
+  description: Returns list of available instruments
+  operationId: getInstruments
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/instrument.yaml#/components/schemas/InstrumentList'
+    "404":
+      description: Not found

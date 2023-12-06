@@ -1,0 +1,22 @@
+get:
+  tags:
+    - admin
+  summary: Get application entity
+  description: Return registered user by external id
+  operationId: getAppEntity
+  parameters:
+    - in: path
+      name: external_id
+      required: true
+      schema:
+        $ref: '../../models/app_entity.yaml#/components/schemas/AppEntityExternalId'
+
+  responses:
+    "200":
+      description: List of registered users
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/app_entity.yaml#/components/schemas/AppEntity'
+    "404":
+      description: Error

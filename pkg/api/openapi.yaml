@@ -17,23 +17,48 @@ info:
   version: 1.0.0
   title: OPEN OUTCRY API
 
-security:
-  - basicAuth: []
 servers:
-  - url: https://your.public.url
+  - url: http://localhost:4000
+
 components:
   securitySchemes:
     basicAuth:
       type: http
       scheme: basic
+
+tags:
+  - name: user
+    description: User facing resources for management by a specific user of their accounts
+
+  - name: public
+    description: Public facing resources pertaining to exchange in general
+
+  - name: admin
+    description: Admin facing resources for exchange management
+
 paths:
+  # EXCHANGE OPERATIONS
   /currencies:
-    $ref: ./endpoints/currencies_list.yaml
+    $ref: ./endpoints/public/currencies.yaml
+  /fxinstruments:
+    $ref: ./endpoints/public/fx-instruments.yaml
   /instruments:
-    $ref: ./endpoints/instruments_list.yaml
+    $ref: ./endpoints/public/instruments.yaml
   /order_books/{instrument_name}:
-    $ref: ./endpoints/order_books.yaml
+    $ref: ./endpoints/public/order_books_by_instrument_name.yaml
+
+  # USER OPERATIONS
+  /trades/{trading_account_id}:
+    $ref: ./endpoints/user/trades.yaml
+  /trades/{trading_account_id}/id/{trade_id}:
+    $ref: ./endpoints/user/trades.yaml
   /trades:
-    $ref: ./endpoints/trades_list.yaml
-  /trade_orders:
-    $ref: ./endpoints/trade_orders_list.yaml
+    $ref: ./endpoints/user/trades.yaml
+  /trade_orders/{trading_account_id}:
+    $ref: ./endpoints/user/trade_orders.yaml
+
+  #  # ADMIN OPERATIONS
+  /apps/{app_entity_id}:
+    $ref: ./endpoints/admin/apps_by_id.yaml
+  /apps:
+    $ref: ./endpoints/admin/apps.yaml

@@ -1,0 +1,22 @@
+get:
+  tags:
+    - public
+  summary: Get order book
+  description: Returns an order book for an specific instrument
+  operationId: getOrderBook
+  parameters:
+    - in: path
+      name: instrument_name
+      required: true
+      schema:
+        $ref: '../../models/instrument.yaml#/components/schemas/InstrumentName'
+
+  responses:
+    "200":
+      description: order book
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/order_book.yaml#/components/schemas/OrderBook'
+    "404":
+      description: Order book not found for instrument

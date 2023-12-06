@@ -1,0 +1,37 @@
+get:
+  tags:
+    - user
+  summary: Get trade orders
+  description: Returns list of user's active trade orders
+  operationId: getTradeOrders
+  parameters:
+    - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrderList'
+    "500":
+      description: Error
+
+post:
+  tags:
+    - users
+  summary: Create trade order
+  description: Creates a trade order
+  operationId: createTrade
+  parameters:
+    - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrder'
+    "500":
+      description: Error

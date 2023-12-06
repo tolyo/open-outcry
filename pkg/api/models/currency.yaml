@@ -1,10 +1,19 @@
 components:
   schemas:
     CurrencyList:
-      type: array
+      type: object
       description: List of currencies supported by app
-      items:
-        $ref: '#/components/schemas/Currency'
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Currency'
+      example:
+        data:
+          - name: USD
+            precision: 2
+          - name: BTC
+            precision: 5
 
     CurrencyName:
       type: string
