@@ -154,6 +154,20 @@ paths:
                 $ref: '#/components/schemas/Trade'
         '404':
           description: Error
+    delete:
+      tags:
+        - user
+      summary: Cancel trade
+      description: Cancels a trade order by id
+      operationId: deleteTradeById
+      parameters:
+        - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: '#/components/parameters/TradeId'
+      responses:
+        '204':
+          description: Success
+        '404':
+          description: Error
   /trades/{trading_account_id}:
     get:
       tags:
@@ -198,6 +212,38 @@ paths:
       operationId: createTrade
       parameters:
         - $ref: '#/components/parameters/TradingAccountId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                instrument:
+                  $ref: '#/components/schemas/InstrumentName'
+                side:
+                  $ref: '#/components/schemas/TradeOrderSide'
+                type:
+                  $ref: '#/components/schemas/TradeOrderType'
+                timeInForce:
+                  $ref: '#/components/schemas/TradeOrderTimeInForce'
+                amount:
+                  $ref: '#/components/schemas/MoneyAmount'
+                price:
+                  $ref: '#/components/schemas/MoneyAmount'
+              required:
+                - instrument
+                - side
+                - type
+                - timeInForce
+                - amount
+            example:
+              instrument: BTC-EUR
+              side: SELL
+              type: LIMIT
+              timeInForce: GTC
+              amount: '100'
+              price: '100.00'
       responses:
         '200':
           description: Success
@@ -382,6 +428,13 @@ components:
       enum:
         - SELL
         - BUY
+    TradeOrderType:
+      type: string
+      enum:
+        - LIMIT
+        - MARKET
+        - STOPLOSS
+        - STOPLIMIT
     TradeOrderTimeInForce:
       type: string
       enum:
@@ -396,6 +449,18 @@ components:
         - OPEN
         - REJECTED
         - CANCELLED
+        - PARTIALLY_CANCELLED
+        - PARTIALLY_REJECTED
+        - FILLED
+        - REJECTED
+    MoneyAmount:
+      type: string
+      format: decimal
+      example: '100.50'
+    DateTime:
+      type: string
+      format: date-time
+      example: '2017-07-21T17:32:28Z'
     TradeOrder:
       type: object
       properties:
@@ -405,18 +470,24 @@ components:
           $ref: '#/components/schemas/InstrumentName'
         side:
           $ref: '#/components/schemas/TradeOrderSide'
+        type:
+          $ref: '#/components/schemas/TradeOrderType'
         timeInForce:
           $ref: '#/components/schemas/TradeOrderTimeInForce'
         status:
           $ref: '#/components/schemas/TradeOrderStatus'
+        price:
+          $ref: '#/components/schemas/MoneyAmount'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        openAmount:
+          $ref: '#/components/schemas/MoneyAmount'
+        created:
+          $ref: '#/components/schemas/DateTime'
     TradeOrderList:
       type: array
       items:
         $ref: '#/components/schemas/TradeOrder'
-    MoneyAmount:
-      type: string
-      format: decimal
-      example: '100.50'
     PaymentAccount:
       type: object
       description: Payment account available to user

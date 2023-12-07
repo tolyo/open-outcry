@@ -67,6 +67,7 @@ type TradeOrder struct {
 	OpenAmount  float64 //     Order amount available for trading
 	Status      OrderStatus
 	TimeInForce OrderTimeInForce
+	Created     string
 }
 
 const tradeOrderBaseQuery = `
@@ -80,7 +81,8 @@ const tradeOrderBaseQuery = `
       t.amount,
       t.open_amount,
       t.status::text,
-      t.time_in_force::text
+      t.time_in_force::text,
+      t.created_at
 
     FROM trade_order AS t
     INNER JOIN trading_account ta
@@ -102,6 +104,7 @@ func GetTradeOrder(id TradeOrderId) TradeOrder {
 		&order.OpenAmount,
 		&order.Status,
 		&order.TimeInForce,
+		&order.Created,
 	)
 	return order
 }

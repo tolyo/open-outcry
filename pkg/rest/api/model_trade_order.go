@@ -17,9 +17,19 @@ type TradeOrder struct {
 
 	Side TradeOrderSide `json:"side,omitempty"`
 
+	Type TradeOrderType `json:"type,omitempty"`
+
 	TimeInForce TradeOrderTimeInForce `json:"timeInForce,omitempty"`
 
 	Status TradeOrderStatus `json:"status,omitempty"`
+
+	Price *interface{} `json:"price,omitempty"`
+
+	Amount *interface{} `json:"amount,omitempty"`
+
+	OpenAmount *interface{} `json:"openAmount,omitempty"`
+
+	Created *interface{} `json:"created,omitempty"`
 }
 
 // AssertTradeOrderRequired checks if the required fields are not zero-ed

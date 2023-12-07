@@ -3,7 +3,6 @@ api/api.go
 api/api_admin.go
 api/api_admin_service.go
 api/api_public.go
-api/api_public_service.go
 api/api_user.go
 api/api_user_service.go
 api/api_users.go
@@ -13,6 +12,7 @@ api/helpers.go
 api/impl.go
 api/logger.go
 api/model_app_entity.go
+api/model_create_trade_request.go
 api/model_currency.go
 api/model_currency_list.go
 api/model_fx_instrument.go
@@ -28,4 +28,5 @@ api/model_trade_order.go
 api/model_trade_order_side.go
 api/model_trade_order_status.go
 api/model_trade_order_time_in_force.go
+api/model_trade_order_type.go
 api/openapi.yaml

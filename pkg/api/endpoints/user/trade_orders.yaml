@@ -25,6 +25,38 @@ post:
   operationId: createTrade
   parameters:
     - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
+  requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              instrument:
+                $ref: '../../models/instrument.yaml#/components/schemas/InstrumentName'
+              side:
+                $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrderSide'
+              type:
+                $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrderType'
+              timeInForce:
+                $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrderTimeInForce'
+              amount:
+                $ref: '../../models/shared.yaml#/components/schemas/MoneyAmount'
+              price:
+                $ref: '../../models/shared.yaml#/components/schemas/MoneyAmount'
+            required:
+              - instrument
+              - side
+              - type
+              - timeInForce
+              - amount
+          example:
+            instrument: "BTC-EUR"
+            side: "SELL"
+            type: "LIMIT"
+            timeInForce: "GTC"
+            amount: "100"
+            price: "100.00"
 
   responses:
     "200":

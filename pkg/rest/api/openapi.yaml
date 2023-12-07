@@ -139,6 +139,20 @@ paths:
       tags:
       - user
   /trades/{trading_account_id}/id/{trade_id}:
+    delete:
+      description: Cancels a trade order by id
+      operationId: deleteTradeById
+      parameters:
+      - $ref: '#/components/parameters/TradingAccountId'
+      - $ref: '#/components/parameters/TradeId'
+      responses:
+        "204":
+          description: Success
+        "404":
+          description: Error
+      summary: Cancel trade
+      tags:
+      - user
     get:
       description: Returns a trade by id
       operationId: getTradeById
@@ -198,6 +212,19 @@ paths:
       operationId: createTrade
       parameters:
       - $ref: '#/components/parameters/TradingAccountId'
+      requestBody:
+        content:
+          application/json:
+            example:
+              instrument: BTC-EUR
+              side: SELL
+              type: LIMIT
+              timeInForce: GTC
+              amount: "100"
+              price: "100.00"
+            schema:
+              $ref: '#/components/schemas/createTrade_request'
+        required: true
       responses:
         "200":
           content:
@@ -403,6 +430,12 @@ components:
       enum:
       - SELL
       - BUY
+    TradeOrderType:
+      enum:
+      - LIMIT
+      - MARKET
+      - STOPLOSS
+      - STOPLIMIT
     TradeOrderTimeInForce:
       enum:
       - GTC
@@ -415,12 +448,27 @@ components:
       - OPEN
       - REJECTED
       - CANCELLED
+      - PARTIALLY_CANCELLED
+      - PARTIALLY_REJECTED
+      - FILLED
+      - REJECTED
+    MoneyAmount:
+      example: "100.50"
+      format: decimal
+    DateTime:
+      example: 2017-07-21T17:32:28Z
+      format: date-time
     TradeOrder:
       example:
         side: null
+        amount: "100.50"
+        price: "100.50"
+        created: 2017-07-21T17:32:28Z
         instrument: BTC-EUR
         id: 29b6e916-0d74-41c3-b004-eb8373bca606
+        type: null
         timeInForce: null
+        openAmount: "100.50"
         status: null
       properties:
         id:
@@ -432,16 +480,27 @@ components:
           example: BTC-EUR
         side:
           $ref: '#/components/schemas/TradeOrderSide'
+        type:
+          $ref: '#/components/schemas/TradeOrderType'
         timeInForce:
           $ref: '#/components/schemas/TradeOrderTimeInForce'
         status:
           $ref: '#/components/schemas/TradeOrderStatus'
+        price:
+          example: "100.50"
+          format: decimal
+        amount:
+          example: "100.50"
+          format: decimal
+        openAmount:
+          example: "100.50"
+          format: decimal
+        created:
+          example: 2017-07-21T17:32:28Z
+          format: date-time
     TradeOrderList:
       items:
         $ref: '#/components/schemas/TradeOrder'
-    MoneyAmount:
-      example: "100.50"
-      format: decimal
     PaymentAccount:
       description: Payment account available to user
       properties:
@@ -564,4 +623,28 @@ components:
       - id
       - senderAccountId
       - status
+      - type
+    createTrade_request:
+      properties:
+        instrument:
+          description: "Ticker-like name of the instrument. For monetary instruments,\
+            \ a currency pair is used."
+          example: BTC-EUR
+        side:
+          $ref: '#/components/schemas/TradeOrderSide'
+        type:
+          $ref: '#/components/schemas/TradeOrderType'
+        timeInForce:
+          $ref: '#/components/schemas/TradeOrderTimeInForce'
+        amount:
+          example: "100.50"
+          format: decimal
+        price:
+          example: "100.50"
+          format: decimal
+      required:
+      - amount
+      - instrument
+      - side
+      - timeInForce
       - type

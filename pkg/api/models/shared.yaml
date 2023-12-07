@@ -10,6 +10,11 @@ components:
       format: decimal
       example: "100.50"
 
+    DateTime:
+      type: string
+      format: date-time
+      example: "2017-07-21T17:32:28Z"
+
   parameters:
     PaginationPage:
       name: page
@@ -19,6 +24,7 @@ components:
         type: integer
         default: 1
         example: 2
+
     PaginationLimit:
       name: limit
       in: query

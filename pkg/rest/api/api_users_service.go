@@ -27,7 +27,7 @@ func NewUsersAPIService() UsersAPIServicer {
 }
 
 // CreateTrade - Create trade order
-func (s *UsersAPIService) CreateTrade(ctx context.Context, tradingAccountId interface{}) (ImplResponse, error) {
+func (s *UsersAPIService) CreateTrade(ctx context.Context, tradingAccountId interface{}, createTradeRequest CreateTradeRequest) (ImplResponse, error) {
 	// TODO - update CreateTrade with the required logic for this service method.
 	// Add api_users_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 

@@ -15,6 +15,13 @@ components:
         - FOK
         - GTD
         - GTT
+    TradeOrderType:
+      type: string
+      enum:
+        - LIMIT
+        - MARKET
+        - STOPLOSS
+        - STOPLIMIT
 
     TradeOrderStatus:
       type: string
@@ -22,6 +29,10 @@ components:
         - OPEN
         - REJECTED
         - CANCELLED
+        - PARTIALLY_CANCELLED
+        - PARTIALLY_REJECTED
+        - FILLED
+        - REJECTED
 
     TradeOrderList:
       type: array
@@ -32,15 +43,26 @@ components:
       type: object
       properties:
         id:
-          $ref: ./shared.yaml#/components/schemas/Id
+          $ref: './shared.yaml#/components/schemas/Id'
         instrument:
-          $ref: ./instrument.yaml#/components/schemas/InstrumentName
+          $ref: './instrument.yaml#/components/schemas/InstrumentName'
         side:
           $ref: '#/components/schemas/TradeOrderSide'
+        type:
+          $ref: '#/components/schemas/TradeOrderType'
         timeInForce:
           $ref: '#/components/schemas/TradeOrderTimeInForce'
         status:
           $ref: '#/components/schemas/TradeOrderStatus'
+        price:
+          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+        amount:
+          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+        openAmount:
+          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+        created:
+          $ref: './shared.yaml#/components/schemas/DateTime'
+
 
 
 

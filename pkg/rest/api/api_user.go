@@ -49,6 +49,11 @@ func NewUserAPIController(s UserAPIServicer, opts ...UserAPIOption) Router {
 // Routes returns all the api routes for the UserAPIController
 func (c *UserAPIController) Routes() Routes {
 	return Routes{
+		"DeleteTradeById": Route{
+			strings.ToUpper("Delete"),
+			"/trades/{trading_account_id}/id/{trade_id}",
+			c.DeleteTradeById,
+		},
 		"GetBookOrders": Route{
 			strings.ToUpper("Get"),
 			"/book_orders/{trading_account_id}",
@@ -75,6 +80,21 @@ func (c *UserAPIController) Routes() Routes {
 			c.GetTrades,
 		},
 	}
+}
+
+// DeleteTradeById - Cancel trade
+func (c *UserAPIController) DeleteTradeById(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	tradingAccountIdParam := params["trading_account_id"]
+	tradeIdParam := params["trade_id"]
+	result, err := c.service.DeleteTradeById(r.Context(), tradingAccountIdParam, tradeIdParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
 // GetBookOrders - Get book orders

@@ -38,6 +38,7 @@ type PublicAPIRouter interface {
 // The UserAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a UserAPIServicer to perform the required actions, then write the service results to the http response.
 type UserAPIRouter interface {
+	DeleteTradeById(http.ResponseWriter, *http.Request)
 	GetBookOrders(http.ResponseWriter, *http.Request)
 	GetPaymentAccounts(http.ResponseWriter, *http.Request)
 	GetTradeById(http.ResponseWriter, *http.Request)
@@ -79,6 +80,7 @@ type PublicAPIServicer interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type UserAPIServicer interface {
+	DeleteTradeById(context.Context, interface{}, interface{}) (ImplResponse, error)
 	GetBookOrders(context.Context, interface{}) (ImplResponse, error)
 	GetPaymentAccounts(context.Context, interface{}) (ImplResponse, error)
 	GetTradeById(context.Context, interface{}, interface{}) (ImplResponse, error)
@@ -91,5 +93,5 @@ type UserAPIServicer interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type UsersAPIServicer interface {
-	CreateTrade(context.Context, interface{}) (ImplResponse, error)
+	CreateTrade(context.Context, interface{}, CreateTradeRequest) (ImplResponse, error)
 }
