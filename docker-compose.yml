@@ -5,7 +5,7 @@ volumes:
 services:
   db:
     container_name: exchange_db
-    image: postgres:15
+    image: postgres:16.1-alpine
     ports:
       - "5432:5432"
     volumes:

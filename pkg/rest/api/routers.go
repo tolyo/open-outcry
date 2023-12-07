@@ -41,7 +41,7 @@ const errMsgMaxValueConstraint = "provided parameter is not respecting maximum v
 
 // NewRouter creates a new router for any number of api routers
 func NewRouter(routers ...Router) *mux.Router {
-	router := mux.NewRouter().StrictSlash(true)
+	router := mux.NewRouter().StrictSlash(false)
 	for _, api := range routers {
 		for name, route := range api.Routes() {
 			var handler http.Handler
