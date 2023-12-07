@@ -29,4 +29,6 @@ api/model_trade_order_side.go
 api/model_trade_order_status.go
 api/model_trade_order_time_in_force.go
 api/model_trade_order_type.go
+api/model_trading_account.go
+api/model_trading_account_instrument.go
 api/openapi.yaml

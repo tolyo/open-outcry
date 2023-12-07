@@ -44,6 +44,7 @@ type UserAPIRouter interface {
 	GetTradeById(http.ResponseWriter, *http.Request)
 	GetTradeOrders(http.ResponseWriter, *http.Request)
 	GetTrades(http.ResponseWriter, *http.Request)
+	GetTradingAccount(http.ResponseWriter, *http.Request)
 }
 
 // UsersAPIRouter defines the required methods for binding the api requests to a responses for the UsersAPI
@@ -86,6 +87,7 @@ type UserAPIServicer interface {
 	GetTradeById(context.Context, interface{}, interface{}) (ImplResponse, error)
 	GetTradeOrders(context.Context, interface{}) (ImplResponse, error)
 	GetTrades(context.Context, interface{}) (ImplResponse, error)
+	GetTradingAccount(context.Context, interface{}) (ImplResponse, error)
 }
 
 // UsersAPIServicer defines the api actions for the UsersAPI service

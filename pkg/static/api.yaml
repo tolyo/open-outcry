@@ -253,6 +253,28 @@ paths:
                 $ref: '#/components/schemas/TradeOrder'
         '404':
           description: Error
+  /trading_account/{trading_account_id}:
+    get:
+      tags:
+        - user
+      summary: Get trading account
+      description: Returns user's trading account
+      operationId: getTradingAccount
+      parameters:
+        - in: path
+          name: trading_account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/Id'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingAccount'
+        '404':
+          description: Error
   /apps/{app_entity_id}:
     get:
       tags:
@@ -527,6 +549,40 @@ components:
       description: List of executed trades
       items:
         $ref: '#/components/schemas/Trade'
+    TradingAccountInstrument:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/InstrumentName'
+        amount:
+          $ref: '#/components/schemas/MoneyAmount'
+        amountReserved:
+          $ref: '#/components/schemas/MoneyAmount'
+        amountAvailable:
+          $ref: '#/components/schemas/MoneyAmount'
+        value:
+          $ref: '#/components/schemas/MoneyAmount'
+        currency:
+          $ref: '#/components/schemas/CurrencyName'
+      required:
+        - name
+        - amount
+        - amountReserved
+        - amountAvailable
+        - value
+        - currency
+    TradingAccount:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        instruments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TradingAccountInstrument'
+      required:
+        - id
+        - instruments
     AppEntityExternalId:
       type: string
       description: External id

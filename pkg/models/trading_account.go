@@ -1,13 +1,27 @@
 package models
 
-import "open-outcry/pkg/db"
+import (
+	"open-outcry/pkg/db"
+
+	"github.com/shopspring/decimal"
+)
 
 // `trading_account.pub_id` db reference
 type TradingAccountId string
 
+type TradingAccountInstrument struct {
+	Amount          decimal.Decimal
+	AmountAvailable float64
+	AmountReserved  float64
+	Name            InstrumentName
+	Value           float64
+	Currency        CurrencyName
+}
+
 type TradingAccount struct {
 	Id          TradingAccountId
 	AppEntityId AppEntityExternalId
+	// Instruments []TradingAccountInstrument
 }
 
 const tradingAccountBaseQuery = `

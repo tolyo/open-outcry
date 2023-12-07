@@ -237,6 +237,30 @@ paths:
       summary: Create trade order
       tags:
       - users
+  /trading_account/{trading_account_id}:
+    get:
+      description: Returns user's trading account
+      operationId: getTradingAccount
+      parameters:
+      - explode: false
+        in: path
+        name: trading_account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/Id'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradingAccount'
+          description: Success
+        "404":
+          description: Error
+      summary: Get trading account
+      tags:
+      - user
   /apps/{app_entity_id}:
     get:
       description: Return registered user by external id
@@ -543,6 +567,48 @@ components:
       description: List of executed trades
       items:
         $ref: '#/components/schemas/Trade'
+    TradingAccountInstrument:
+      properties:
+        name:
+          description: "Ticker-like name of the instrument. For monetary instruments,\
+            \ a currency pair is used."
+          example: BTC-EUR
+        amount:
+          example: "100.50"
+          format: decimal
+        amountReserved:
+          example: "100.50"
+          format: decimal
+        amountAvailable:
+          example: "100.50"
+          format: decimal
+        value:
+          example: "100.50"
+          format: decimal
+        currency:
+          description: ISO 4217 Currency symbol
+          example: USD
+      required:
+      - amount
+      - amountAvailable
+      - amountReserved
+      - currency
+      - name
+      - value
+    TradingAccount:
+      example:
+        instruments: ""
+        id: 29b6e916-0d74-41c3-b004-eb8373bca606
+      properties:
+        id:
+          example: 29b6e916-0d74-41c3-b004-eb8373bca606
+          format: uuid
+        instruments:
+          items:
+            $ref: '#/components/schemas/TradingAccountInstrument'
+      required:
+      - id
+      - instruments
     AppEntityExternalId:
       description: External id
     AppEntity:

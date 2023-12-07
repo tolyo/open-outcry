@@ -10,6 +10,7 @@ func NewServer() http.Server {
 	router := api.NewRouter(
 		api.NewPublicAPIController(api.NewPublicAPIService()),
 	)
+
 	return http.Server{
 		Addr:    ":" + conf.Get().RestPort,
 		Handler: router,

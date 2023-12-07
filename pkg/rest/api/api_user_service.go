@@ -109,3 +109,17 @@ func (s *UserAPIService) GetTrades(ctx context.Context, tradingAccountId interfa
 
 	return Response(http.StatusNotImplemented, nil), errors.New("GetTrades method not implemented")
 }
+
+// GetTradingAccount - Get trading account
+func (s *UserAPIService) GetTradingAccount(ctx context.Context, tradingAccountId interface{}) (ImplResponse, error) {
+	// TODO - update GetTradingAccount with the required logic for this service method.
+	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+
+	// TODO: Uncomment the next line to return response Response(200, TradingAccount{}) or use other options such as http.Ok ...
+	// return Response(200, TradingAccount{}), nil
+
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("GetTradingAccount method not implemented")
+}

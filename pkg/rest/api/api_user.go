@@ -79,6 +79,11 @@ func (c *UserAPIController) Routes() Routes {
 			"/trades/{trading_account_id}",
 			c.GetTrades,
 		},
+		"GetTradingAccount": Route{
+			strings.ToUpper("Get"),
+			"/trading_account/{trading_account_id}",
+			c.GetTradingAccount,
+		},
 	}
 }
 
@@ -159,6 +164,20 @@ func (c *UserAPIController) GetTrades(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	tradingAccountIdParam := params["trading_account_id"]
 	result, err := c.service.GetTrades(r.Context(), tradingAccountIdParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+}
+
+// GetTradingAccount - Get trading account
+func (c *UserAPIController) GetTradingAccount(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	tradingAccountIdParam := params["trading_account_id"]
+	result, err := c.service.GetTradingAccount(r.Context(), tradingAccountIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

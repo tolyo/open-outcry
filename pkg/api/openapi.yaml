@@ -55,6 +55,8 @@ paths:
     $ref: ./endpoints/user/trades.yaml
   /trade_orders/{trading_account_id}:
     $ref: ./endpoints/user/trade_orders.yaml
+  /trading_account/{trading_account_id}:
+    $ref: ./endpoints/user/trading_account_by_id.yaml
 
   #  # ADMIN OPERATIONS
   /apps/{app_entity_id}:

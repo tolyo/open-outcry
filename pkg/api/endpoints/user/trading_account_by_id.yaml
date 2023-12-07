@@ -1,0 +1,22 @@
+get:
+  tags:
+    - user
+  summary: Get trading account
+  description: Returns user's trading account
+  operationId: getTradingAccount
+  parameters:
+    - in: path
+      name: trading_account_id
+      required: true
+      schema:
+        $ref: '../../models/trading_account.yaml#/components/schemas/TradingAccountId'
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/trading_account.yaml#/components/schemas/TradingAccount'
+    "404":
+      description: Error
