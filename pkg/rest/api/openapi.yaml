@@ -236,7 +236,7 @@ paths:
           description: Error
       summary: Create trade order
       tags:
-      - users
+      - user
   /trading_account/{trading_account_id}:
     get:
       description: Returns user's trading account

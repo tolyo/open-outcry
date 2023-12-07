@@ -206,7 +206,7 @@ paths:
           description: Error
     post:
       tags:
-        - users
+        - user
       summary: Create trade order
       description: Creates a trade order
       operationId: createTrade

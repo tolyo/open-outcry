@@ -26,6 +26,20 @@ func NewUserAPIService() UserAPIServicer {
 	return &UserAPIService{}
 }
 
+// CreateTrade - Create trade order
+func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId interface{}, createTradeRequest CreateTradeRequest) (ImplResponse, error) {
+	// TODO - update CreateTrade with the required logic for this service method.
+	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+
+	// TODO: Uncomment the next line to return response Response(200, TradeOrder{}) or use other options such as http.Ok ...
+	// return Response(200, TradeOrder{}), nil
+
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("CreateTrade method not implemented")
+}
+
 // DeleteTradeById - Cancel trade
 func (s *UserAPIService) DeleteTradeById(ctx context.Context, tradingAccountId interface{}, tradeId interface{}) (ImplResponse, error) {
 	// TODO - update DeleteTradeById with the required logic for this service method.

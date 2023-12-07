@@ -10,6 +10,7 @@
 package api
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
 
@@ -49,6 +50,11 @@ func NewUserAPIController(s UserAPIServicer, opts ...UserAPIOption) Router {
 // Routes returns all the api routes for the UserAPIController
 func (c *UserAPIController) Routes() Routes {
 	return Routes{
+		"CreateTrade": Route{
+			strings.ToUpper("Post"),
+			"/trade_orders/{trading_account_id}",
+			c.CreateTrade,
+		},
 		"DeleteTradeById": Route{
 			strings.ToUpper("Delete"),
 			"/trades/{trading_account_id}/id/{trade_id}",
@@ -85,6 +91,35 @@ func (c *UserAPIController) Routes() Routes {
 			c.GetTradingAccount,
 		},
 	}
+}
+
+// CreateTrade - Create trade order
+func (c *UserAPIController) CreateTrade(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	tradingAccountIdParam := params["trading_account_id"]
+	createTradeRequestParam := CreateTradeRequest{}
+	d := json.NewDecoder(r.Body)
+	d.DisallowUnknownFields()
+	if err := d.Decode(&createTradeRequestParam); err != nil {
+		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+		return
+	}
+	if err := AssertCreateTradeRequestRequired(createTradeRequestParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	if err := AssertCreateTradeRequestConstraints(createTradeRequestParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	result, err := c.service.CreateTrade(r.Context(), tradingAccountIdParam, createTradeRequestParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
 // DeleteTradeById - Cancel trade

@@ -38,6 +38,7 @@ type PublicAPIRouter interface {
 // The UserAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a UserAPIServicer to perform the required actions, then write the service results to the http response.
 type UserAPIRouter interface {
+	CreateTrade(http.ResponseWriter, *http.Request)
 	DeleteTradeById(http.ResponseWriter, *http.Request)
 	GetBookOrders(http.ResponseWriter, *http.Request)
 	GetPaymentAccounts(http.ResponseWriter, *http.Request)
@@ -45,13 +46,6 @@ type UserAPIRouter interface {
 	GetTradeOrders(http.ResponseWriter, *http.Request)
 	GetTrades(http.ResponseWriter, *http.Request)
 	GetTradingAccount(http.ResponseWriter, *http.Request)
-}
-
-// UsersAPIRouter defines the required methods for binding the api requests to a responses for the UsersAPI
-// The UsersAPIRouter implementation should parse necessary information from the http request,
-// pass the data to a UsersAPIServicer to perform the required actions, then write the service results to the http response.
-type UsersAPIRouter interface {
-	CreateTrade(http.ResponseWriter, *http.Request)
 }
 
 // AdminAPIServicer defines the api actions for the AdminAPI service
@@ -81,6 +75,7 @@ type PublicAPIServicer interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type UserAPIServicer interface {
+	CreateTrade(context.Context, interface{}, CreateTradeRequest) (ImplResponse, error)
 	DeleteTradeById(context.Context, interface{}, interface{}) (ImplResponse, error)
 	GetBookOrders(context.Context, interface{}) (ImplResponse, error)
 	GetPaymentAccounts(context.Context, interface{}) (ImplResponse, error)
@@ -88,12 +83,4 @@ type UserAPIServicer interface {
 	GetTradeOrders(context.Context, interface{}) (ImplResponse, error)
 	GetTrades(context.Context, interface{}) (ImplResponse, error)
 	GetTradingAccount(context.Context, interface{}) (ImplResponse, error)
-}
-
-// UsersAPIServicer defines the api actions for the UsersAPI service
-// This interface intended to stay up to date with the openapi yaml used to generate it,
-// while the service implementation can be ignored with the .openapi-generator-ignore file
-// and updated with the logic required for the API.
-type UsersAPIServicer interface {
-	CreateTrade(context.Context, interface{}, CreateTradeRequest) (ImplResponse, error)
 }
