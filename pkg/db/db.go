@@ -71,11 +71,15 @@ func QueryList[T interface{}](query string, args ...any) []T {
 }
 
 func GetCount(tableName string) int {
-	return QueryVal[int]("SELECT COUNT(*) FROM " + tableName)
+	return QueryVal[int](
+		"SELECT COUNT(*) FROM " + tableName,
+	)
 }
 
 func DeleteAll(tableName string) {
-	_, err := Instance().ExecContext(context.Background(), "DELETE FROM "+tableName)
+	_, err := Instance().ExecContext(context.Background(),
+		"DELETE FROM "+tableName,
+	)
 	if err != nil {
 		log2.Fatal(err)
 	}

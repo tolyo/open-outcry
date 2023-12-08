@@ -28,7 +28,7 @@ lint:
 
 include ./pkg/conf/dev.env
 DBDSN:="host=$(POSTGRES_HOST) user=$(POSTGRES_USER) password=$(POSTGRES_PASSWORD) dbname=$(POSTGRES_DB) port=$(POSTGRES_PORT) sslmode=disable"
-MIGRATE_OPTIONS=-allow-missing -dir="./pkg/db/migrations"
+MIGRATE_OPTIONS=-allow-missing -dir="./sql"
 
 db-up: ## Migrate down on database
 	goose -v $(MIGRATE_OPTIONS) postgres $(DBDSN) up

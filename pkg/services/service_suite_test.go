@@ -5,6 +5,7 @@ import (
 	"open-outcry/pkg/db"
 	"open-outcry/pkg/models"
 	"open-outcry/pkg/utils"
+	"open-outcry/sql"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -28,7 +29,7 @@ func (suite *ServiceTestSuite) SetupSuite() {
 	if err != nil {
 		panic(err)
 	}
-	db.MigrateUp()
+	sql.MigrateUp()
 }
 
 func (suite *ServiceTestSuite) SetupTest() {
@@ -50,6 +51,6 @@ func (suite *ServiceTestSuite) TearDownTest() {
 }
 
 func (suite *ServiceTestSuite) TearDownAllSuite() {
-	db.MigrateDown()
+	sql.MigrateDown()
 	db.Instance().Close()
 }

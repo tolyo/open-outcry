@@ -1,12 +1,13 @@
-package db
+package sql
 
 import (
 	"embed"
+	"open-outcry/pkg/db"
 
 	"github.com/pressly/goose/v3"
 )
 
-//go:embed migrations/*.sql
+//go:embed *.sql
 var embedMigrations embed.FS
 
 func MigrateUp() error {
@@ -14,7 +15,7 @@ func MigrateUp() error {
 	if err := goose.SetDialect("postgres"); err != nil {
 		panic(err)
 	}
-	if err := goose.Up(Instance().DB, "migrations"); err != nil {
+	if err := goose.Up(db.Instance().DB, "sql"); err != nil {
 		return err
 	}
 
@@ -26,7 +27,7 @@ func MigrateDown() error {
 	if err := goose.SetDialect("postgres"); err != nil {
 		panic(err)
 	}
-	if err := goose.DownTo(Instance().DB, "migrations", 0); err != nil {
+	if err := goose.DownTo(db.Instance().DB, "sql", 0); err != nil {
 		return err
 	}
 
