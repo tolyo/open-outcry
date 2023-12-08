@@ -1,6 +1,8 @@
 package services
 
-import "open-outcry/pkg/models"
+import (
+	"open-outcry/pkg/models"
+)
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderSave() {
 	// when: a limit order is sent to an empty matching unit
@@ -9,7 +11,7 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderSave() {
 	// then: a matching unit should save the trade order on save order to the order book
 	assert.NotNil(res)
 	assert.Equal(1, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{{10.0, 100.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 10.0, Volume: 100.0}}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderSave() {
@@ -18,7 +20,7 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderSave() {
 
 	// then: a matching unit should save the orderSELL
 	assert.Equal(1, GetBuyBookOrderCount())
-	assert.Equal([]PriceVolume{{10.0, 100.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.0, Volume: 100.0}}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitNoMatchCaseIncomingBuy() {
@@ -30,8 +32,8 @@ func (assert *ServiceTestSuite) TestProcessLimitNoMatchCaseIncomingBuy() {
 	assert.Equal(1, GetSellBookOrderCount())
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(0, GetTradeCount())
-	assert.Equal([]PriceVolume{{10.0, 100.0}}, GetVolumes("BTC_EUR", models.Sell))
-	assert.Equal([]PriceVolume{{9.0, 100.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.0, Volume: 100.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 9.0, Volume: 100.0}}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitNoMatchCaseIncomingSell() {
@@ -44,8 +46,8 @@ func (assert *ServiceTestSuite) TestProcessLimitNoMatchCaseIncomingSell() {
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(0, GetTradeCount())
 	//
-	assert.Equal([]PriceVolume{{10.0, 100.0}}, GetVolumes("BTC_EUR", models.Sell))
-	assert.Equal([]PriceVolume{{9.0, 100.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.0, Volume: 100.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 9.0, Volume: 100.0}}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingBuy() {
@@ -58,7 +60,7 @@ func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingBuy() {
 	assert.Equal(0, GetTradeCount())
 
 	assert.Equal(100.0, GetAvailableLimitVolume(models.Sell, 10))
-	assert.Equal([]PriceVolume{{10.0, 100.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 10.0, Volume: 100.0}}, GetVolumes("BTC_EUR", models.Sell))
 
 	// when: a BUY limit order arrives that crossed
 	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 100, "GTC")
@@ -67,8 +69,8 @@ func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingBuy() {
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(1, GetTradeCount())
 	assert.Equal(0.0, GetAvailableLimitVolume(models.Sell, 10))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitPartialMatchIncomingBuySingleTrade() {
@@ -79,7 +81,7 @@ func (assert *ServiceTestSuite) TestProcessLimitPartialMatchIncomingBuySingleTra
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetTradeCount())
 
-	assert.Equal([]PriceVolume{{10.0, 100.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 10.0, Volume: 100.0}}, GetVolumes("BTC_EUR", models.Sell))
 
 	// when: incoming buy order is only partially matched
 	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10.00, 50.00, "GTC")
@@ -89,8 +91,8 @@ func (assert *ServiceTestSuite) TestProcessLimitPartialMatchIncomingBuySingleTra
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(1, GetTradeCount())
 
-	assert.Equal([]PriceVolume{{10.0, 50.0}}, GetVolumes("BTC_EUR", models.Sell))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.0, Volume: 50.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitOverflowMatchIncomingBuySingleTrade() {
@@ -110,9 +112,9 @@ func (assert *ServiceTestSuite) TestProcessLimitOverflowMatchIncomingBuySingleTr
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(1, GetTradeCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal([]PriceVolume{{10.00, 5.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.00, Volume: 5.0}}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitPartialMatchIncomingSellSingleTrade() {
@@ -135,9 +137,9 @@ func (assert *ServiceTestSuite) TestProcessLimitPartialMatchIncomingSellSingleTr
 	assert.Equal(1, GetTradeCount())
 
 	assert.Equal(50.0, GetAvailableLimitVolume(models.Buy, 10))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal([]PriceVolume{{10.00, 50.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.00, Volume: 50.0}}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitOverflowMatchIncomingSellSingleTrade() {
@@ -160,9 +162,9 @@ func (assert *ServiceTestSuite) TestProcessLimitOverflowMatchIncomingSellSingleT
 
 	assert.Equal(50.0, GetAvailableLimitVolume(models.Sell, 10))
 
-	assert.Equal([]PriceVolume{{10.00, 50.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 10.00, Volume: 50.0}}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingBuysMultipleTrades() {
@@ -186,8 +188,8 @@ func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingBuysMultipleTr
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(2, GetTradeCount())
 	assert.Equal(0.0, GetAvailableLimitVolume(models.Sell, 10))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingSellMultipleTrades() {
@@ -210,8 +212,8 @@ func (assert *ServiceTestSuite) TestProcessLimitExactMatchIncomingSellMultipleTr
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(2, GetTradeCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookSellsToMultipleTrades() {
@@ -236,8 +238,8 @@ func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookSellsToM
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(2, GetTradeCount())
 
-	assert.Equal([]PriceVolume{{10.00, 25.0}}, GetVolumes("BTC_EUR", models.Sell))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.00, Volume: 25.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookBuysToMultipleTrades() {
@@ -261,9 +263,9 @@ func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookBuysToMu
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(2, GetTradeCount())
 
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal([]PriceVolume{{10.00, 25.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.00, Volume: 25.0}}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitExactMatchMultipleBookSellsToMultipleTrades() {
@@ -289,8 +291,8 @@ func (assert *ServiceTestSuite) TestProcessLimitExactMatchMultipleBookSellsToMul
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(4, GetTradeCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitExactMatchMultipleBookBuyToMultipleTrades() {
@@ -315,8 +317,8 @@ func (assert *ServiceTestSuite) TestProcessLimitExactMatchMultipleBookBuyToMulti
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(4, GetTradeCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitIncompleteMatchMultipleBookSellsToMultipleTrades() {
@@ -339,9 +341,9 @@ func (assert *ServiceTestSuite) TestProcessLimitIncompleteMatchMultipleBookSells
 	assert.Equal(0, GetSellBookOrderCount())
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(2, GetTradeCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal([]PriceVolume{{10.00, 7.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.00, Volume: 7.0}}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitIncompleteMatchMultipleBookBuysToMultipleTrades() {
@@ -365,9 +367,9 @@ func (assert *ServiceTestSuite) TestProcessLimitIncompleteMatchMultipleBookBuysT
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(2, GetTradeCount())
 
-	assert.Equal([]PriceVolume{{10.00, 75.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 10.00, Volume: 75.0}}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookSellsToMultipleTradesMultiplePrices() {
@@ -390,9 +392,9 @@ func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookSellsToM
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(2, GetTradeCount())
 
-	assert.Equal([]PriceVolume{{10.00, 25.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 10.00, Volume: 25.0}}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookBuysToMultipleTradesMultiplePrices() {
@@ -417,9 +419,9 @@ func (assert *ServiceTestSuite) TestProcessLimitPartialMatchMultipleBookBuysToMu
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(2, GetTradeCount())
 	assert.Equal(25.0, GetAvailableLimitVolume(models.Buy, 9))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 
-	assert.Equal([]PriceVolume{{9.00, 25.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 9.00, Volume: 25.0}}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitSelfTradePreventions() {

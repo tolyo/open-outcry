@@ -153,10 +153,10 @@ func RunTestCases(assert *ServiceTestSuite, cases []MatchingServiceTestCase) {
 				}
 
 				if fieldExists(expectedState, "orderBookStates") {
-					utils.Each(expectedState.orderBookStates.buySide, func(level models.PriceLevel) {
+					utils.Each(expectedState.orderBookStates.buySide, func(level models.PriceVolume) {
 						assert.Equal(level.Volume, GetAvailableLimitVolume(models.Buy, models.OrderPrice(level.Price)))
 					})
-					utils.Each(expectedState.orderBookStates.sellSide, func(level models.PriceLevel) {
+					utils.Each(expectedState.orderBookStates.sellSide, func(level models.PriceVolume) {
 						assert.Equal(level.Volume, GetAvailableLimitVolume(models.Sell, models.OrderPrice(level.Price)))
 					})
 				}

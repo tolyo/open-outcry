@@ -5,11 +5,6 @@ import (
 	"open-outcry/pkg/models"
 )
 
-type PriceVolume struct {
-	Price  float64
-	Volume float64
-}
-
 func GetVolumeAtPrice(instrumentName models.InstrumentName, side models.OrderSide, price models.OrderPrice) float64 {
 	res := db.QueryVal[float64](`
 	 SELECT volume
@@ -21,7 +16,7 @@ func GetVolumeAtPrice(instrumentName models.InstrumentName, side models.OrderSid
 	return res
 }
 
-func GetVolumes(instrumentName models.InstrumentName, side models.OrderSide) []PriceVolume {
+func GetVolumes(instrumentName models.InstrumentName, side models.OrderSide) []models.PriceVolume {
 	var orderBy string
 	switch side {
 	case models.Sell:
@@ -29,7 +24,7 @@ func GetVolumes(instrumentName models.InstrumentName, side models.OrderSide) []P
 	case models.Buy:
 		orderBy = "DESC"
 	}
-	res := db.QueryList[PriceVolume](`
+	res := db.QueryList[models.PriceVolume](`
 		SELECT price, volume
 		FROM price_level
 		WHERE side = $2

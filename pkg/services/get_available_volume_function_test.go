@@ -8,10 +8,10 @@ var volumeCases = []MatchingServiceTestCase{
 	{steps: []TestStep{
 		{
 			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceLevel{
+				sellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 				},
-				buySide: []models.PriceLevel{
+				buySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 				},
 			}},
@@ -21,12 +21,12 @@ var volumeCases = []MatchingServiceTestCase{
 				{Side: models.Sell, Type: models.Limit, Price: 10, Amount: 100, TimeInForce: models.GTC},
 			},
 			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceLevel{
+				sellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 100.0},
 					{Price: 11.00, Volume: 100.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceLevel{
+				buySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
@@ -39,12 +39,12 @@ var volumeCases = []MatchingServiceTestCase{
 				{Side: models.Sell, Type: models.Limit, Price: 10, Amount: 100, TimeInForce: models.GTC},
 			},
 			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceLevel{
+				sellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 200.0},
 					{Price: 11.00, Volume: 200.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceLevel{
+				buySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
@@ -57,13 +57,13 @@ var volumeCases = []MatchingServiceTestCase{
 				{Side: models.Sell, Type: models.Limit, Price: 9, Amount: 100, TimeInForce: models.GTC},
 			},
 			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceLevel{
+				sellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 300.0},
 					{Price: 11.00, Volume: 300.0},
 					{Price: 9.00, Volume: 100.0},
 					{Price: 8.00, Volume: 0.0},
 				},
-				buySide: []models.PriceLevel{
+				buySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
@@ -79,12 +79,12 @@ var volumeCases = []MatchingServiceTestCase{
 				{Side: models.Buy, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
 			},
 			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceLevel{
+				sellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceLevel{
+				buySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 10.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 10.0},
@@ -97,12 +97,12 @@ var volumeCases = []MatchingServiceTestCase{
 				{Side: models.Buy, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
 			},
 			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceLevel{
+				sellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceLevel{
+				buySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 20.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 20.0},
@@ -115,12 +115,12 @@ var volumeCases = []MatchingServiceTestCase{
 				{Side: models.Buy, Type: models.Limit, Price: 9, Amount: 10, TimeInForce: models.GTC},
 			},
 			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceLevel{
+				sellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceLevel{
+				buySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 20.0},
 					{Price: 10.001, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},

@@ -44,10 +44,10 @@ func (assert *ServiceTestSuite) TestGetVolumeSellSide() {
 	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.4, 100, "GTC")
 
 	// then should be sorted with cheapest orders first
-	assert.Equal([]PriceVolume{
-		{10.4, 100},
-		{10.6, 100},
-		{10.7, 200},
+	assert.Equal([]models.PriceVolume{
+		{Price: 10.4, Volume: 100},
+		{Price: 10.6, Volume: 100},
+		{Price: 10.7, Volume: 200},
 	}, GetVolumes("BTC_EUR", models.Sell))
 }
 
@@ -60,10 +60,10 @@ func (assert *ServiceTestSuite) TestGetVolumeBuySide() {
 	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.4, 10, "GTC")
 
 	// then should be sorted with most expensive orders first
-	assert.Equal([]PriceVolume{
-		{1.7, 20},
-		{1.6, 10},
-		{1.4, 10},
+	assert.Equal([]models.PriceVolume{
+		{Price: 1.7, Volume: 20},
+		{Price: 1.6, Volume: 10},
+		{Price: 1.4, Volume: 10},
 	}, GetVolumes("BTC_EUR", models.Buy))
 
 }

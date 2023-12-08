@@ -32,7 +32,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderSave() {
 	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", models.Market, models.Sell, 0, 100, "GTC")
 	// then: a matching unit should save the trade order but it should not be visible to the order book
 	assert.Equal(1, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderSave() {
@@ -41,7 +41,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderSave() {
 
 	// then: a matching unit should save the trade order but it should not be visible to the order book
 	assert.Equal(1, GetBuyBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingSellLimit() {
@@ -52,7 +52,7 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingSellLimit(
 
 	// then: a matching unit should save the trade order but it should not be visible to the order book
 	assert.Equal(2, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{{10, 100}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 10, Volume: 100}}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingBuyLimit() {
@@ -63,7 +63,7 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingBuyLimit() 
 
 	// then: a matching unit should save the trade order but it should not be visible to the order book
 	assert.Equal(2, GetBuyBookOrderCount())
-	assert.Equal([]PriceVolume{{10.0, 10.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.0, Volume: 10.0}}, GetVolumes("BTC_EUR", models.Buy))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingBuyLimit() {
@@ -76,8 +76,8 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingBuyLimit()
 	assert.Equal([]float64{10.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingSellLimit() {
@@ -89,8 +89,8 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingSellLimit()
 	assert.Equal([]float64{10.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(1, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{{10.0, 90.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 10.0, Volume: 90.0}}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithMultipleExistingBuyLimits() {
@@ -105,8 +105,8 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithMultipleExistingBu
 	assert.Equal([]float64{7.0, 5.0, 4.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithMultipleExistingSellLimits() {
@@ -122,8 +122,8 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithMultipleExistingSel
 	assert.Equal([]float64{4.0, 5.0, 7.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSell() {
@@ -137,8 +137,8 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSell()
 	assert.Equal([]float64{5.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuy() {
@@ -152,8 +152,8 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuy()
 	assert.Equal([]float64{5.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(1, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{{5.0, 8.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 5.0, Volume: 8.0}}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAndBetterLimitSell() {
@@ -168,8 +168,8 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 	assert.Equal([]float64{5.0, 5.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAndBetterLimitBuy() {
@@ -184,8 +184,8 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAn
 	assert.Equal([]float64{5.0, 5.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAndWorseLimitSell() {
@@ -200,8 +200,8 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 	assert.Equal([]float64{6.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(1, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{{7.0, 10.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 7.0, Volume: 10.0}}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAndWorseLimitBuy() {
@@ -216,8 +216,8 @@ func (assert *ServiceTestSuite) TestProcessLimitSellOrderWithExistingMarketBuyAn
 	assert.Equal([]float64{5.0}, GetTradePrices())
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{{4.0, 10.0}}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 4.0, Volume: 10.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellAndNoReferencePrice() {
@@ -231,8 +231,8 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 	assert.Equal([]float64{}, GetTradePrices())
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(1, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndNoReferencePrice() {
@@ -246,8 +246,8 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 	assert.Equal([]float64{}, GetTradePrices())
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(1, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuOrderWithExistingMarketSellAndLimitSell() {
@@ -262,8 +262,8 @@ func (assert *ServiceTestSuite) TestProcessMarketBuOrderWithExistingMarketSellAn
 	assert.Equal([]float64{5.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(1, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{{5.0, 10.0}}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{{Price: 5.0, Volume: 10.0}}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndLimitBuy() {
@@ -278,8 +278,8 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 	assert.Equal([]float64{5.0}, GetTradePrices())
 	assert.Equal(1, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{{5.0, 10.0}}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{{Price: 5.0, Volume: 10.0}}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellAnReferencePrice() {
@@ -295,8 +295,8 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 	assert.Equal([]float64{5.0, 5.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndReferencePrice() {
@@ -312,8 +312,8 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 	assert.Equal([]float64{5.0, 5.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAndReferencePrice() {
@@ -329,8 +329,8 @@ func (assert *ServiceTestSuite) TestProcessLimitBuyOrderWithExistingMarketSellAn
 	assert.Equal([]float64{5.0, 5.0}, GetTradePrices())
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 // ---- TESTS BELOW REQUIRE VARIOUS HACKS TO SIMULATE TIMESTAMP INCREMENTS
@@ -360,8 +360,8 @@ func (assert *ServiceTestSuite) TestProcessMarketBuyOrderWithExistingMarketSellA
 	assert.Equal(5.0, GetTradePrices()[0])
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }
 
 func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyAndMultipleReferencePrices() {
@@ -389,6 +389,6 @@ func (assert *ServiceTestSuite) TestProcessMarketSellOrderWithExistingMarketBuyA
 	assert.Equal(5.0, GetTradePrices()[0])
 	assert.Equal(0, GetBuyBookOrderCount())
 	assert.Equal(0, GetSellBookOrderCount())
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
-	assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Buy))
+	assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", models.Sell))
 }

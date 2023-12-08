@@ -1,6 +1,6 @@
 package models
 
-type PriceLevel struct {
+type PriceVolume struct {
 	Price  float64
 	Volume float64
 }

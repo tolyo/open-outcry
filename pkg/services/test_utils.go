@@ -5,8 +5,8 @@ import (
 )
 
 type OrderBook struct {
-	sellSide []models.PriceLevel
-	buySide  []models.PriceLevel
+	sellSide []models.PriceVolume
+	buySide  []models.PriceVolume
 }
 
 // AppState represents the expected payment account state for both test entities

@@ -1,6 +1,8 @@
 package services
 
-import "open-outcry/pkg/models"
+import (
+	"open-outcry/pkg/models"
+)
 
 type TestData struct {
 	side                     models.OrderSide
@@ -43,7 +45,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrder() {
 		assert.Nil(err)
 		assert.Equal(1, GetBookOrderCount(data.side))
 		assert.Equal(
-			[]PriceVolume{{Price: data.price, Volume: data.amount}},
+			[]models.PriceVolume{{Price: data.price, Volume: data.amount}},
 			GetVolumes("BTC_EUR", data.side),
 		)
 
@@ -59,7 +61,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrder() {
 
 		// then: it is removed from the order book
 		assert.Equal(0, GetBookOrderCount(data.side))
-		assert.Equal([]PriceVolume{}, GetVolumes("BTC_EUR", data.side))
+		assert.Equal([]models.PriceVolume{}, GetVolumes("BTC_EUR", data.side))
 
 		// and: its status is cancelled
 		res = models.GetTradeOrder(tradeOrder)
