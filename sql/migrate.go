@@ -15,7 +15,7 @@ func MigrateUp() error {
 	if err := goose.SetDialect("postgres"); err != nil {
 		panic(err)
 	}
-	if err := goose.Up(db.Instance().DB, "sql"); err != nil {
+	if err := goose.Up(db.Instance().DB, "/"); err != nil {
 		return err
 	}
 
@@ -27,7 +27,7 @@ func MigrateDown() error {
 	if err := goose.SetDialect("postgres"); err != nil {
 		panic(err)
 	}
-	if err := goose.DownTo(db.Instance().DB, "sql", 0); err != nil {
+	if err := goose.DownTo(db.Instance().DB, "/", 0); err != nil {
 		return err
 	}
 
