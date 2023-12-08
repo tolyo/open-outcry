@@ -24,7 +24,7 @@ func TestServiceTestSuite(t *testing.T) {
 	suite.Run(t, &ServiceTestSuite{})
 }
 
-func (suite *ServiceTestSuite) SetupSuite() {
+func (assert *ServiceTestSuite) SetupSuite() {
 	err := db.SetupInstance()
 	if err != nil {
 		panic(err)
@@ -32,12 +32,12 @@ func (suite *ServiceTestSuite) SetupSuite() {
 	sql.MigrateUp()
 }
 
-func (suite *ServiceTestSuite) SetupTest() {
-	suite.appEntity1, suite.tradingAccount1 = Acc("test")
-	suite.appEntity2, suite.tradingAccount2 = Acc("test2")
+func (assert *ServiceTestSuite) SetupTest() {
+	assert.appEntity1, assert.tradingAccount1 = Acc("test")
+	assert.appEntity2, assert.tradingAccount2 = Acc("test2")
 }
 
-func (suite *ServiceTestSuite) TearDownTest() {
+func (assert *ServiceTestSuite) TearDownTest() {
 	utils.Each([]string{"stop_order",
 		"trading_account_transfer",
 		"trade",
@@ -50,7 +50,7 @@ func (suite *ServiceTestSuite) TearDownTest() {
 	}, db.DeleteAll)
 }
 
-func (suite *ServiceTestSuite) TearDownAllSuite() {
+func (assert *ServiceTestSuite) TearDownAllSuite() {
 	sql.MigrateDown()
 	db.Instance().Close()
 }

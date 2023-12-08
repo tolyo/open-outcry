@@ -7,11 +7,11 @@ var volumeCases = []MatchingServiceTestCase{
 	// if the order is on the sell side and order limit price is below or equal the query limit price.
 	{steps: []TestStep{
 		{
-			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceVolume{
+			expectedState: AppState{orderBookStates: models.OrderBook{
+				SellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 				},
-				buySide: []models.PriceVolume{
+				BuySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 				},
 			}},
@@ -20,13 +20,13 @@ var volumeCases = []MatchingServiceTestCase{
 			orders: []models.TradeOrder{
 				{Side: models.Sell, Type: models.Limit, Price: 10, Amount: 100, TimeInForce: models.GTC},
 			},
-			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceVolume{
+			expectedState: AppState{orderBookStates: models.OrderBook{
+				SellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 100.0},
 					{Price: 11.00, Volume: 100.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceVolume{
+				BuySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
@@ -38,13 +38,13 @@ var volumeCases = []MatchingServiceTestCase{
 			orders: []models.TradeOrder{
 				{Side: models.Sell, Type: models.Limit, Price: 10, Amount: 100, TimeInForce: models.GTC},
 			},
-			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceVolume{
+			expectedState: AppState{orderBookStates: models.OrderBook{
+				SellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 200.0},
 					{Price: 11.00, Volume: 200.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceVolume{
+				BuySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
@@ -56,14 +56,14 @@ var volumeCases = []MatchingServiceTestCase{
 			orders: []models.TradeOrder{
 				{Side: models.Sell, Type: models.Limit, Price: 9, Amount: 100, TimeInForce: models.GTC},
 			},
-			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceVolume{
+			expectedState: AppState{orderBookStates: models.OrderBook{
+				SellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 300.0},
 					{Price: 11.00, Volume: 300.0},
 					{Price: 9.00, Volume: 100.0},
 					{Price: 8.00, Volume: 0.0},
 				},
-				buySide: []models.PriceVolume{
+				BuySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
@@ -78,13 +78,13 @@ var volumeCases = []MatchingServiceTestCase{
 			orders: []models.TradeOrder{
 				{Side: models.Buy, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
 			},
-			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceVolume{
+			expectedState: AppState{orderBookStates: models.OrderBook{
+				SellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceVolume{
+				BuySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 10.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 10.0},
@@ -96,13 +96,13 @@ var volumeCases = []MatchingServiceTestCase{
 			orders: []models.TradeOrder{
 				{Side: models.Buy, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
 			},
-			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceVolume{
+			expectedState: AppState{orderBookStates: models.OrderBook{
+				SellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceVolume{
+				BuySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 20.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 20.0},
@@ -114,13 +114,13 @@ var volumeCases = []MatchingServiceTestCase{
 			orders: []models.TradeOrder{
 				{Side: models.Buy, Type: models.Limit, Price: 9, Amount: 10, TimeInForce: models.GTC},
 			},
-			expectedState: AppState{orderBookStates: OrderBook{
-				sellSide: []models.PriceVolume{
+			expectedState: AppState{orderBookStates: models.OrderBook{
+				SellSide: []models.PriceVolume{
 					{Price: 10.00, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},
 					{Price: 9.00, Volume: 0.0},
 				},
-				buySide: []models.PriceVolume{
+				BuySide: []models.PriceVolume{
 					{Price: 10.00, Volume: 20.0},
 					{Price: 10.001, Volume: 0.0},
 					{Price: 11.00, Volume: 0.0},

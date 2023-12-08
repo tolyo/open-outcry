@@ -4,17 +4,12 @@ import (
 	"open-outcry/pkg/models"
 )
 
-type OrderBook struct {
-	sellSide []models.PriceVolume
-	buySide  []models.PriceVolume
-}
-
 // AppState represents the expected payment account state for both test entities
 type AppState struct {
 	entity1         []models.PaymentAccount
 	entity2         []models.PaymentAccount
 	tradeCount      int
-	orderBookStates OrderBook
+	orderBookStates models.OrderBook
 }
 
 // TestStep is a representation of initial and final account states with orders to be executed in between
