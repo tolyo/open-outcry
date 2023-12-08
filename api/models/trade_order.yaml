@@ -32,7 +32,6 @@ components:
         - PARTIALLY_CANCELLED
         - PARTIALLY_REJECTED
         - FILLED
-        - REJECTED
 
     TradeOrderList:
       type: array

@@ -33,8 +33,8 @@ func (s *PublicAPIService) GetCurrencies(ctx context.Context) (ImplResponse, err
 	res := make([]Currency, 0)
 	for _, v := range currencies {
 		cur := Currency{
-			Name:      NewInterface(v.Name),
-			Precision: NewInterface(v.Precision),
+			Name:      string(v.Name),
+			Precision: int32(v.Precision),
 		}
 		res = append(res, cur)
 	}
@@ -47,8 +47,8 @@ func (s *PublicAPIService) GetFxInstruments(ctx context.Context) (ImplResponse, 
 	// TODO - update GetFxInstruments with the required logic for this service method.
 	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	// TODO: Uncomment the next line to return response Response(200, interface{}{}) or use other options such as http.Ok ...
-	// return Response(200, interface{}{}), nil
+	// TODO: Uncomment the next line to return response Response(200, []FxInstrument{}) or use other options such as http.Ok ...
+	// return Response(200, []FxInstrument{}), nil
 
 	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
 	// return Response(404, nil),nil
@@ -61,8 +61,8 @@ func (s *PublicAPIService) GetInstruments(ctx context.Context) (ImplResponse, er
 	// TODO - update GetInstruments with the required logic for this service method.
 	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	// TODO: Uncomment the next line to return response Response(200, interface{}{}) or use other options such as http.Ok ...
-	// return Response(200, interface{}{}), nil
+	// TODO: Uncomment the next line to return response Response(200, []Instrument{}) or use other options such as http.Ok ...
+	// return Response(200, []Instrument{}), nil
 
 	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
 	// return Response(404, nil),nil
@@ -71,7 +71,7 @@ func (s *PublicAPIService) GetInstruments(ctx context.Context) (ImplResponse, er
 }
 
 // GetOrderBook - Get order book
-func (s *PublicAPIService) GetOrderBook(ctx context.Context, instrumentName interface{}) (ImplResponse, error) {
+func (s *PublicAPIService) GetOrderBook(ctx context.Context, instrumentName string) (ImplResponse, error) {
 	// TODO - update GetOrderBook with the required logic for this service method.
 	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 

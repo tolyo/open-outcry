@@ -88,6 +88,10 @@ func (c *AdminAPIController) CreateAdminPayment(w http.ResponseWriter, r *http.R
 func (c *AdminAPIController) GetAdminPaymentById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	paymentIdParam := params["payment_id"]
+	if paymentIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"payment_id"}, nil)
+		return
+	}
 	result, err := c.service.GetAdminPaymentById(r.Context(), paymentIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
@@ -114,6 +118,10 @@ func (c *AdminAPIController) GetAppEntities(w http.ResponseWriter, r *http.Reque
 func (c *AdminAPIController) GetAppEntity(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	appEntityIdParam := params["app_entity_id"]
+	if appEntityIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"app_entity_id"}, nil)
+		return
+	}
 	result, err := c.service.GetAppEntity(r.Context(), appEntityIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {

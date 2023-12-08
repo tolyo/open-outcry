@@ -12,7 +12,7 @@ package api
 type CreateTradeRequest struct {
 
 	// Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
-	Instrument *interface{} `json:"instrument"`
+	Instrument string `json:"instrument"`
 
 	Side TradeOrderSide `json:"side"`
 
@@ -20,9 +20,9 @@ type CreateTradeRequest struct {
 
 	TimeInForce TradeOrderTimeInForce `json:"timeInForce"`
 
-	Amount *interface{} `json:"amount"`
+	Amount float64 `json:"amount"`
 
-	Price *interface{} `json:"price,omitempty"`
+	Price float64 `json:"price,omitempty"`
 }
 
 // AssertCreateTradeRequestRequired checks if the required fields are not zero-ed

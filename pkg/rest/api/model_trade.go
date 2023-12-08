@@ -11,7 +11,7 @@ package api
 
 // Trade - Executed trade
 type Trade struct {
-	Id *interface{} `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 }
 
 // AssertTradeRequired checks if the required fields are not zero-ed

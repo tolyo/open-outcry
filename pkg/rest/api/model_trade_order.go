@@ -9,11 +9,15 @@
 
 package api
 
+import (
+	"time"
+)
+
 type TradeOrder struct {
-	Id *interface{} `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	// Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
-	Instrument *interface{} `json:"instrument,omitempty"`
+	Instrument string `json:"instrument,omitempty"`
 
 	Side TradeOrderSide `json:"side,omitempty"`
 
@@ -23,13 +27,13 @@ type TradeOrder struct {
 
 	Status TradeOrderStatus `json:"status,omitempty"`
 
-	Price *interface{} `json:"price,omitempty"`
+	Price float64 `json:"price,omitempty"`
 
-	Amount *interface{} `json:"amount,omitempty"`
+	Amount float64 `json:"amount,omitempty"`
 
-	OpenAmount *interface{} `json:"openAmount,omitempty"`
+	OpenAmount float64 `json:"openAmount,omitempty"`
 
-	Created *interface{} `json:"created,omitempty"`
+	Created time.Time `json:"created,omitempty"`
 }
 
 // AssertTradeOrderRequired checks if the required fields are not zero-ed

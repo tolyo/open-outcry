@@ -10,13 +10,18 @@
 package api
 
 type OrderBook struct {
-	Sell *interface{} `json:"sell,omitempty"`
+	Sell []PriceVolume `json:"sell,omitempty"`
 
 	Buy *interface{} `json:"buy,omitempty"`
 }
 
 // AssertOrderBookRequired checks if the required fields are not zero-ed
 func AssertOrderBookRequired(obj OrderBook) error {
+	for _, el := range obj.Sell {
+		if err := AssertPriceVolumeRequired(el); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

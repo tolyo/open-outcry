@@ -11,11 +11,16 @@ package api
 
 // CurrencyList - List of currencies supported by app
 type CurrencyList struct {
-	Data *interface{} `json:"data,omitempty"`
+	Data []Currency `json:"data,omitempty"`
 }
 
 // AssertCurrencyListRequired checks if the required fields are not zero-ed
 func AssertCurrencyListRequired(obj CurrencyList) error {
+	for _, el := range obj.Data {
+		if err := AssertCurrencyRequired(el); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

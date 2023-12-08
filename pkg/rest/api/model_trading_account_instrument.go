@@ -12,18 +12,18 @@ package api
 type TradingAccountInstrument struct {
 
 	// Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
-	Name *interface{} `json:"name"`
+	Name string `json:"name"`
 
-	Amount *interface{} `json:"amount"`
+	Amount float64 `json:"amount"`
 
-	AmountReserved *interface{} `json:"amountReserved"`
+	AmountReserved float64 `json:"amountReserved"`
 
-	AmountAvailable *interface{} `json:"amountAvailable"`
+	AmountAvailable float64 `json:"amountAvailable"`
 
-	Value *interface{} `json:"value"`
+	Value float64 `json:"value"`
 
 	// ISO 4217 Currency symbol
-	Currency *interface{} `json:"currency"`
+	Currency string `json:"currency"`
 }
 
 // AssertTradingAccountInstrumentRequired checks if the required fields are not zero-ed

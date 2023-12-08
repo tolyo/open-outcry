@@ -27,7 +27,7 @@ func NewUserAPIService() UserAPIServicer {
 }
 
 // CreateTrade - Create trade order
-func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId interface{}, createTradeRequest CreateTradeRequest) (ImplResponse, error) {
+func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId string, createTradeRequest CreateTradeRequest) (ImplResponse, error) {
 	// TODO - update CreateTrade with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -41,7 +41,7 @@ func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId inter
 }
 
 // DeleteTradeById - Cancel trade
-func (s *UserAPIService) DeleteTradeById(ctx context.Context, tradingAccountId interface{}, tradeId interface{}) (ImplResponse, error) {
+func (s *UserAPIService) DeleteTradeById(ctx context.Context, tradingAccountId string, tradeId string) (ImplResponse, error) {
 	// TODO - update DeleteTradeById with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -55,12 +55,12 @@ func (s *UserAPIService) DeleteTradeById(ctx context.Context, tradingAccountId i
 }
 
 // GetBookOrders - Get book orders
-func (s *UserAPIService) GetBookOrders(ctx context.Context, tradingAccountId interface{}) (ImplResponse, error) {
+func (s *UserAPIService) GetBookOrders(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
 	// TODO - update GetBookOrders with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	// TODO: Uncomment the next line to return response Response(200, interface{}{}) or use other options such as http.Ok ...
-	// return Response(200, interface{}{}), nil
+	// TODO: Uncomment the next line to return response Response(200, []TradeOrder{}) or use other options such as http.Ok ...
+	// return Response(200, []TradeOrder{}), nil
 
 	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
 	// return Response(404, nil),nil
@@ -69,7 +69,7 @@ func (s *UserAPIService) GetBookOrders(ctx context.Context, tradingAccountId int
 }
 
 // GetPaymentAccounts - Get payment accounts
-func (s *UserAPIService) GetPaymentAccounts(ctx context.Context, appEntityId interface{}) (ImplResponse, error) {
+func (s *UserAPIService) GetPaymentAccounts(ctx context.Context, appEntityId string) (ImplResponse, error) {
 	// TODO - update GetPaymentAccounts with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -83,7 +83,7 @@ func (s *UserAPIService) GetPaymentAccounts(ctx context.Context, appEntityId int
 }
 
 // GetTradeById - Get trade
-func (s *UserAPIService) GetTradeById(ctx context.Context, tradingAccountId interface{}, tradeId interface{}) (ImplResponse, error) {
+func (s *UserAPIService) GetTradeById(ctx context.Context, tradingAccountId string, tradeId string) (ImplResponse, error) {
 	// TODO - update GetTradeById with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -97,12 +97,12 @@ func (s *UserAPIService) GetTradeById(ctx context.Context, tradingAccountId inte
 }
 
 // GetTradeOrders - Get trade orders
-func (s *UserAPIService) GetTradeOrders(ctx context.Context, tradingAccountId interface{}) (ImplResponse, error) {
+func (s *UserAPIService) GetTradeOrders(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
 	// TODO - update GetTradeOrders with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	// TODO: Uncomment the next line to return response Response(200, interface{}{}) or use other options such as http.Ok ...
-	// return Response(200, interface{}{}), nil
+	// TODO: Uncomment the next line to return response Response(200, []TradeOrder{}) or use other options such as http.Ok ...
+	// return Response(200, []TradeOrder{}), nil
 
 	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
 	// return Response(404, nil),nil
@@ -111,12 +111,12 @@ func (s *UserAPIService) GetTradeOrders(ctx context.Context, tradingAccountId in
 }
 
 // GetTrades - Trades list
-func (s *UserAPIService) GetTrades(ctx context.Context, tradingAccountId interface{}) (ImplResponse, error) {
+func (s *UserAPIService) GetTrades(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
 	// TODO - update GetTrades with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	// TODO: Uncomment the next line to return response Response(200, interface{}{}) or use other options such as http.Ok ...
-	// return Response(200, interface{}{}), nil
+	// TODO: Uncomment the next line to return response Response(200, []Trade{}) or use other options such as http.Ok ...
+	// return Response(200, []Trade{}), nil
 
 	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
 	// return Response(404, nil),nil
@@ -125,7 +125,7 @@ func (s *UserAPIService) GetTrades(ctx context.Context, tradingAccountId interfa
 }
 
 // GetTradingAccount - Get trading account
-func (s *UserAPIService) GetTradingAccount(ctx context.Context, tradingAccountId interface{}) (ImplResponse, error) {
+func (s *UserAPIService) GetTradingAccount(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
 	// TODO - update GetTradingAccount with the required logic for this service method.
 	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 

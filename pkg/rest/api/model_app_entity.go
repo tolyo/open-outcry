@@ -11,10 +11,10 @@ package api
 
 // AppEntity - Registered user
 type AppEntity struct {
-	Id *interface{} `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	// External id
-	ExternalId *interface{} `json:"external_id,omitempty"`
+	ExternalId string `json:"external_id,omitempty"`
 }
 
 // AssertAppEntityRequired checks if the required fields are not zero-ed

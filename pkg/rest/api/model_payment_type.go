@@ -9,7 +9,57 @@
 
 package api
 
-type PaymentType struct {
+import (
+	"fmt"
+)
+
+type PaymentType string
+
+// List of PaymentType
+const (
+	DEPOSIT         PaymentType = "DEPOSIT"
+	WITHDRAWAL      PaymentType = "WITHDRAWAL"
+	TRANSFER        PaymentType = "TRANSFER"
+	INSTRUMENT_BUY  PaymentType = "INSTRUMENT_BUY"
+	INSTRUMENT_SELL PaymentType = "INSTRUMENT_SELL"
+	CHARGE          PaymentType = "CHARGE"
+)
+
+// AllowedPaymentTypeEnumValues is all the allowed values of PaymentType enum
+var AllowedPaymentTypeEnumValues = []PaymentType{
+	"DEPOSIT",
+	"WITHDRAWAL",
+	"TRANSFER",
+	"INSTRUMENT_BUY",
+	"INSTRUMENT_SELL",
+	"CHARGE",
+}
+
+// validPaymentTypeEnumValue provides a map of PaymentTypes for fast verification of use input
+var validPaymentTypeEnumValues = map[PaymentType]struct{}{
+	"DEPOSIT":         {},
+	"WITHDRAWAL":      {},
+	"TRANSFER":        {},
+	"INSTRUMENT_BUY":  {},
+	"INSTRUMENT_SELL": {},
+	"CHARGE":          {},
+}
+
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PaymentType) IsValid() bool {
+	_, ok := validPaymentTypeEnumValues[v]
+	return ok
+}
+
+// NewPaymentTypeFromValue returns a pointer to a valid PaymentType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPaymentTypeFromValue(v string) (PaymentType, error) {
+	ev := PaymentType(v)
+	if ev.IsValid() {
+		return ev, nil
+	} else {
+		return "", fmt.Errorf("invalid value '%v' for PaymentType: valid values are %v", v, AllowedPaymentTypeEnumValues)
+	}
 }
 
 // AssertPaymentTypeRequired checks if the required fields are not zero-ed

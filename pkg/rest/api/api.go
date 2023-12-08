@@ -54,9 +54,9 @@ type UserAPIRouter interface {
 // and updated with the logic required for the API.
 type AdminAPIServicer interface {
 	CreateAdminPayment(context.Context) (ImplResponse, error)
-	GetAdminPaymentById(context.Context, interface{}) (ImplResponse, error)
+	GetAdminPaymentById(context.Context, string) (ImplResponse, error)
 	GetAppEntities(context.Context) (ImplResponse, error)
-	GetAppEntity(context.Context, interface{}) (ImplResponse, error)
+	GetAppEntity(context.Context, string) (ImplResponse, error)
 }
 
 // PublicAPIServicer defines the api actions for the PublicAPI service
@@ -67,7 +67,7 @@ type PublicAPIServicer interface {
 	GetCurrencies(context.Context) (ImplResponse, error)
 	GetFxInstruments(context.Context) (ImplResponse, error)
 	GetInstruments(context.Context) (ImplResponse, error)
-	GetOrderBook(context.Context, interface{}) (ImplResponse, error)
+	GetOrderBook(context.Context, string) (ImplResponse, error)
 }
 
 // UserAPIServicer defines the api actions for the UserAPI service
@@ -75,12 +75,12 @@ type PublicAPIServicer interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type UserAPIServicer interface {
-	CreateTrade(context.Context, interface{}, CreateTradeRequest) (ImplResponse, error)
-	DeleteTradeById(context.Context, interface{}, interface{}) (ImplResponse, error)
-	GetBookOrders(context.Context, interface{}) (ImplResponse, error)
-	GetPaymentAccounts(context.Context, interface{}) (ImplResponse, error)
-	GetTradeById(context.Context, interface{}, interface{}) (ImplResponse, error)
-	GetTradeOrders(context.Context, interface{}) (ImplResponse, error)
-	GetTrades(context.Context, interface{}) (ImplResponse, error)
-	GetTradingAccount(context.Context, interface{}) (ImplResponse, error)
+	CreateTrade(context.Context, string, CreateTradeRequest) (ImplResponse, error)
+	DeleteTradeById(context.Context, string, string) (ImplResponse, error)
+	GetBookOrders(context.Context, string) (ImplResponse, error)
+	GetPaymentAccounts(context.Context, string) (ImplResponse, error)
+	GetTradeById(context.Context, string, string) (ImplResponse, error)
+	GetTradeOrders(context.Context, string) (ImplResponse, error)
+	GetTrades(context.Context, string) (ImplResponse, error)
+	GetTradingAccount(context.Context, string) (ImplResponse, error)
 }

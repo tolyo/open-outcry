@@ -9,7 +9,54 @@
 
 package api
 
-type TradeOrderTimeInForce struct {
+import (
+	"fmt"
+)
+
+type TradeOrderTimeInForce string
+
+// List of TradeOrderTimeInForce
+const (
+	GTC TradeOrderTimeInForce = "GTC"
+	IOC TradeOrderTimeInForce = "IOC"
+	FOK TradeOrderTimeInForce = "FOK"
+	GTD TradeOrderTimeInForce = "GTD"
+	GTT TradeOrderTimeInForce = "GTT"
+)
+
+// AllowedTradeOrderTimeInForceEnumValues is all the allowed values of TradeOrderTimeInForce enum
+var AllowedTradeOrderTimeInForceEnumValues = []TradeOrderTimeInForce{
+	"GTC",
+	"IOC",
+	"FOK",
+	"GTD",
+	"GTT",
+}
+
+// validTradeOrderTimeInForceEnumValue provides a map of TradeOrderTimeInForces for fast verification of use input
+var validTradeOrderTimeInForceEnumValues = map[TradeOrderTimeInForce]struct{}{
+	"GTC": {},
+	"IOC": {},
+	"FOK": {},
+	"GTD": {},
+	"GTT": {},
+}
+
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v TradeOrderTimeInForce) IsValid() bool {
+	_, ok := validTradeOrderTimeInForceEnumValues[v]
+	return ok
+}
+
+// NewTradeOrderTimeInForceFromValue returns a pointer to a valid TradeOrderTimeInForce
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewTradeOrderTimeInForceFromValue(v string) (TradeOrderTimeInForce, error) {
+	ev := TradeOrderTimeInForce(v)
+	if ev.IsValid() {
+		return ev, nil
+	} else {
+		return "", fmt.Errorf("invalid value '%v' for TradeOrderTimeInForce: valid values are %v", v, AllowedTradeOrderTimeInForceEnumValues)
+	}
 }
 
 // AssertTradeOrderTimeInForceRequired checks if the required fields are not zero-ed

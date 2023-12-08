@@ -9,7 +9,45 @@
 
 package api
 
-type TradeOrderSide struct {
+import (
+	"fmt"
+)
+
+type TradeOrderSide string
+
+// List of TradeOrderSide
+const (
+	SELL TradeOrderSide = "SELL"
+	BUY  TradeOrderSide = "BUY"
+)
+
+// AllowedTradeOrderSideEnumValues is all the allowed values of TradeOrderSide enum
+var AllowedTradeOrderSideEnumValues = []TradeOrderSide{
+	"SELL",
+	"BUY",
+}
+
+// validTradeOrderSideEnumValue provides a map of TradeOrderSides for fast verification of use input
+var validTradeOrderSideEnumValues = map[TradeOrderSide]struct{}{
+	"SELL": {},
+	"BUY":  {},
+}
+
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v TradeOrderSide) IsValid() bool {
+	_, ok := validTradeOrderSideEnumValues[v]
+	return ok
+}
+
+// NewTradeOrderSideFromValue returns a pointer to a valid TradeOrderSide
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewTradeOrderSideFromValue(v string) (TradeOrderSide, error) {
+	ev := TradeOrderSide(v)
+	if ev.IsValid() {
+		return ev, nil
+	} else {
+		return "", fmt.Errorf("invalid value '%v' for TradeOrderSide: valid values are %v", v, AllowedTradeOrderSideEnumValues)
+	}
 }
 
 // AssertTradeOrderSideRequired checks if the required fields are not zero-ed

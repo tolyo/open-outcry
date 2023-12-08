@@ -363,15 +363,18 @@ components:
     CurrencyName:
       description: ISO 4217 Currency symbol
       example: USD
+      type: string
     Currency:
       description: Currency of payment account
       properties:
         name:
           description: ISO 4217 Currency symbol
           example: USD
+          type: string
         precision:
           description: Currency precision as number of decimal points
           example: 2
+          type: integer
     CurrencyList:
       description: List of currencies supported by app
       example:
@@ -384,69 +387,105 @@ components:
         data:
           items:
             $ref: '#/components/schemas/Currency'
+          type: array
     Id:
       example: 29b6e916-0d74-41c3-b004-eb8373bca606
       format: uuid
+      type: string
     InstrumentName:
       description: "Ticker-like name of the instrument. For monetary instruments,\
         \ a currency pair is used."
       example: BTC-EUR
+      type: string
     InstrumentAvailability:
       description: Availability for trading
       example: true
+      type: boolean
     FxInstrument:
+      example:
+        base_currency: USD
+        name: BTC-EUR
+        id: 29b6e916-0d74-41c3-b004-eb8373bca606
+        quote_currency: USD
+        enabled: true
       properties:
         id:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
         name:
           description: "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
+          type: string
         quote_currency:
           description: ISO 4217 Currency symbol
           example: USD
+          type: string
         enabled:
           description: Availability for trading
           example: true
+          type: boolean
         base_currency:
           description: ISO 4217 Currency symbol
           example: USD
+          type: string
     FxInstrumentList:
       items:
         $ref: '#/components/schemas/FxInstrument'
+      type: array
     Instrument:
+      example:
+        name: BTC-EUR
+        id: 29b6e916-0d74-41c3-b004-eb8373bca606
+        quote_currency: USD
+        enabled: true
       properties:
         id:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
         name:
           description: "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
+          type: string
         quote_currency:
           description: ISO 4217 Currency symbol
           example: USD
+          type: string
         enabled:
           description: Availability for trading
           example: true
+          type: boolean
     InstrumentList:
       items:
         $ref: '#/components/schemas/Instrument'
+      type: array
     PriceVolume:
+      example:
+        volume: 80
+        price: 120
       properties:
         price:
           example: 120
+          type: number
         volume:
           example: 80
+          type: number
     OrderBook:
       example:
-        sell: ""
+        sell:
+        - volume: 80
+          price: 120
+        - volume: 80
+          price: 120
         buy: ""
       properties:
         sell:
           items:
             $ref: '#/components/schemas/PriceVolume'
+          type: array
         buy:
           items:
             $ref: '#/components/schemas/PriceVolume'
@@ -454,12 +493,14 @@ components:
       enum:
       - SELL
       - BUY
+      type: string
     TradeOrderType:
       enum:
       - LIMIT
       - MARKET
       - STOPLOSS
       - STOPLIMIT
+      type: string
     TradeOrderTimeInForce:
       enum:
       - GTC
@@ -467,6 +508,7 @@ components:
       - FOK
       - GTD
       - GTT
+      type: string
     TradeOrderStatus:
       enum:
       - OPEN
@@ -475,13 +517,15 @@ components:
       - PARTIALLY_CANCELLED
       - PARTIALLY_REJECTED
       - FILLED
-      - REJECTED
+      type: string
     MoneyAmount:
       example: "100.50"
       format: decimal
+      type: string
     DateTime:
       example: 2017-07-21T17:32:28Z
       format: date-time
+      type: string
     TradeOrder:
       example:
         side: null
@@ -498,10 +542,12 @@ components:
         id:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
         instrument:
           description: "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
+          type: string
         side:
           $ref: '#/components/schemas/TradeOrderSide'
         type:
@@ -513,36 +559,46 @@ components:
         price:
           example: "100.50"
           format: decimal
+          type: string
         amount:
           example: "100.50"
           format: decimal
+          type: string
         openAmount:
           example: "100.50"
           format: decimal
+          type: string
         created:
           example: 2017-07-21T17:32:28Z
           format: date-time
+          type: string
     TradeOrderList:
       items:
         $ref: '#/components/schemas/TradeOrder'
+      type: array
     PaymentAccount:
       description: Payment account available to user
       properties:
         id:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
         currency:
           description: ISO 4217 Currency symbol
           example: USD
+          type: string
         amount:
           example: "100.50"
           format: decimal
+          type: string
         amountReserved:
           example: "100.50"
           format: decimal
+          type: string
         amountAvailable:
           example: "100.50"
           format: decimal
+          type: string
     PaymentAccountList:
       description: List of payment accounts available to user
       example:
@@ -555,6 +611,7 @@ components:
         data:
           items:
             $ref: '#/components/schemas/PaymentAccount'
+          type: array
     Trade:
       description: Executed trade
       example:
@@ -563,31 +620,45 @@ components:
         id:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
     TradeList:
-      description: List of executed trades
       items:
         $ref: '#/components/schemas/Trade'
+      type: array
     TradingAccountInstrument:
+      example:
+        amount: "100.50"
+        amountAvailable: "100.50"
+        name: BTC-EUR
+        amountReserved: "100.50"
+        currency: USD
+        value: "100.50"
       properties:
         name:
           description: "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
+          type: string
         amount:
           example: "100.50"
           format: decimal
+          type: string
         amountReserved:
           example: "100.50"
           format: decimal
+          type: string
         amountAvailable:
           example: "100.50"
           format: decimal
+          type: string
         value:
           example: "100.50"
           format: decimal
+          type: string
         currency:
           description: ISO 4217 Currency symbol
           example: USD
+          type: string
       required:
       - amount
       - amountAvailable
@@ -597,35 +668,52 @@ components:
       - value
     TradingAccount:
       example:
-        instruments: ""
+        instruments:
+        - amount: "100.50"
+          amountAvailable: "100.50"
+          name: BTC-EUR
+          amountReserved: "100.50"
+          currency: USD
+          value: "100.50"
+        - amount: "100.50"
+          amountAvailable: "100.50"
+          name: BTC-EUR
+          amountReserved: "100.50"
+          currency: USD
+          value: "100.50"
         id: 29b6e916-0d74-41c3-b004-eb8373bca606
       properties:
         id:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
         instruments:
           items:
             $ref: '#/components/schemas/TradingAccountInstrument'
+          type: array
       required:
       - id
       - instruments
     AppEntityExternalId:
       description: External id
+      type: string
     AppEntity:
       description: Registered user
       example:
-        external_id: ""
+        external_id: external_id
         id: 29b6e916-0d74-41c3-b004-eb8373bca606
       properties:
         id:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
         external_id:
           description: External id
+          type: string
     AppEntityList:
-      description: List of registered users
       items:
         $ref: '#/components/schemas/AppEntity'
+      type: array
     PaymentType:
       enum:
       - DEPOSIT
@@ -634,10 +722,13 @@ components:
       - INSTRUMENT_BUY
       - INSTRUMENT_SELL
       - CHARGE
+      type: string
     PaymentDetails:
       example: Bank deposit Bank REF123456
+      type: string
     PaymentExternalReferenceNumber:
       example: REF123456
+      type: string
     Payment:
       example:
         amount: "100.50"
@@ -650,36 +741,46 @@ components:
         id: 29b6e916-0d74-41c3-b004-eb8373bca606
         type: null
         senderAccountId: 29b6e916-0d74-41c3-b004-eb8373bca606
-        status: ""
+        status: status
       properties:
         id:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
         type:
           $ref: '#/components/schemas/PaymentType'
         amount:
           example: "100.50"
           format: decimal
+          type: string
         currency:
           description: ISO 4217 Currency symbol
           example: USD
+          type: string
         senderAccountId:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
         beneficiaryAccountId:
           example: 29b6e916-0d74-41c3-b004-eb8373bca606
           format: uuid
+          type: string
         details:
           example: Bank deposit Bank REF123456
+          type: string
         externalReferenceNumber:
           example: REF123456
-        status: {}
+          type: string
+        status:
+          type: string
         debitBalanceAmount:
           example: "100.50"
           format: decimal
+          type: string
         creditBalanceAmount:
           example: "100.50"
           format: decimal
+          type: string
       required:
       - amount
       - beneficiaryAccountId
@@ -696,6 +797,7 @@ components:
           description: "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
+          type: string
         side:
           $ref: '#/components/schemas/TradeOrderSide'
         type:
@@ -705,9 +807,11 @@ components:
         amount:
           example: "100.50"
           format: decimal
+          type: string
         price:
           example: "100.50"
           format: decimal
+          type: string
       required:
       - amount
       - instrument

@@ -10,16 +10,16 @@
 package api
 
 type Instrument struct {
-	Id *interface{} `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	// Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
-	Name *interface{} `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 
 	// ISO 4217 Currency symbol
-	QuoteCurrency *interface{} `json:"quote_currency,omitempty"`
+	QuoteCurrency string `json:"quote_currency,omitempty"`
 
 	// Availability for trading
-	Enabled *interface{} `json:"enabled,omitempty"`
+	Enabled bool `json:"enabled,omitempty"`
 }
 
 // AssertInstrumentRequired checks if the required fields are not zero-ed

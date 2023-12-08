@@ -112,6 +112,10 @@ func (c *PublicAPIController) GetInstruments(w http.ResponseWriter, r *http.Requ
 func (c *PublicAPIController) GetOrderBook(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	instrumentNameParam := params["instrument_name"]
+	if instrumentNameParam == "" {
+		c.errorHandler(w, r, &RequiredError{"instrument_name"}, nil)
+		return
+	}
 	result, err := c.service.GetOrderBook(r.Context(), instrumentNameParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {

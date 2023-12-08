@@ -11,16 +11,16 @@ package api
 
 // PaymentAccount - Payment account available to user
 type PaymentAccount struct {
-	Id *interface{} `json:"id,omitempty"`
+	Id string `json:"id,omitempty"`
 
 	// ISO 4217 Currency symbol
-	Currency *interface{} `json:"currency,omitempty"`
+	Currency string `json:"currency,omitempty"`
 
-	Amount *interface{} `json:"amount,omitempty"`
+	Amount float64 `json:"amount,omitempty"`
 
-	AmountReserved *interface{} `json:"amountReserved,omitempty"`
+	AmountReserved float64 `json:"amountReserved,omitempty"`
 
-	AmountAvailable *interface{} `json:"amountAvailable,omitempty"`
+	AmountAvailable float64 `json:"amountAvailable,omitempty"`
 }
 
 // AssertPaymentAccountRequired checks if the required fields are not zero-ed

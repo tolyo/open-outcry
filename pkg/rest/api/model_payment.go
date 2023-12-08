@@ -10,28 +10,28 @@
 package api
 
 type Payment struct {
-	Id *interface{} `json:"id"`
+	Id string `json:"id"`
 
 	Type PaymentType `json:"type"`
 
-	Amount *interface{} `json:"amount"`
+	Amount float64 `json:"amount"`
 
 	// ISO 4217 Currency symbol
-	Currency *interface{} `json:"currency"`
+	Currency string `json:"currency"`
 
-	SenderAccountId *interface{} `json:"senderAccountId"`
+	SenderAccountId string `json:"senderAccountId"`
 
-	BeneficiaryAccountId *interface{} `json:"beneficiaryAccountId"`
+	BeneficiaryAccountId string `json:"beneficiaryAccountId"`
 
-	Details *interface{} `json:"details"`
+	Details string `json:"details"`
 
-	ExternalReferenceNumber *interface{} `json:"externalReferenceNumber"`
+	ExternalReferenceNumber string `json:"externalReferenceNumber"`
 
-	Status *interface{} `json:"status"`
+	Status string `json:"status"`
 
-	DebitBalanceAmount *interface{} `json:"debitBalanceAmount,omitempty"`
+	DebitBalanceAmount float64 `json:"debitBalanceAmount,omitempty"`
 
-	CreditBalanceAmount *interface{} `json:"creditBalanceAmount,omitempty"`
+	CreditBalanceAmount float64 `json:"creditBalanceAmount,omitempty"`
 }
 
 // AssertPaymentRequired checks if the required fields are not zero-ed

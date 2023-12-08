@@ -41,7 +41,7 @@ func (s *AdminAPIService) CreateAdminPayment(ctx context.Context) (ImplResponse,
 }
 
 // GetAdminPaymentById - Get payment
-func (s *AdminAPIService) GetAdminPaymentById(ctx context.Context, paymentId interface{}) (ImplResponse, error) {
+func (s *AdminAPIService) GetAdminPaymentById(ctx context.Context, paymentId string) (ImplResponse, error) {
 	// TODO - update GetAdminPaymentById with the required logic for this service method.
 	// Add api_admin_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -59,8 +59,8 @@ func (s *AdminAPIService) GetAppEntities(ctx context.Context) (ImplResponse, err
 	// TODO - update GetAppEntities with the required logic for this service method.
 	// Add api_admin_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	// TODO: Uncomment the next line to return response Response(200, interface{}{}) or use other options such as http.Ok ...
-	// return Response(200, interface{}{}), nil
+	// TODO: Uncomment the next line to return response Response(200, []AppEntity{}) or use other options such as http.Ok ...
+	// return Response(200, []AppEntity{}), nil
 
 	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
 	// return Response(404, nil),nil
@@ -69,7 +69,7 @@ func (s *AdminAPIService) GetAppEntities(ctx context.Context) (ImplResponse, err
 }
 
 // GetAppEntity - Get application entity
-func (s *AdminAPIService) GetAppEntity(ctx context.Context, appEntityId interface{}) (ImplResponse, error) {
+func (s *AdminAPIService) GetAppEntity(ctx context.Context, appEntityId string) (ImplResponse, error) {
 	// TODO - update GetAppEntity with the required logic for this service method.
 	// Add api_admin_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 

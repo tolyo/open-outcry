@@ -11,11 +11,16 @@ package api
 
 // PaymentAccountList - List of payment accounts available to user
 type PaymentAccountList struct {
-	Data *interface{} `json:"data,omitempty"`
+	Data []PaymentAccount `json:"data,omitempty"`
 }
 
 // AssertPaymentAccountListRequired checks if the required fields are not zero-ed
 func AssertPaymentAccountListRequired(obj PaymentAccountList) error {
+	for _, el := range obj.Data {
+		if err := AssertPaymentAccountRequired(el); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

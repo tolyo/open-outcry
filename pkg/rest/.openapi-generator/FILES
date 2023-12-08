@@ -3,6 +3,7 @@ api/api.go
 api/api_admin.go
 api/api_admin_service.go
 api/api_public.go
+api/api_public_service.go
 api/api_user.go
 api/api_user_service.go
 api/error.go

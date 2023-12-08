@@ -13,10 +13,10 @@ package api
 type Currency struct {
 
 	// ISO 4217 Currency symbol
-	Name *interface{} `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 
 	// Currency precision as number of decimal points
-	Precision *interface{} `json:"precision,omitempty"`
+	Precision int32 `json:"precision,omitempty"`
 }
 
 // AssertCurrencyRequired checks if the required fields are not zero-ed

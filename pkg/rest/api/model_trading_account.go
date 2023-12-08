@@ -10,9 +10,9 @@
 package api
 
 type TradingAccount struct {
-	Id *interface{} `json:"id"`
+	Id string `json:"id"`
 
-	Instruments *interface{} `json:"instruments"`
+	Instruments []TradingAccountInstrument `json:"instruments"`
 }
 
 // AssertTradingAccountRequired checks if the required fields are not zero-ed
@@ -27,6 +27,11 @@ func AssertTradingAccountRequired(obj TradingAccount) error {
 		}
 	}
 
+	for _, el := range obj.Instruments {
+		if err := AssertTradingAccountInstrumentRequired(el); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

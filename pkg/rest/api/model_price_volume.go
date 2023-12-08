@@ -10,9 +10,9 @@
 package api
 
 type PriceVolume struct {
-	Price *interface{} `json:"price,omitempty"`
+	Price float32 `json:"price,omitempty"`
 
-	Volume *interface{} `json:"volume,omitempty"`
+	Volume float32 `json:"volume,omitempty"`
 }
 
 // AssertPriceVolumeRequired checks if the required fields are not zero-ed
