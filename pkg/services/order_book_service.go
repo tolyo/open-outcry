@@ -36,3 +36,30 @@ func GetVolumes(instrumentName models.InstrumentName, side models.OrderSide) []m
 	)
 	return res
 }
+
+func GetOrderBook(instrumentName models.InstrumentName) models.OrderBook {
+	res := db.QueryList[models.PriceVolume](`
+		SELECT price, volume, side
+		FROM price_level
+		WHERE price > 0
+		AND instrument_id = (SELECT id FROM instrument WHERE name = $1)
+		ORDER BY price ASC, side DESC
+	`, instrumentName)
+
+	orderBook := models.OrderBook{}
+	for _, entry := range res {
+		switch entry.Side {
+		case models.Sell:
+			orderBook.SellSide = append(orderBook.SellSide, models.PriceVolume{Price: entry.Price, Volume: entry.Volume})
+		case models.Buy:
+			orderBook.BuySide = append(orderBook.BuySide, models.PriceVolume{Price: entry.Price, Volume: entry.Volume})
+		}
+	}
+
+	// reverse array
+	for i, j := 0, len(orderBook.BuySide)-1; i < j; i, j = i+1, j-1 {
+		orderBook.BuySide[i], orderBook.BuySide[j] = orderBook.BuySide[j], orderBook.BuySide[i]
+	}
+
+	return orderBook
+}

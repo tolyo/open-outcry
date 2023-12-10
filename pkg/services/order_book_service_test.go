@@ -67,3 +67,27 @@ func (assert *ServiceTestSuite) TestGetVolumeBuySide() {
 	}, GetVolumes("BTC_EUR", models.Buy))
 
 }
+
+func (assert *ServiceTestSuite) TestGetOrderBook() {
+
+	res := GetOrderBook("BTC_EUR")
+	assert.Len(res.BuySide, 0)
+	assert.Len(res.BuySide, 0)
+
+	// when
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.6, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.4, 10, "GTC")
+
+	// then should be sorted with most expensive orders first
+	assert.Equal(models.OrderBook{
+		BuySide: []models.PriceVolume{
+			{Price: 1.7, Volume: 20},
+			{Price: 1.6, Volume: 10},
+			{Price: 1.4, Volume: 10},
+		},
+		SellSide: nil,
+	}, GetOrderBook("BTC_EUR"))
+
+}
