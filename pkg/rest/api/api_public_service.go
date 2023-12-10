@@ -14,6 +14,8 @@ import (
 	"errors"
 	"net/http"
 	"open-outcry/pkg/models"
+	"open-outcry/pkg/services"
+	"open-outcry/pkg/utils"
 )
 
 // PublicAPIService is a service that implements the logic for the PublicAPIServicer
@@ -72,14 +74,21 @@ func (s *PublicAPIService) GetInstruments(ctx context.Context) (ImplResponse, er
 
 // GetOrderBook - Get order book
 func (s *PublicAPIService) GetOrderBook(ctx context.Context, instrumentName string) (ImplResponse, error) {
-	// TODO - update GetOrderBook with the required logic for this service method.
-	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+	res := services.GetOrderBook(models.InstrumentName(instrumentName))
+	orderBook := OrderBook{
+		Sell: utils.Map[models.PriceVolume, PriceVolume](res.SellSide, func(v models.PriceVolume) PriceVolume {
+			return PriceVolume{
+				Price:  float32(v.Price),
+				Volume: float32(v.Volume),
+			}
+		}),
+		Buy: utils.Map[models.PriceVolume, PriceVolume](res.BuySide, func(v models.PriceVolume) PriceVolume {
+			return PriceVolume{
+				Price:  float32(v.Price),
+				Volume: float32(v.Volume),
+			}
+		}),
+	}
 
-	// TODO: Uncomment the next line to return response Response(200, OrderBook{}) or use other options such as http.Ok ...
-	// return Response(200, OrderBook{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetOrderBook method not implemented")
+	return Response(http.StatusOK, orderBook), nil
 }

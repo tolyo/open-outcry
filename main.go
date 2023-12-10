@@ -29,9 +29,14 @@ func main() {
 		models.LoadFees(fees)
 	}
 
+	// Sample seed for debugging
+	//_, tradingAccount1 := services.Acc("test")
+	//services.ProcessTradeOrder(tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 1, "GTC")
+
 	server := rest.NewServer()
 	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }

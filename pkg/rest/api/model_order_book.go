@@ -10,9 +10,9 @@
 package api
 
 type OrderBook struct {
-	Sell []PriceVolume `json:"sell,omitempty"`
+	Sell []PriceVolume `json:"sell"`
 
-	Buy *interface{} `json:"buy,omitempty"`
+	Buy []PriceVolume `json:"buy"`
 }
 
 // AssertOrderBookRequired checks if the required fields are not zero-ed

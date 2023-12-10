@@ -87,7 +87,24 @@ func (assert *ServiceTestSuite) TestGetOrderBook() {
 			{Price: 1.6, Volume: 10},
 			{Price: 1.4, Volume: 10},
 		},
-		SellSide: nil,
+		SellSide: []models.PriceVolume{},
 	}, GetOrderBook("BTC_EUR"))
 
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.6, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
+	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.4, 100, "GTC")
+
+	assert.Equal(models.OrderBook{
+		BuySide: []models.PriceVolume{
+			{Price: 1.7, Volume: 20},
+			{Price: 1.6, Volume: 10},
+			{Price: 1.4, Volume: 10},
+		},
+		SellSide: []models.PriceVolume{
+			{Price: 10.4, Volume: 100},
+			{Price: 10.6, Volume: 100},
+			{Price: 10.7, Volume: 200},
+		},
+	}, GetOrderBook("BTC_EUR"))
 }

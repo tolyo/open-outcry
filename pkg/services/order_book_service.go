@@ -46,7 +46,10 @@ func GetOrderBook(instrumentName models.InstrumentName) models.OrderBook {
 		ORDER BY price ASC, side DESC
 	`, instrumentName)
 
-	orderBook := models.OrderBook{}
+	orderBook := models.OrderBook{
+		SellSide: make([]models.PriceVolume, 0),
+		BuySide:  make([]models.PriceVolume, 0),
+	}
 	for _, entry := range res {
 		switch entry.Side {
 		case models.Sell:
