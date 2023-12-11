@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	log2 "log"
 	"open-outcry/pkg/conf"
 	"reflect"
 
@@ -81,6 +80,6 @@ func DeleteAll(tableName string) {
 		"DELETE FROM "+tableName,
 	)
 	if err != nil {
-		log2.Fatal(err)
+		log.Fatal(err)
 	}
 }
