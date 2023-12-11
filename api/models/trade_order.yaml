@@ -1,5 +1,7 @@
 components:
   schemas:
+    TradeOrderId:
+      $ref: './shared.yaml#/components/schemas/Id'
 
     TradeOrderSide:
       type: string
@@ -42,7 +44,7 @@ components:
       type: object
       properties:
         id:
-          $ref: './shared.yaml#/components/schemas/Id'
+          $ref: '#/components/schemas/TradeOrderId'
         instrument:
           $ref: './instrument.yaml#/components/schemas/InstrumentName'
         side:
@@ -62,6 +64,13 @@ components:
         created:
           $ref: './shared.yaml#/components/schemas/DateTime'
 
+  parameters:
+    TradingAccountId:
+      name: trade_order_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/TradeOrderId'
 
 
 

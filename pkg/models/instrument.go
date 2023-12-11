@@ -2,16 +2,16 @@ package models
 
 import "open-outcry/pkg/db"
 
-// `instrument.pub_id` db reference
+// InstrumentId `instrument.pub_id` db reference
 type InstrumentId string
 
-// Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
+// InstrumentName Ticker-like name of the instrument. For monetary instruments, a currency pair is used.
 type InstrumentName string
 
-// The underlying currency of the FX instrument
+// InstrumentBaseCurrency The underlying currency of the FX instrument
 type InstrumentBaseCurrency CurrencyName
 
-// The default currency for market quotes of the instrument
+// InstrumentQuoteCurrency The default currency for market quotes of the instrument
 type InstrumentQuoteCurrency CurrencyName
 
 type Instrument struct {

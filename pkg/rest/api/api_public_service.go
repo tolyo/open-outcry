@@ -11,7 +11,6 @@ package api
 
 import (
 	"context"
-	"errors"
 	"net/http"
 	"open-outcry/pkg/models"
 	"open-outcry/pkg/services"
@@ -46,30 +45,37 @@ func (s *PublicAPIService) GetCurrencies(ctx context.Context) (ImplResponse, err
 
 // GetFxInstruments - Fx instrument list
 func (s *PublicAPIService) GetFxInstruments(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetFxInstruments with the required logic for this service method.
-	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+	instruments := models.GetFxInstruments()
+	res := make([]FxInstrument, 0)
 
-	// TODO: Uncomment the next line to return response Response(200, []FxInstrument{}) or use other options such as http.Ok ...
-	// return Response(200, []FxInstrument{}), nil
+	for _, item := range instruments {
+		res = append(res, FxInstrument{
+			Id:            string(item.Id),
+			Name:          string(item.Name),
+			QuoteCurrency: string(item.QuoteCurrency),
+			BaseCurrency:  string(item.BaseCurrency),
+			Enabled:       false,
+		})
+	}
 
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetFxInstruments method not implemented")
+	return Response(http.StatusOK, res), nil
 }
 
 // GetInstruments - Instrument list
 func (s *PublicAPIService) GetInstruments(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetInstruments with the required logic for this service method.
-	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+	instruments := models.GetInstruments()
+	res := make([]Instrument, 0)
 
-	// TODO: Uncomment the next line to return response Response(200, []Instrument{}) or use other options such as http.Ok ...
-	// return Response(200, []Instrument{}), nil
+	for _, item := range instruments {
+		res = append(res, Instrument{
+			Id:            string(item.Id),
+			Name:          string(item.Name),
+			QuoteCurrency: string(item.QuoteCurrency),
+			Enabled:       false,
+		})
+	}
 
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetInstruments method not implemented")
+	return Response(http.StatusOK, res), nil
 }
 
 // GetOrderBook - Get order book

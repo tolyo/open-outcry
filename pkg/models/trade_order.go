@@ -39,7 +39,7 @@ const (
 	Rejected           OrderStatus = "REJECTED"
 )
 
-// See SQL for atom funcinitions
+// OrderType See SQL for atom funcinitions
 type OrderType string
 
 const (
