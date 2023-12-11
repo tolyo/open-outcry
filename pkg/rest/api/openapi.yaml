@@ -139,20 +139,6 @@ paths:
       tags:
       - user
   /trades/{trading_account_id}/id/{trade_id}:
-    delete:
-      description: Cancels a trade order by id
-      operationId: deleteTradeById
-      parameters:
-      - $ref: '#/components/parameters/TradingAccountId'
-      - $ref: '#/components/parameters/TradeId'
-      responses:
-        "204":
-          description: Success
-        "404":
-          description: Error
-      summary: Cancel trade
-      tags:
-      - user
     get:
       description: Returns a trade by id
       operationId: getTradeById
@@ -235,6 +221,39 @@ paths:
         "404":
           description: Error
       summary: Create trade order
+      tags:
+      - user
+  /trade_orders/{trading_account_id}/id/{trade_order_id}:
+    delete:
+      description: Cancels a trade order by id
+      operationId: deleteTradeOrderById
+      parameters:
+      - $ref: '#/components/parameters/TradingAccountId'
+      - $ref: '#/components/parameters/TradeOrderId'
+      responses:
+        "204":
+          description: Success
+        "404":
+          description: Error
+      summary: Cancel trade order
+      tags:
+      - user
+    get:
+      description: Returns user's trade order
+      operationId: getTradeOrderById
+      parameters:
+      - $ref: '#/components/parameters/TradingAccountId'
+      - $ref: '#/components/parameters/TradeOrderId'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeOrder'
+          description: Success
+        "404":
+          description: Error
+      summary: Get trade order
       tags:
       - user
   /trading_account/{trading_account_id}:
@@ -359,6 +378,14 @@ components:
       schema:
         $ref: '#/components/schemas/Id'
       style: simple
+    TradeOrderId:
+      explode: false
+      in: path
+      name: trade_order_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
+      style: simple
   schemas:
     CurrencyName:
       description: ISO 4217 Currency symbol
@@ -422,14 +449,14 @@ components:
           description: ISO 4217 Currency symbol
           example: USD
           type: string
-        enabled:
-          description: Availability for trading
-          example: true
-          type: boolean
         base_currency:
           description: ISO 4217 Currency symbol
           example: USD
           type: string
+        enabled:
+          description: Availability for trading
+          example: true
+          type: boolean
     FxInstrumentList:
       items:
         $ref: '#/components/schemas/FxInstrument'

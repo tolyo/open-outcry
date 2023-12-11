@@ -18,11 +18,11 @@ type FxInstrument struct {
 	// ISO 4217 Currency symbol
 	QuoteCurrency string `json:"quote_currency,omitempty"`
 
-	// Availability for trading
-	Enabled bool `json:"enabled,omitempty"`
-
 	// ISO 4217 Currency symbol
 	BaseCurrency string `json:"base_currency,omitempty"`
+
+	// Availability for trading
+	Enabled bool `json:"enabled,omitempty"`
 }
 
 // AssertFxInstrumentRequired checks if the required fields are not zero-ed

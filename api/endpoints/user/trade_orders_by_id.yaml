@@ -27,7 +27,7 @@ delete:
   operationId: deleteTradeOrderById
   parameters:
     - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
-    - $ref: '../../models/trade.yaml#/components/parameters/TradeId'
+    - $ref: '../../models/trade_order.yaml#/components/parameters/TradeOrderId'
   responses:
     "204":
       description: Success

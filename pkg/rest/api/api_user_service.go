@@ -52,11 +52,11 @@ func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId strin
 	return Response(http.StatusOK, res), nil
 }
 
-// DeleteTradeById - Cancel trade
-func (s *UserAPIService) DeleteTradeById(ctx context.Context, tradingAccountId string, tradeId string) (ImplResponse, error) {
+// DeleteTradeOrderById - Cancel trade order
+func (s *UserAPIService) DeleteTradeOrderById(ctx context.Context, tradingAccountId string, tradeOrderId string) (ImplResponse, error) {
 	// TODO add validation
 	err := services.CancelTradeOrder(
-		models.TradeOrderId(tradeId),
+		models.TradeOrderId(tradeOrderId),
 	)
 
 	if err != nil {
@@ -108,6 +108,20 @@ func (s *UserAPIService) GetTradeById(ctx context.Context, tradingAccountId stri
 	// return Response(404, nil),nil
 
 	return Response(http.StatusNotImplemented, nil), errors.New("GetTradeById method not implemented")
+}
+
+// GetTradeOrderById - Get trade order
+func (s *UserAPIService) GetTradeOrderById(ctx context.Context, tradingAccountId string, tradeOrderId string) (ImplResponse, error) {
+	// TODO - update GetTradeOrderById with the required logic for this service method.
+	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+
+	// TODO: Uncomment the next line to return response Response(200, TradeOrder{}) or use other options such as http.Ok ...
+	// return Response(200, TradeOrder{}), nil
+
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("GetTradeOrderById method not implemented")
 }
 
 // GetTradeOrders - Get trade orders

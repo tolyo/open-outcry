@@ -39,10 +39,11 @@ type PublicAPIRouter interface {
 // pass the data to a UserAPIServicer to perform the required actions, then write the service results to the http response.
 type UserAPIRouter interface {
 	CreateTrade(http.ResponseWriter, *http.Request)
-	DeleteTradeById(http.ResponseWriter, *http.Request)
+	DeleteTradeOrderById(http.ResponseWriter, *http.Request)
 	GetBookOrders(http.ResponseWriter, *http.Request)
 	GetPaymentAccounts(http.ResponseWriter, *http.Request)
 	GetTradeById(http.ResponseWriter, *http.Request)
+	GetTradeOrderById(http.ResponseWriter, *http.Request)
 	GetTradeOrders(http.ResponseWriter, *http.Request)
 	GetTrades(http.ResponseWriter, *http.Request)
 	GetTradingAccount(http.ResponseWriter, *http.Request)
@@ -76,10 +77,11 @@ type PublicAPIServicer interface {
 // and updated with the logic required for the API.
 type UserAPIServicer interface {
 	CreateTrade(context.Context, string, CreateTradeRequest) (ImplResponse, error)
-	DeleteTradeById(context.Context, string, string) (ImplResponse, error)
+	DeleteTradeOrderById(context.Context, string, string) (ImplResponse, error)
 	GetBookOrders(context.Context, string) (ImplResponse, error)
 	GetPaymentAccounts(context.Context, string) (ImplResponse, error)
 	GetTradeById(context.Context, string, string) (ImplResponse, error)
+	GetTradeOrderById(context.Context, string, string) (ImplResponse, error)
 	GetTradeOrders(context.Context, string) (ImplResponse, error)
 	GetTrades(context.Context, string) (ImplResponse, error)
 	GetTradingAccount(context.Context, string) (ImplResponse, error)

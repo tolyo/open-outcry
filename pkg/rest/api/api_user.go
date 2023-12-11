@@ -55,10 +55,10 @@ func (c *UserAPIController) Routes() Routes {
 			"/trade_orders/{trading_account_id}",
 			c.CreateTrade,
 		},
-		"DeleteTradeById": Route{
+		"DeleteTradeOrderById": Route{
 			strings.ToUpper("Delete"),
-			"/trades/{trading_account_id}/id/{trade_id}",
-			c.DeleteTradeById,
+			"/trade_orders/{trading_account_id}/id/{trade_order_id}",
+			c.DeleteTradeOrderById,
 		},
 		"GetBookOrders": Route{
 			strings.ToUpper("Get"),
@@ -74,6 +74,11 @@ func (c *UserAPIController) Routes() Routes {
 			strings.ToUpper("Get"),
 			"/trades/{trading_account_id}/id/{trade_id}",
 			c.GetTradeById,
+		},
+		"GetTradeOrderById": Route{
+			strings.ToUpper("Get"),
+			"/trade_orders/{trading_account_id}/id/{trade_order_id}",
+			c.GetTradeOrderById,
 		},
 		"GetTradeOrders": Route{
 			strings.ToUpper("Get"),
@@ -126,20 +131,20 @@ func (c *UserAPIController) CreateTrade(w http.ResponseWriter, r *http.Request) 
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// DeleteTradeById - Cancel trade
-func (c *UserAPIController) DeleteTradeById(w http.ResponseWriter, r *http.Request) {
+// DeleteTradeOrderById - Cancel trade order
+func (c *UserAPIController) DeleteTradeOrderById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	tradingAccountIdParam := params["trading_account_id"]
 	if tradingAccountIdParam == "" {
 		c.errorHandler(w, r, &RequiredError{"trading_account_id"}, nil)
 		return
 	}
-	tradeIdParam := params["trade_id"]
-	if tradeIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"trade_id"}, nil)
+	tradeOrderIdParam := params["trade_order_id"]
+	if tradeOrderIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"trade_order_id"}, nil)
 		return
 	}
-	result, err := c.service.DeleteTradeById(r.Context(), tradingAccountIdParam, tradeIdParam)
+	result, err := c.service.DeleteTradeOrderById(r.Context(), tradingAccountIdParam, tradeOrderIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -199,6 +204,29 @@ func (c *UserAPIController) GetTradeById(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	result, err := c.service.GetTradeById(r.Context(), tradingAccountIdParam, tradeIdParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+}
+
+// GetTradeOrderById - Get trade order
+func (c *UserAPIController) GetTradeOrderById(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	tradingAccountIdParam := params["trading_account_id"]
+	if tradingAccountIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"trading_account_id"}, nil)
+		return
+	}
+	tradeOrderIdParam := params["trade_order_id"]
+	if tradeOrderIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"trade_order_id"}, nil)
+		return
+	}
+	result, err := c.service.GetTradeOrderById(r.Context(), tradingAccountIdParam, tradeOrderIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

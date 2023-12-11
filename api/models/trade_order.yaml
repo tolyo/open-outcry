@@ -65,7 +65,7 @@ components:
           $ref: './shared.yaml#/components/schemas/DateTime'
 
   parameters:
-    TradingAccountId:
+    TradeOrderId:
       name: trade_order_id
       in: path
       required: true
