@@ -63,8 +63,6 @@ paths:
     $ref: ./endpoints/admin/apps_by_id.yaml
   /apps:
     $ref: ./endpoints/admin/apps.yaml
-  #  /apps/auctions: TODO
-  #    $ref: ./endpoints/admin/auctions.yaml
   /apps/payments/{payment_id}:
     $ref: ./endpoints/admin/payments_by_id.yaml
   /apps/payments:

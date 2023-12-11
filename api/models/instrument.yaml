@@ -1,5 +1,8 @@
 components:
   schemas:
+    InstrumentId:
+      $ref: './shared.yaml#/components/schemas/Id'
+
     InstrumentList:
       type: array
       items:
@@ -24,7 +27,7 @@ components:
       type: object
       properties:
         id:
-          $ref: './shared.yaml#/components/schemas/Id'
+          $ref: '#/components/schemas/InstrumentId'
         name:
           $ref: '#/components/schemas/InstrumentName'
         quote_currency:
@@ -41,9 +44,9 @@ components:
           $ref: '#/components/schemas/InstrumentName'
         quote_currency:
           $ref: './currency.yaml#/components/schemas/CurrencyName'
-        enabled:
-          $ref: '#/components/schemas/InstrumentAvailability'
         base_currency:
           $ref: './currency.yaml#/components/schemas/CurrencyName'
+        enabled:
+          $ref: '#/components/schemas/InstrumentAvailability'
 
 

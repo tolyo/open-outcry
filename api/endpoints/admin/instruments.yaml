@@ -1,1 +1,29 @@
 post:
+  tags:
+    - admin
+  summary: Create instrument
+  description: Creates an instrument that can be trade
+  operationId: createInstrument
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              $ref: '../../models/instrument.yaml#/components/schemas/InstrumentName'
+            quote_currency:
+              $ref: '../../models/currency.yaml#/components/schemas/CurrencyName'
+            base_currency:
+              $ref: '../../models/currency.yaml#/components/schemas/CurrencyName'
+
+  responses:
+    "201":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/instrument.yaml#/components/schemas/InstrumentId'
+    "422":
+      description: Error

@@ -28,7 +28,7 @@ components:
     PaginationLimit:
       name: limit
       in: query
-      description: The number of days per page.
+      description: The number of items per page
       schema:
         type: integer
         default: 10
