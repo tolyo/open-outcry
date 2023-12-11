@@ -6,7 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// `payment_account.pub_id` db reference
+// PaymentAccountId `payment_account.pub_id` db reference
 type PaymentAccountId string
 
 type PaymentAccount struct {

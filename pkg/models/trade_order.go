@@ -49,10 +49,10 @@ const (
 	StopLimit OrderType = "STOPLIMIT"
 )
 
-// `trade_order.pub_id` db reference
+// TradeOrderId `trade_order.pub_id` db reference
 type TradeOrderId string
 
-// The limit price at which order may be executed
+// OrderPrice The limit price at which order may be executed
 type OrderPrice float64
 
 type TradeOrder struct {

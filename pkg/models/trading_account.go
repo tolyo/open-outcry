@@ -6,7 +6,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// `trading_account.pub_id` db reference
+// TradingAccountId `trading_account.pub_id` db reference
 type TradingAccountId string
 
 type TradingAccountInstrument struct {
@@ -21,7 +21,6 @@ type TradingAccountInstrument struct {
 type TradingAccount struct {
 	Id          TradingAccountId
 	AppEntityId AppEntityExternalId
-	// Instruments []TradingAccountInstrument
 }
 
 const tradingAccountBaseQuery = `
