@@ -3,6 +3,9 @@
 INPUT_YAML:="./api/openapi.yaml"
 OUTPUT_YAML:="../pkg/static/api.yaml"
 
+install-api:
+	npm i
+
 bundle-api:
 	npx @redocly/cli bundle \
 		$(INPUT_YAML) \

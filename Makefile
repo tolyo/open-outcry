@@ -7,16 +7,15 @@ setup:
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install honnef.co/go/tools/cmd/staticcheck@latest
 	go install github.com/pressly/goose/v3/cmd/goose@latest
-	go install github.com/cosmtrek/air@latest
-	npm i
 	go get ./...
+	(cd api && npm i)
 
 build: ## Installs and compiles dependencies
 	go build -v ./...
 
 run: ## Start dev mode
 	make db-up
-	air main.go
+	go run main.go
 
 test:
 	go test ./... -v -cover -p 1

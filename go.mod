@@ -6,20 +6,28 @@ toolchain go1.21.4
 
 require (
 	github.com/google/uuid v1.3.1
+	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.9
 	github.com/pressly/goose/v3 v3.15.0
+	github.com/quickfixgo/enum v0.1.0
+	github.com/quickfixgo/field v0.1.0
+	github.com/quickfixgo/fix40 v0.1.0
+	github.com/quickfixgo/fix41 v0.1.0
+	github.com/quickfixgo/fix42 v0.1.0
+	github.com/quickfixgo/fix43 v0.1.0
+	github.com/quickfixgo/fix44 v0.1.0
+	github.com/quickfixgo/fix50 v0.1.0
+	github.com/quickfixgo/quickfix v0.9.0
+	github.com/quickfixgo/tag v0.1.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.16.0
 	github.com/stretchr/testify v1.8.4
 )
 
-require github.com/jmoiron/sqlx v1.3.5
-
 require (
 	github.com/armon/go-proxyproto v0.1.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/quickfixgo/quickfix v0.9.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 )
 
