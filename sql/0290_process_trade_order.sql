@@ -208,7 +208,7 @@ BEGIN
             AND t.trading_account_id != trading_account_instance.id
             AND t.side = opposite_side_var
             AND t.order_type = 'MARKET'::order_type
-            ORDER BY t.created_at ASC
+            ORDER BY t.created_at
 
             LOOP
                 trade_price_var = get_trade_price(

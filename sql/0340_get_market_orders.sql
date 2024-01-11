@@ -17,14 +17,14 @@ BEGIN
             AND side = side_param
             AND order_type = 'MARKET'::order_type
         -- order first by price then by date created
-        ORDER BY created_at ASC;
+        ORDER BY created_at;
     ELSE
         RETURN QUERY SELECT * FROM book_order
         WHERE instrument_id = instrument_id_param
             AND side = side_param
             AND order_type = 'MARKET'::order_type
         -- order first by price then by date created
-        ORDER BY created_at ASC;
+        ORDER BY created_at;
     END IF;
 END;
 $$;

@@ -35,7 +35,7 @@ BEGIN
                 AND t.trading_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
             -- order first by price then by date created
-            ORDER BY t.price ASC, t.created_at ASC;
+            ORDER BY t.price, t.created_at;
         ELSE
             RETURN QUERY SELECT b.id, b.pub_id, b.trade_order_id FROM book_order b
             INNER JOIN trade_order t
@@ -45,7 +45,7 @@ BEGIN
                 AND t.trading_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
             -- order first by price then by date created
-            ORDER BY t.price DESC, t.created_at ASC;
+            ORDER BY t.price DESC, t.created_at;
         END IF;
     ELSE
         -- handle limit order
@@ -59,7 +59,7 @@ BEGIN
                 AND t.order_type = 'LIMIT'::order_type
                 AND t.price <= price_param
             -- order first by price then by date created
-            ORDER BY t.price ASC, t.created_at ASC;
+            ORDER BY t.price, t.created_at;
         ELSE
             RETURN QUERY SELECT b.id, b.pub_id, b.trade_order_id FROM book_order b
             INNER JOIN trade_order t
@@ -70,7 +70,7 @@ BEGIN
                 AND t.order_type = 'LIMIT'::order_type
                 AND t.price >= price_param
             -- order first by price then by date created
-            ORDER BY t.price DESC, t.created_at ASC;
+            ORDER BY t.price DESC, t.created_at;
         END IF;
     END IF;
 END;

@@ -6,10 +6,9 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/spf13/viper"
-
-	// Loads yaml config files
 	_ "embed"
+
+	"github.com/spf13/viper"
 )
 
 //go:embed dev.env
@@ -30,18 +29,18 @@ var mapper = map[EnvName]string{
 	DEV: dev,
 }
 
-// configuration - structure that contains configuration information from config variables
-type configuration struct {
+// Configuration - structure that contains Configuration information from config variables
+type Configuration struct {
 	DBDsn      string
 	UpdateFees bool
 	RestPort   string
 }
 
-var config *configuration
+var config *Configuration
 var envName EnvName
 
 // LoadConfig - loads configurations from config variables into Environment struct
-func LoadConfig(conf string) (*configuration, error) {
+func LoadConfig(conf string) (*Configuration, error) {
 	envName = EnvName(conf)
 	switch envName {
 	case DEV:
@@ -58,7 +57,7 @@ func LoadConfig(conf string) (*configuration, error) {
 		log.Fatal("Environment variable not supplied")
 	}
 
-	config = &configuration{
+	config = &Configuration{
 		DBDsn: fmt.Sprintf(
 			"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 			viper.GetString("POSTGRES_HOST"),
@@ -75,7 +74,7 @@ func LoadConfig(conf string) (*configuration, error) {
 }
 
 // Get config
-func Get() *configuration {
+func Get() *Configuration {
 	if config == nil {
 		log.Fatal("Env not initialized")
 	}
@@ -83,7 +82,7 @@ func Get() *configuration {
 }
 
 // LoadTestConfig - Helper for calling in tests
-func LoadTestConfig() (*configuration, error) {
+func LoadTestConfig() (*Configuration, error) {
 	return LoadConfig(string(DEV))
 }
 

@@ -18,7 +18,7 @@ BEGIN
         WHERE side = side_param
         AND instrument_id = instrument_id_param
         AND price > 0
-        ORDER BY price ASC
+        ORDER BY price
         LIMIT 1
         INTO acc;
     ELSEIF side_param = 'BUY'::order_side THEN
