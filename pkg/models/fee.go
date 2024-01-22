@@ -34,7 +34,7 @@ func LoadFees(fees string) {
 			var rec Fee
 			for j, field := range line {
 				if j == 0 {
-					rec.Type = string(field)
+					rec.Type = field
 				} else if j == 1 {
 					rec.Currency = CurrencyName(field)
 				} else if j == 2 {

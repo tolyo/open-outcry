@@ -27,7 +27,7 @@ type MatchingServiceTestCase struct {
 // Acc shorthand methods
 func Acc(v string) (models.AppEntityId, models.TradingAccountId) {
 	appEntityId := CreateAppEntity(models.AppEntityExternalId(v))
-	models.CreatePaymentAccount(appEntityId, models.CurrencyName("BTC"))
+	models.CreatePaymentAccount(appEntityId, "BTC")
 	CreatePaymentDeposit(appEntityId, 1000, "BTC", "Test", "Test")
 	CreatePaymentDeposit(appEntityId, 1000, "EUR", "Test", "Test")
 	tradingAccount := models.FindTradingAccountByApplicationEntityId(appEntityId)

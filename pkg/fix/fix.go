@@ -12,7 +12,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// FixServer implements the main quickfix interface
+// Server FixServer implements the main quickfix interface
 type Server struct {
 	*quickfix.MessageRouter
 }

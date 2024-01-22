@@ -2,7 +2,6 @@ package services
 
 import (
 	"open-outcry/pkg/db"
-	"open-outcry/pkg/models"
 
 	"github.com/google/uuid"
 )
@@ -10,7 +9,7 @@ import (
 func (assert *ServiceTestSuite) TestCreateAppEntity() {
 	// when
 	count := db.GetCount("app_entity")
-	res := CreateAppEntity(models.AppEntityExternalId("test"))
+	res := CreateAppEntity("test")
 
 	// then
 	assert.NotNil(res)
@@ -19,7 +18,7 @@ func (assert *ServiceTestSuite) TestCreateAppEntity() {
 	assert.Equal(count+1, db.GetCount("app_entity"))
 
 	// when
-	res2 := CreateAppEntity(models.AppEntityExternalId("test"))
+	res2 := CreateAppEntity("test")
 
 	// then
 	assert.NotEqual(res, res2)

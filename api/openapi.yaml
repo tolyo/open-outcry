@@ -41,11 +41,11 @@ paths:
     $ref: ./endpoints/public/fx-instruments.yaml
   /instruments:
     $ref: ./endpoints/public/instruments.yaml
-  /order_books/{instrument_name}:
+  /order-books/{instrument_name}:
     $ref: ./endpoints/public/order_books_by_instrument_name.yaml
 
   # USER OPERATIONS
-  /book_orders/{trading_account_id}:
+  /book-orders/{trading_account_id}:
     $ref: ./endpoints/user/book_orders.yaml
   /payment-accounts/{app_entity_id}:
     $ref: ./endpoints/user/payment_accounts.yaml
@@ -53,11 +53,11 @@ paths:
     $ref: ./endpoints/user/trades_by_id.yaml
   /trades/{trading_account_id}:
     $ref: ./endpoints/user/trades.yaml
-  /trade_orders/{trading_account_id}:
+  /trade-orders/{trading_account_id}:
     $ref: ./endpoints/user/trade_orders.yaml
-  /trade_orders/{trading_account_id}/id/{trade_order_id}:
+  /trade-orders/{trading_account_id}/id/{trade_order_id}:
     $ref: ./endpoints/user/trade_orders_by_id.yaml
-  /trading_account/{trading_account_id}:
+  /trading-accounts/{trading_account_id}:
     $ref: ./endpoints/user/trading_account_by_id.yaml
 
   #  # ADMIN OPERATIONS
