@@ -29,7 +29,7 @@ BEGIN
     INTO price_level_instance;
 
     -- create new price level if not found
-    -- for decreatsing price level it will always be found
+    -- for decreasing price level it will always be found
     IF NOT FOUND AND increasing_param = TRUE THEN
         INSERT INTO price_level(
             instrument_id,

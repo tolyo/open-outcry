@@ -2,7 +2,7 @@
 -- +goose Up
 -- time constraints imposed on the order
 CREATE TYPE order_time_in_force AS ENUM (
-    -- good-til-cancelled (GTC) orders require a specific cancelling order, which can persist infuncinitely
+    -- good-til-cancelled (GTC) orders require a specific cancelling order, which can persist infinitely
     -- this is the default state for all orders
     'GTC',
 

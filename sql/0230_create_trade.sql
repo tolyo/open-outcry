@@ -107,7 +107,7 @@ BEGIN
             END)
         );
     ELSE
-        -- transfer instuments directly between two accounts
+        -- transfer instruments directly between two accounts
         PERFORM create_trading_account_transfer(
             (SELECT pub_id FROM trading_account WHERE app_entity_id = seller_app_entity_instance.id),
             (SELECT pub_id FROM trading_account WHERE app_entity_id = buyer_app_entity_instance.id),

@@ -7,7 +7,7 @@ CREATE TABLE trading_account_transfer (
        amount                             INTEGER default 0 NOT NULL CHECK (amount > 0),
        instrument_id                      BIGINT REFERENCES instrument(id) NOT NULL,
        sender_trading_account_id          BIGINT REFERENCES trading_account(id) NOT NULL,
-       benneficiary_trading_account_id    BIGINT REFERENCES trading_account(id) NOT NULL,
+       beneficiary_trading_account_id     BIGINT REFERENCES trading_account(id) NOT NULL,
        details                            TEXT NOT NULL,
        external_reference_number          TEXT NULL,
        -- Resulting debit balance amount 

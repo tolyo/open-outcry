@@ -32,7 +32,7 @@ BEGIN
         RAISE EXCEPTION 'currency_instance_not_found';
     END IF;
 
-    -- prevent dublicates
+    -- prevent duplicates
     SELECT * FROM payment_account
     WHERE currency_name = currency_instance.name
     AND app_entity_id = app_entity_instance.id

@@ -57,7 +57,7 @@ BEGIN
             RETURN best_limit_price_var;
         END IF;
 
-        -- incoming market matches an outstandling limit
+        -- incoming market matches an outstanding limit
         IF maker_order_type_param = 'LIMIT'::order_type THEN
             RETURN best_limit_price_var;
         END IF;

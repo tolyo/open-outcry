@@ -443,7 +443,7 @@ BEGIN
             WHERE id = taker_trade_order_instance.id
             INTO taker_trade_order_instance;
 
-            -- save orderbook_order
+            -- save order book_order
             PERFORM create_book_order(
                 taker_trade_order_instance
             );
