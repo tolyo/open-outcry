@@ -7,7 +7,7 @@ CREATE TYPE trade_order_status AS ENUM (
     -- order remains in the order book and has no fills
     'OPEN',
 
-    -- order remains in the order book but with parial fill
+    -- order remains in the order book but with partial fill
     'PARTIALLY_FILLED',
 
 

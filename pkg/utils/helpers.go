@@ -8,7 +8,10 @@ import (
 // Format helps with string concatenation. Example: utils.Format("Variable {{.}} ", data)
 func Format(s string, v interface{}) string {
 	t, b := new(template.Template), new(strings.Builder)
-	template.Must(t.Parse(s)).Execute(b, v)
+	err := template.Must(t.Parse(s)).Execute(b, v)
+	if err != nil {
+		return ""
+	}
 	return b.String()
 }
 

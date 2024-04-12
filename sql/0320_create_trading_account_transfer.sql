@@ -42,7 +42,7 @@ BEGIN
   
   -- check sufficiency of funds in case of non-master accounts
   IF from_customer_id_param != 'MASTER' THEN
-    -- TO{ calculate with FEE!!!
+    -- TODO calculate with FEE!!!
     IF from_trading_account_instance.amount < amount_param THEN
       RAISE EXCEPTION 'insufficient_funds available: %, required % ', from_trading_account_instance.amount, amount_param;
     END IF;

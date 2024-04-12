@@ -10,8 +10,8 @@ import (
 )
 
 // ProcessTradeOrder Main entry point for processing a trade order.
-//   - For BUY side, the amount must be alocated in quote currency.
-//   - For SELL side the amount must be allocared in base currency
+//   - For BUY side, the amount must be allocated in quote currency.
+//   - For SELL side the amount must be allocated in base currency
 func ProcessTradeOrder(
 	tradingAccountId models.TradingAccountId,
 	instrumentName models.InstrumentName,
