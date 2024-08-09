@@ -1,0 +1,23 @@
+/**
+ * Font Import and Configuration with Google Fonts
+ *
+ * The CSS code is imported at the head of your 'index.html' for optimal loading while this file configures the font family for your project.
+ * IBM Plex Sans is used here as an example font that perfectly captures the
+ * industrial spirit of professional web-development. For more details, see: https://www.ibm.com/plex/concept/
+ * 
+ * You can easily replace it with your preferred font family.
+ */
+
+/* Define the default font */
+:root {
+  --font-family: "IBM Plex Sans", sans-serif;
+
+  --font-weight-thin: 100;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  --font-style-normal: normal;
+  --font-style-italic: italic;
+}

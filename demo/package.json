@@ -1,0 +1,46 @@
+{
+  "name": "angular-seed",
+  "version": "0.0.1",
+  "description": "A starter template for AngularTS app",
+  "main": "index.js",
+  "scripts": {
+    "serve": "web-dev-server --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Angular-Wave/angular-seed.git"
+  },
+  "keywords": [
+    "AngularJS",
+    "AngularTS",
+    "Angular seed"
+  ],
+  "author": "Anatoly Ostrovsky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Angular-Wave/angular-seed/issues"
+  },
+  "homepage": "https://github.com/Angular-Wave/angular-seed#readme",
+  "dependencies": {
+    "@angular-wave/angular.ts": "latest",
+    "modern-normalize": "latest"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "latest",
+    "@rollup/plugin-terser": "latest",
+    "@web/dev-server": "latest",
+    "@web/rollup-plugin-copy": "latest",
+    "@web/rollup-plugin-html": "latest",
+    "husky": "latest",
+    "lightningcss": "latest",
+    "lint-staged": "latest",
+    "prettier": "latest",
+    "rollup": "latest"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}
