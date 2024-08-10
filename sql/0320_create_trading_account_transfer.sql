@@ -39,14 +39,6 @@ BEGIN
   IF NOT FOUND THEN
       RAISE EXCEPTION 'from_trading_account_instance_not_found';
   END IF;
-  
-  -- check sufficiency of funds in case of non-master accounts
-  IF from_customer_id_param != 'MASTER' THEN
-    -- TODO calculate with FEE!!!
-    IF from_trading_account_instance.amount < amount_param THEN
-      RAISE EXCEPTION 'insufficient_funds available: %, required % ', from_trading_account_instance.amount, amount_param;
-    END IF;
-  END IF;
 
   SELECT * FROM trading_account 
   WHERE app_entity_id =
@@ -64,7 +56,7 @@ BEGIN
       type, 
       amount, 
       currency_name, 
-      sENDer_trading_account_id,
+      sender_trading_account_id,
       beneficiary_trading_account_id, 
       details, 
       external_reference_number, 
