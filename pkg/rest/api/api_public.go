@@ -66,7 +66,7 @@ func (c *PublicAPIController) Routes() Routes {
 		},
 		"GetOrderBook": Route{
 			strings.ToUpper("Get"),
-			"/order_books/{instrument_name}",
+			"/order-books/{instrument_name}",
 			c.GetOrderBook,
 		},
 	}

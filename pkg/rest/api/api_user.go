@@ -52,17 +52,17 @@ func (c *UserAPIController) Routes() Routes {
 	return Routes{
 		"CreateTrade": Route{
 			strings.ToUpper("Post"),
-			"/trade_orders/{trading_account_id}",
+			"/trade-orders/{trading_account_id}",
 			c.CreateTrade,
 		},
 		"DeleteTradeOrderById": Route{
 			strings.ToUpper("Delete"),
-			"/trade_orders/{trading_account_id}/id/{trade_order_id}",
+			"/trade-orders/{trading_account_id}/id/{trade_order_id}",
 			c.DeleteTradeOrderById,
 		},
 		"GetBookOrders": Route{
 			strings.ToUpper("Get"),
-			"/book_orders/{trading_account_id}",
+			"/book-orders/{trading_account_id}",
 			c.GetBookOrders,
 		},
 		"GetPaymentAccounts": Route{
@@ -77,12 +77,12 @@ func (c *UserAPIController) Routes() Routes {
 		},
 		"GetTradeOrderById": Route{
 			strings.ToUpper("Get"),
-			"/trade_orders/{trading_account_id}/id/{trade_order_id}",
+			"/trade-orders/{trading_account_id}/id/{trade_order_id}",
 			c.GetTradeOrderById,
 		},
 		"GetTradeOrders": Route{
 			strings.ToUpper("Get"),
-			"/trade_orders/{trading_account_id}",
+			"/trade-orders/{trading_account_id}",
 			c.GetTradeOrders,
 		},
 		"GetTrades": Route{
@@ -92,7 +92,7 @@ func (c *UserAPIController) Routes() Routes {
 		},
 		"GetTradingAccount": Route{
 			strings.ToUpper("Get"),
-			"/trading_account/{trading_account_id}",
+			"/trading-accounts/{trading_account_id}",
 			c.GetTradingAccount,
 		},
 	}

@@ -25,4 +25,14 @@ generate-api: validate-api
 		--additional-properties=packageName=api \
 		--additional-properties=sourceFolder=api \
 		--additional-properties=outputAsLibrary=true
+
+	npx @openapitools/openapi-generator-cli generate \
+		-i $(OUTPUT_YAML) \
+		-g go \
+		-o demo/pkg/client \
+		--additional-properties=packageName=api \
+		--additional-properties=sourceFolder=api \
+		--additional-properties=outputAsLibrary=true
+	make lint
+
 	make lint

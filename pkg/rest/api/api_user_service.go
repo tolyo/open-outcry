@@ -13,10 +13,6 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"open-outcry/pkg/models"
-	"open-outcry/pkg/services"
-
-	log "github.com/sirupsen/logrus"
 )
 
 // UserAPIService is a service that implements the logic for the UserAPIServicer
@@ -31,41 +27,31 @@ func NewUserAPIService() UserAPIServicer {
 }
 
 // CreateTrade - Create trade order
-func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId string, req CreateTradeRequest) (ImplResponse, error) {
-	// TODO add validation
-	res, err := services.ProcessTradeOrder(
-		models.TradingAccountId(tradingAccountId),
-		models.InstrumentName(req.Instrument),
-		models.OrderType(req.Type),
-		models.OrderSide(req.Side),
-		models.OrderPrice(req.Price),
-		req.Amount,
-		models.OrderTimeInForce(req.TimeInForce),
-	)
+func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId string, createTradeRequest CreateTradeRequest) (ImplResponse, error) {
+	// TODO - update CreateTrade with the required logic for this service method.
+	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	if err != nil {
-		log.Error(err)
-		// TODO implement error handling
-		return Response(http.StatusUnprocessableEntity, err), err
-	}
+	// TODO: Uncomment the next line to return response Response(200, TradeOrder{}) or use other options such as http.Ok ...
+	// return Response(200, TradeOrder{}), nil
 
-	return Response(http.StatusOK, res), nil
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("CreateTrade method not implemented")
 }
 
 // DeleteTradeOrderById - Cancel trade order
 func (s *UserAPIService) DeleteTradeOrderById(ctx context.Context, tradingAccountId string, tradeOrderId string) (ImplResponse, error) {
-	// TODO add validation
-	err := services.CancelTradeOrder(
-		models.TradeOrderId(tradeOrderId),
-	)
+	// TODO - update DeleteTradeOrderById with the required logic for this service method.
+	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	if err != nil {
-		log.Error(err)
-		// TODO implement error handling
-		return Response(http.StatusUnprocessableEntity, err), err
-	}
+	// TODO: Uncomment the next line to return response Response(204, {}) or use other options such as http.Ok ...
+	// return Response(204, nil),nil
 
-	return Response(http.StatusOK, nil), nil
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("DeleteTradeOrderById method not implemented")
 }
 
 // GetBookOrders - Get book orders

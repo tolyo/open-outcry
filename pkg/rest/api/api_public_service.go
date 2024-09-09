@@ -11,10 +11,8 @@ package api
 
 import (
 	"context"
+	"errors"
 	"net/http"
-	"open-outcry/pkg/models"
-	"open-outcry/pkg/services"
-	"open-outcry/pkg/utils"
 )
 
 // PublicAPIService is a service that implements the logic for the PublicAPIServicer
@@ -30,71 +28,56 @@ func NewPublicAPIService() PublicAPIServicer {
 
 // GetCurrencies - Currencies list
 func (s *PublicAPIService) GetCurrencies(ctx context.Context) (ImplResponse, error) {
-	currencies := models.GetCurrencies()
-	res := make([]Currency, 0)
-	for _, v := range currencies {
-		cur := Currency{
-			Name:      string(v.Name),
-			Precision: int32(v.Precision),
-		}
-		res = append(res, cur)
-	}
+	// TODO - update GetCurrencies with the required logic for this service method.
+	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	return Response(http.StatusOK, res), nil
+	// TODO: Uncomment the next line to return response Response(200, CurrencyList{}) or use other options such as http.Ok ...
+	// return Response(200, CurrencyList{}), nil
+
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("GetCurrencies method not implemented")
 }
 
 // GetFxInstruments - Fx instrument list
 func (s *PublicAPIService) GetFxInstruments(ctx context.Context) (ImplResponse, error) {
-	instruments := models.GetFxInstruments()
-	res := make([]FxInstrument, 0)
+	// TODO - update GetFxInstruments with the required logic for this service method.
+	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	for _, item := range instruments {
-		res = append(res, FxInstrument{
-			Id:            string(item.Id),
-			Name:          string(item.Name),
-			QuoteCurrency: string(item.QuoteCurrency),
-			BaseCurrency:  string(item.BaseCurrency),
-			Enabled:       false,
-		})
-	}
+	// TODO: Uncomment the next line to return response Response(200, []FxInstrument{}) or use other options such as http.Ok ...
+	// return Response(200, []FxInstrument{}), nil
 
-	return Response(http.StatusOK, res), nil
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("GetFxInstruments method not implemented")
 }
 
 // GetInstruments - Instrument list
 func (s *PublicAPIService) GetInstruments(ctx context.Context) (ImplResponse, error) {
-	instruments := models.GetInstruments()
-	res := make([]Instrument, 0)
+	// TODO - update GetInstruments with the required logic for this service method.
+	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	for _, item := range instruments {
-		res = append(res, Instrument{
-			Id:            string(item.Id),
-			Name:          string(item.Name),
-			QuoteCurrency: string(item.QuoteCurrency),
-			Enabled:       false,
-		})
-	}
+	// TODO: Uncomment the next line to return response Response(200, []Instrument{}) or use other options such as http.Ok ...
+	// return Response(200, []Instrument{}), nil
 
-	return Response(http.StatusOK, res), nil
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("GetInstruments method not implemented")
 }
 
 // GetOrderBook - Get order book
 func (s *PublicAPIService) GetOrderBook(ctx context.Context, instrumentName string) (ImplResponse, error) {
-	res := services.GetOrderBook(models.InstrumentName(instrumentName))
-	orderBook := OrderBook{
-		Sell: utils.Map[models.PriceVolume, PriceVolume](res.SellSide, func(v models.PriceVolume) PriceVolume {
-			return PriceVolume{
-				Price:  float32(v.Price),
-				Volume: float32(v.Volume),
-			}
-		}),
-		Buy: utils.Map[models.PriceVolume, PriceVolume](res.BuySide, func(v models.PriceVolume) PriceVolume {
-			return PriceVolume{
-				Price:  float32(v.Price),
-				Volume: float32(v.Volume),
-			}
-		}),
-	}
+	// TODO - update GetOrderBook with the required logic for this service method.
+	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
-	return Response(http.StatusOK, orderBook), nil
+	// TODO: Uncomment the next line to return response Response(200, OrderBook{}) or use other options such as http.Ok ...
+	// return Response(200, OrderBook{}), nil
+
+	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
+	// return Response(404, nil),nil
+
+	return Response(http.StatusNotImplemented, nil), errors.New("GetOrderBook method not implemented")
 }
