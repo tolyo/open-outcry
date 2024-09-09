@@ -1,7 +1,7 @@
 components:
   schemas:
     TradeOrderId:
-      $ref: './shared.yaml#/components/schemas/Id'
+      $ref: "./shared.yaml#/components/schemas/Id"
 
     TradeOrderSide:
       type: string
@@ -38,31 +38,31 @@ components:
     TradeOrderList:
       type: array
       items:
-        $ref: '#/components/schemas/TradeOrder'
+        $ref: "#/components/schemas/TradeOrder"
 
     TradeOrder:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/TradeOrderId'
+          $ref: "#/components/schemas/TradeOrderId"
         instrument:
-          $ref: './instrument.yaml#/components/schemas/InstrumentName'
+          $ref: "./instrument.yaml#/components/schemas/InstrumentName"
         side:
-          $ref: '#/components/schemas/TradeOrderSide'
+          $ref: "#/components/schemas/TradeOrderSide"
         type:
-          $ref: '#/components/schemas/TradeOrderType'
+          $ref: "#/components/schemas/TradeOrderType"
         timeInForce:
-          $ref: '#/components/schemas/TradeOrderTimeInForce'
+          $ref: "#/components/schemas/TradeOrderTimeInForce"
         status:
-          $ref: '#/components/schemas/TradeOrderStatus'
+          $ref: "#/components/schemas/TradeOrderStatus"
         price:
-          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
         amount:
-          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
         openAmount:
-          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
         created:
-          $ref: './shared.yaml#/components/schemas/DateTime'
+          $ref: "./shared.yaml#/components/schemas/DateTime"
 
   parameters:
     TradeOrderId:
@@ -70,8 +70,4 @@ components:
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/TradeOrderId'
-
-
-
-
+        $ref: "#/components/schemas/TradeOrderId"

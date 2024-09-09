@@ -10,6 +10,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../models/currency.yaml#/components/schemas/CurrencyList'
+            $ref: "../../models/currency.yaml#/components/schemas/CurrencyList"
     "404":
       description: Error

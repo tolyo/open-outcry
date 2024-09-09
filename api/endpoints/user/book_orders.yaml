@@ -5,7 +5,7 @@ get:
   description: Returns list of user's trade orders currently on the order book
   operationId: getBookOrders
   parameters:
-    - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
+    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
 
   responses:
     "200":
@@ -13,6 +13,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrderList'
+            $ref: "../../models/trade_order.yaml#/components/schemas/TradeOrderList"
     "404":
       description: Error

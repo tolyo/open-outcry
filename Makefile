@@ -1,4 +1,5 @@
 include api/api.mk
+include demo/demo.mk
 
 .DEFAULT_GOAL := help
 .PHONY: help

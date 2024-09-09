@@ -9,7 +9,7 @@ get:
       name: trading_account_id
       required: true
       schema:
-        $ref: '../../models/trading_account.yaml#/components/schemas/TradingAccountId'
+        $ref: "../../models/trading_account.yaml#/components/schemas/TradingAccountId"
 
   responses:
     "200":
@@ -17,6 +17,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../models/trading_account.yaml#/components/schemas/TradingAccount'
+            $ref: "../../models/trading_account.yaml#/components/schemas/TradingAccount"
     "404":
       description: Error

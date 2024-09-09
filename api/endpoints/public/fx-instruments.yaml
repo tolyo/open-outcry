@@ -10,6 +10,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../models/instrument.yaml#/components/schemas/FxInstrumentList'
+            $ref: "../../models/instrument.yaml#/components/schemas/FxInstrumentList"
     "404":
       description: Not found

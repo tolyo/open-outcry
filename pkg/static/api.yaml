@@ -33,13 +33,13 @@ paths:
       description: Returns list of available currencies
       operationId: getCurrencies
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CurrencyList'
-        '404':
+                $ref: "#/components/schemas/CurrencyList"
+        "404":
           description: Error
   /fxinstruments:
     get:
@@ -49,13 +49,13 @@ paths:
       description: Returns list of available fx instruments
       operationId: getFxInstruments
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FxInstrumentList'
-        '404':
+                $ref: "#/components/schemas/FxInstrumentList"
+        "404":
           description: Not found
   /instruments:
     get:
@@ -65,13 +65,13 @@ paths:
       description: Returns list of available instruments
       operationId: getInstruments
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InstrumentList'
-        '404':
+                $ref: "#/components/schemas/InstrumentList"
+        "404":
           description: Not found
   /order_books/{instrument_name}:
     get:
@@ -85,15 +85,15 @@ paths:
           name: instrument_name
           required: true
           schema:
-            $ref: '#/components/schemas/InstrumentName'
+            $ref: "#/components/schemas/InstrumentName"
       responses:
-        '200':
+        "200":
           description: order book
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderBook'
-        '404':
+                $ref: "#/components/schemas/OrderBook"
+        "404":
           description: Order book not found for instrument
   /book_orders/{trading_account_id}:
     get:
@@ -103,15 +103,15 @@ paths:
       description: Returns list of user's trade orders currently on the order book
       operationId: getBookOrders
       parameters:
-        - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: "#/components/parameters/TradingAccountId"
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeOrderList'
-        '404':
+                $ref: "#/components/schemas/TradeOrderList"
+        "404":
           description: Error
   /payment-accounts/{app_entity_id}:
     get:
@@ -125,15 +125,15 @@ paths:
           name: app_entity_id
           required: true
           schema:
-            $ref: '#/components/schemas/Id'
+            $ref: "#/components/schemas/Id"
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentAccountList'
-        '404':
+                $ref: "#/components/schemas/PaymentAccountList"
+        "404":
           description: Error
   /trades/{trading_account_id}/id/{trade_id}:
     get:
@@ -143,16 +143,16 @@ paths:
       description: Returns a trade by id
       operationId: getTradeById
       parameters:
-        - $ref: '#/components/parameters/TradingAccountId'
-        - $ref: '#/components/parameters/TradeId'
+        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/TradeId"
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trade'
-        '404':
+                $ref: "#/components/schemas/Trade"
+        "404":
           description: Error
     delete:
       tags:
@@ -161,12 +161,12 @@ paths:
       description: Cancels a trade order by id
       operationId: deleteTradeById
       parameters:
-        - $ref: '#/components/parameters/TradingAccountId'
-        - $ref: '#/components/parameters/TradeId'
+        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/TradeId"
       responses:
-        '204':
+        "204":
           description: Success
-        '404':
+        "404":
           description: Error
   /trades/{trading_account_id}:
     get:
@@ -176,15 +176,15 @@ paths:
       description: Returns list of entity's trades
       operationId: getTrades
       parameters:
-        - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: "#/components/parameters/TradingAccountId"
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeList'
-        '404':
+                $ref: "#/components/schemas/TradeList"
+        "404":
           description: Error
   /trade_orders/{trading_account_id}:
     get:
@@ -194,15 +194,15 @@ paths:
       description: Returns list of user's trade orders
       operationId: getTradeOrders
       parameters:
-        - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: "#/components/parameters/TradingAccountId"
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeOrderList'
-        '404':
+                $ref: "#/components/schemas/TradeOrderList"
+        "404":
           description: Error
     post:
       tags:
@@ -211,7 +211,7 @@ paths:
       description: Creates a trade order
       operationId: createTrade
       parameters:
-        - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: "#/components/parameters/TradingAccountId"
       requestBody:
         required: true
         content:
@@ -220,17 +220,17 @@ paths:
               type: object
               properties:
                 instrument:
-                  $ref: '#/components/schemas/InstrumentName'
+                  $ref: "#/components/schemas/InstrumentName"
                 side:
-                  $ref: '#/components/schemas/TradeOrderSide'
+                  $ref: "#/components/schemas/TradeOrderSide"
                 type:
-                  $ref: '#/components/schemas/TradeOrderType'
+                  $ref: "#/components/schemas/TradeOrderType"
                 timeInForce:
-                  $ref: '#/components/schemas/TradeOrderTimeInForce'
+                  $ref: "#/components/schemas/TradeOrderTimeInForce"
                 amount:
-                  $ref: '#/components/schemas/MoneyAmount'
+                  $ref: "#/components/schemas/MoneyAmount"
                 price:
-                  $ref: '#/components/schemas/MoneyAmount'
+                  $ref: "#/components/schemas/MoneyAmount"
               required:
                 - instrument
                 - side
@@ -242,16 +242,16 @@ paths:
               side: SELL
               type: LIMIT
               timeInForce: GTC
-              amount: '100'
-              price: '100.00'
+              amount: "100"
+              price: "100.00"
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeOrder'
-        '404':
+                $ref: "#/components/schemas/TradeOrder"
+        "404":
           description: Error
   /trading_account/{trading_account_id}:
     get:
@@ -265,15 +265,15 @@ paths:
           name: trading_account_id
           required: true
           schema:
-            $ref: '#/components/schemas/Id'
+            $ref: "#/components/schemas/Id"
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradingAccount'
-        '404':
+                $ref: "#/components/schemas/TradingAccount"
+        "404":
           description: Error
   /apps/{app_entity_id}:
     get:
@@ -287,15 +287,15 @@ paths:
           name: app_entity_id
           required: true
           schema:
-            $ref: '#/components/schemas/Id'
+            $ref: "#/components/schemas/Id"
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AppEntity'
-        '404':
+                $ref: "#/components/schemas/AppEntity"
+        "404":
           description: Error
   /apps:
     get:
@@ -305,13 +305,13 @@ paths:
       description: Return a list of registered users
       operationId: getAppEntities
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AppEntityList'
-        '404':
+                $ref: "#/components/schemas/AppEntityList"
+        "404":
           description: Error
   /apps/payments/{payment_id}:
     post:
@@ -325,15 +325,15 @@ paths:
           name: payment_id
           required: true
           schema:
-            $ref: '#/components/schemas/Id'
+            $ref: "#/components/schemas/Id"
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Payment'
-        '404':
+                $ref: "#/components/schemas/Payment"
+        "404":
           description: Error
   /apps/payments:
     post:
@@ -343,13 +343,13 @@ paths:
       description: Creates a payment on user's account
       operationId: createAdminPayment
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Payment'
-        '404':
+                $ref: "#/components/schemas/Payment"
+        "404":
           description: Error
 components:
   schemas:
@@ -362,7 +362,7 @@ components:
       description: Currency of payment account
       properties:
         name:
-          $ref: '#/components/schemas/CurrencyName'
+          $ref: "#/components/schemas/CurrencyName"
         precision:
           type: integer
           description: Currency precision as number of decimal points
@@ -374,7 +374,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/Currency'
+            $ref: "#/components/schemas/Currency"
       example:
         data:
           - name: USD
@@ -397,34 +397,34 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
         name:
-          $ref: '#/components/schemas/InstrumentName'
+          $ref: "#/components/schemas/InstrumentName"
         quote_currency:
-          $ref: '#/components/schemas/CurrencyName'
+          $ref: "#/components/schemas/CurrencyName"
         enabled:
-          $ref: '#/components/schemas/InstrumentAvailability'
+          $ref: "#/components/schemas/InstrumentAvailability"
         base_currency:
-          $ref: '#/components/schemas/CurrencyName'
+          $ref: "#/components/schemas/CurrencyName"
     FxInstrumentList:
       type: array
       items:
-        $ref: '#/components/schemas/FxInstrument'
+        $ref: "#/components/schemas/FxInstrument"
     Instrument:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
         name:
-          $ref: '#/components/schemas/InstrumentName'
+          $ref: "#/components/schemas/InstrumentName"
         quote_currency:
-          $ref: '#/components/schemas/CurrencyName'
+          $ref: "#/components/schemas/CurrencyName"
         enabled:
-          $ref: '#/components/schemas/InstrumentAvailability'
+          $ref: "#/components/schemas/InstrumentAvailability"
     InstrumentList:
       type: array
       items:
-        $ref: '#/components/schemas/Instrument'
+        $ref: "#/components/schemas/Instrument"
     PriceVolume:
       type: object
       properties:
@@ -440,11 +440,11 @@ components:
         sell:
           type: array
           items:
-            $ref: '#/components/schemas/PriceVolume'
+            $ref: "#/components/schemas/PriceVolume"
         buy:
           type: array
           items:
-            $ref: '#/components/schemas/PriceVolume'
+            $ref: "#/components/schemas/PriceVolume"
     TradeOrderSide:
       type: string
       enum:
@@ -478,52 +478,52 @@ components:
     MoneyAmount:
       type: string
       format: decimal
-      example: '100.50'
+      example: "100.50"
     DateTime:
       type: string
       format: date-time
-      example: '2017-07-21T17:32:28Z'
+      example: "2017-07-21T17:32:28Z"
     TradeOrder:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
         instrument:
-          $ref: '#/components/schemas/InstrumentName'
+          $ref: "#/components/schemas/InstrumentName"
         side:
-          $ref: '#/components/schemas/TradeOrderSide'
+          $ref: "#/components/schemas/TradeOrderSide"
         type:
-          $ref: '#/components/schemas/TradeOrderType'
+          $ref: "#/components/schemas/TradeOrderType"
         timeInForce:
-          $ref: '#/components/schemas/TradeOrderTimeInForce'
+          $ref: "#/components/schemas/TradeOrderTimeInForce"
         status:
-          $ref: '#/components/schemas/TradeOrderStatus'
+          $ref: "#/components/schemas/TradeOrderStatus"
         price:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         amount:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         openAmount:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         created:
-          $ref: '#/components/schemas/DateTime'
+          $ref: "#/components/schemas/DateTime"
     TradeOrderList:
       type: array
       items:
-        $ref: '#/components/schemas/TradeOrder'
+        $ref: "#/components/schemas/TradeOrder"
     PaymentAccount:
       type: object
       description: Payment account available to user
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
         currency:
-          $ref: '#/components/schemas/CurrencyName'
+          $ref: "#/components/schemas/CurrencyName"
         amount:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         amountReserved:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         amountAvailable:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
     PaymentAccountList:
       type: object
       description: List of payment accounts available to user
@@ -531,7 +531,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/PaymentAccount'
+            $ref: "#/components/schemas/PaymentAccount"
       example:
         data:
           - name: USD
@@ -543,27 +543,27 @@ components:
       description: Executed trade
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
     TradeList:
       type: array
       description: List of executed trades
       items:
-        $ref: '#/components/schemas/Trade'
+        $ref: "#/components/schemas/Trade"
     TradingAccountInstrument:
       type: object
       properties:
         name:
-          $ref: '#/components/schemas/InstrumentName'
+          $ref: "#/components/schemas/InstrumentName"
         amount:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         amountReserved:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         amountAvailable:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         value:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         currency:
-          $ref: '#/components/schemas/CurrencyName'
+          $ref: "#/components/schemas/CurrencyName"
       required:
         - name
         - amount
@@ -575,11 +575,11 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
         instruments:
           type: array
           items:
-            $ref: '#/components/schemas/TradingAccountInstrument'
+            $ref: "#/components/schemas/TradingAccountInstrument"
       required:
         - id
         - instruments
@@ -591,14 +591,14 @@ components:
       description: Registered user
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
         external_id:
-          $ref: '#/components/schemas/AppEntityExternalId'
+          $ref: "#/components/schemas/AppEntityExternalId"
     AppEntityList:
       type: array
       description: List of registered users
       items:
-        $ref: '#/components/schemas/AppEntity'
+        $ref: "#/components/schemas/AppEntity"
     PaymentType:
       type: string
       enum:
@@ -618,27 +618,27 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
         type:
-          $ref: '#/components/schemas/PaymentType'
+          $ref: "#/components/schemas/PaymentType"
         amount:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         currency:
-          $ref: '#/components/schemas/CurrencyName'
+          $ref: "#/components/schemas/CurrencyName"
         senderAccountId:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
         beneficiaryAccountId:
-          $ref: '#/components/schemas/Id'
+          $ref: "#/components/schemas/Id"
         details:
-          $ref: '#/components/schemas/PaymentDetails'
+          $ref: "#/components/schemas/PaymentDetails"
         externalReferenceNumber:
-          $ref: '#/components/schemas/PaymentExternalReferenceNumber'
+          $ref: "#/components/schemas/PaymentExternalReferenceNumber"
         status:
           type: string
         debitBalanceAmount:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
         creditBalanceAmount:
-          $ref: '#/components/schemas/MoneyAmount'
+          $ref: "#/components/schemas/MoneyAmount"
       required:
         - id
         - type
@@ -655,10 +655,10 @@ components:
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/Id'
+        $ref: "#/components/schemas/Id"
     TradeId:
       name: trade_id
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/Id'
+        $ref: "#/components/schemas/Id"

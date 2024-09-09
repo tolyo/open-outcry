@@ -5,13 +5,13 @@ get:
   description: Returns list of entity's trades
   operationId: getTrades
   parameters:
-    - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
+    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
   responses:
     "200":
       description: Success
       content:
         application/json:
           schema:
-            $ref: '../../models/trade.yaml#/components/schemas/TradeList'
+            $ref: "../../models/trade.yaml#/components/schemas/TradeList"
     "404":
       description: Error

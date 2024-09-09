@@ -9,7 +9,7 @@ get:
       name: instrument_name
       required: true
       schema:
-        $ref: '../../models/instrument.yaml#/components/schemas/InstrumentName'
+        $ref: "../../models/instrument.yaml#/components/schemas/InstrumentName"
 
   responses:
     "200":
@@ -17,6 +17,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../models/order_book.yaml#/components/schemas/OrderBook'
+            $ref: "../../models/order_book.yaml#/components/schemas/OrderBook"
     "404":
       description: Order book not found for instrument

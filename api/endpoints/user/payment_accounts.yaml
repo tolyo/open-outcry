@@ -9,7 +9,7 @@ get:
       name: app_entity_id
       required: true
       schema:
-        $ref: '../../models/app_entity.yaml#/components/schemas/AppEntityId'
+        $ref: "../../models/app_entity.yaml#/components/schemas/AppEntityId"
 
   responses:
     "200":
@@ -17,6 +17,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../models/payment_account.yaml#/components/schemas/PaymentAccountList'
+            $ref: "../../models/payment_account.yaml#/components/schemas/PaymentAccountList"
     "404":
       description: Error

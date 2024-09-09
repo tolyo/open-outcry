@@ -16,9 +16,8 @@ components:
         sell:
           type: array
           items:
-            $ref: '#/components/schemas/PriceVolume'
+            $ref: "#/components/schemas/PriceVolume"
         buy:
           type: array
           items:
-            $ref: '#/components/schemas/PriceVolume'
-
+            $ref: "#/components/schemas/PriceVolume"

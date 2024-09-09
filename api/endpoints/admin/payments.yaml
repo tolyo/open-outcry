@@ -11,6 +11,6 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../models/payment.yaml#/components/schemas/Payment'
+            $ref: "../../models/payment.yaml#/components/schemas/Payment"
     "404":
       description: Error

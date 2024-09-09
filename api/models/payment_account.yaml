@@ -7,7 +7,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/PaymentAccount'
+            $ref: "#/components/schemas/PaymentAccount"
       example:
         data:
           - name: USD
@@ -20,12 +20,12 @@ components:
       description: Payment account available to user
       properties:
         id:
-          $ref: './shared.yaml#/components/schemas/Id'
+          $ref: "./shared.yaml#/components/schemas/Id"
         currency:
-          $ref: './currency.yaml#/components/schemas/CurrencyName'
+          $ref: "./currency.yaml#/components/schemas/CurrencyName"
         amount:
-          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
         amountReserved:
-          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
         amountAvailable:
-          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"

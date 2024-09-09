@@ -5,15 +5,14 @@ get:
   description: Returns a trade by id
   operationId: getTradeById
   parameters:
-    - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
-    - $ref: '../../models/trade.yaml#/components/parameters/TradeId'
+    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/trade.yaml#/components/parameters/TradeId"
   responses:
     "200":
       description: Success
       content:
         application/json:
           schema:
-            $ref: '../../models/trade.yaml#/components/schemas/Trade'
+            $ref: "../../models/trade.yaml#/components/schemas/Trade"
     "404":
       description: Error
-

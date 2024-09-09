@@ -5,8 +5,8 @@ get:
   description: Returns user's trade order
   operationId: getTradeOrderById
   parameters:
-    - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
-    - $ref: '../../models/trade_order.yaml#/components/parameters/TradeOrderId'
+    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/trade_order.yaml#/components/parameters/TradeOrderId"
 
   responses:
     "200":
@@ -14,10 +14,9 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../models/trade_order.yaml#/components/schemas/TradeOrder'
+            $ref: "../../models/trade_order.yaml#/components/schemas/TradeOrder"
     "404":
       description: Error
-
 
 delete:
   tags:
@@ -26,8 +25,8 @@ delete:
   description: Cancels a trade order by id
   operationId: deleteTradeOrderById
   parameters:
-    - $ref: '../../models/trading_account.yaml#/components/parameters/TradingAccountId'
-    - $ref: '../../models/trade_order.yaml#/components/parameters/TradeOrderId'
+    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/trade_order.yaml#/components/parameters/TradeOrderId"
   responses:
     "204":
       description: Success

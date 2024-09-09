@@ -1,7 +1,7 @@
 components:
   schemas:
     AppEntityId:
-      $ref: './shared.yaml#/components/schemas/Id'
+      $ref: "./shared.yaml#/components/schemas/Id"
 
     AppEntityExternalId:
       type: string
@@ -11,13 +11,13 @@ components:
       type: array
       description: List of registered users
       items:
-        $ref: '#/components/schemas/AppEntity'
+        $ref: "#/components/schemas/AppEntity"
 
     AppEntity:
       type: object
       description: Registered user
       properties:
         id:
-          $ref: '#/components/schemas/AppEntityId'
+          $ref: "#/components/schemas/AppEntityId"
         external_id:
-          $ref: '#/components/schemas/AppEntityExternalId'
+          $ref: "#/components/schemas/AppEntityExternalId"

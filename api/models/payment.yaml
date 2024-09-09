@@ -1,7 +1,7 @@
 components:
   schemas:
     PaymentId:
-      $ref: './shared.yaml#/components/schemas/Id'
+      $ref: "./shared.yaml#/components/schemas/Id"
     PaymentType:
       type: string
       enum:
@@ -21,7 +21,7 @@ components:
       example: "REF123456"
 
     PaymentAccountId:
-      $ref: './shared.yaml#/components/schemas/Id'
+      $ref: "./shared.yaml#/components/schemas/Id"
 
     Payment:
       type: object
@@ -31,7 +31,7 @@ components:
         type:
           $ref: "#/components/schemas/PaymentType"
         amount:
-          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
         currency:
           $ref: "./currency.yaml#/components/schemas/CurrencyName"
         senderAccountId:
@@ -45,9 +45,9 @@ components:
         status:
           type: string
         debitBalanceAmount:
-          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
         creditBalanceAmount:
-          $ref: './shared.yaml#/components/schemas/MoneyAmount'
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
       required:
         - id
         - type

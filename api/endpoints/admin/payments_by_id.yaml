@@ -9,7 +9,7 @@ post:
       name: payment_id
       required: true
       schema:
-        $ref: '../../models/payment.yaml#/components/schemas/PaymentId'
+        $ref: "../../models/payment.yaml#/components/schemas/PaymentId"
 
   responses:
     "200":
@@ -17,6 +17,6 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../models/payment.yaml#/components/schemas/Payment'
+            $ref: "../../models/payment.yaml#/components/schemas/Payment"
     "404":
       description: Error

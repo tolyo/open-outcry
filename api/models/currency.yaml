@@ -7,7 +7,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/Currency'
+            $ref: "#/components/schemas/Currency"
       example:
         data:
           - name: USD
@@ -25,9 +25,8 @@ components:
       description: Currency of payment account
       properties:
         name:
-          $ref: '#/components/schemas/CurrencyName'
+          $ref: "#/components/schemas/CurrencyName"
         precision:
           type: integer
           description: Currency precision as number of decimal points
           example: 2
-

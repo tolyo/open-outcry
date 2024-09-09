@@ -11,6 +11,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../models/app_entity.yaml#/components/schemas/AppEntityList'
+            $ref: "../../models/app_entity.yaml#/components/schemas/AppEntityList"
     "404":
       description: Error

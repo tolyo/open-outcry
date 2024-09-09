@@ -13,7 +13,6 @@ info:
     * All data has to be submitted UTF-8 encoded.
     * The reply is sent JSON encoded.
 
-
   version: 1.0.0
   title: OPEN OUTCRY API
 

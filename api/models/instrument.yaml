@@ -1,17 +1,17 @@
 components:
   schemas:
     InstrumentId:
-      $ref: './shared.yaml#/components/schemas/Id'
+      $ref: "./shared.yaml#/components/schemas/Id"
 
     InstrumentList:
       type: array
       items:
-        $ref: '#/components/schemas/Instrument'
+        $ref: "#/components/schemas/Instrument"
 
     FxInstrumentList:
       type: array
       items:
-        $ref: '#/components/schemas/FxInstrument'
+        $ref: "#/components/schemas/FxInstrument"
 
     InstrumentName:
       type: string
@@ -27,26 +27,24 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/InstrumentId'
+          $ref: "#/components/schemas/InstrumentId"
         name:
-          $ref: '#/components/schemas/InstrumentName'
+          $ref: "#/components/schemas/InstrumentName"
         quote_currency:
-          $ref: './currency.yaml#/components/schemas/CurrencyName'
+          $ref: "./currency.yaml#/components/schemas/CurrencyName"
         enabled:
-          $ref: '#/components/schemas/InstrumentAvailability'
+          $ref: "#/components/schemas/InstrumentAvailability"
 
     FxInstrument:
       type: object
       properties:
         id:
-          $ref: './shared.yaml#/components/schemas/Id'
+          $ref: "./shared.yaml#/components/schemas/Id"
         name:
-          $ref: '#/components/schemas/InstrumentName'
+          $ref: "#/components/schemas/InstrumentName"
         quote_currency:
-          $ref: './currency.yaml#/components/schemas/CurrencyName'
+          $ref: "./currency.yaml#/components/schemas/CurrencyName"
         base_currency:
-          $ref: './currency.yaml#/components/schemas/CurrencyName'
+          $ref: "./currency.yaml#/components/schemas/CurrencyName"
         enabled:
-          $ref: '#/components/schemas/InstrumentAvailability'
-
-
+          $ref: "#/components/schemas/InstrumentAvailability"

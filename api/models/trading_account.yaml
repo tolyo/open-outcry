@@ -3,10 +3,10 @@ components:
     TradingAccountList:
       type: array
       items:
-        $ref: '#/components/schemas/TradingAccount'
+        $ref: "#/components/schemas/TradingAccount"
 
     TradingAccountId:
-      $ref: './shared.yaml#/components/schemas/Id'
+      $ref: "./shared.yaml#/components/schemas/Id"
 
     TradingAccountInstrument:
       type: object
@@ -35,7 +35,7 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/TradingAccountId'
+          $ref: "#/components/schemas/TradingAccountId"
         instruments:
           type: array
           items:
@@ -50,4 +50,4 @@ components:
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/TradingAccountId'
+        $ref: "#/components/schemas/TradingAccountId"

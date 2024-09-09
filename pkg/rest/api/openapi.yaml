@@ -15,14 +15,14 @@ info:
   title: OPEN OUTCRY API
   version: 1.0.0
 servers:
-- url: http://localhost:4000
+  - url: http://localhost:4000
 tags:
-- description: User facing resources for management by a specific user of their accounts
-  name: user
-- description: Public facing resources pertaining to exchange in general
-  name: public
-- description: Admin facing resources for exchange management
-  name: admin
+  - description: User facing resources for management by a specific user of their accounts
+    name: user
+  - description: Public facing resources pertaining to exchange in general
+    name: public
+  - description: Admin facing resources for exchange management
+    name: admin
 paths:
   /currencies:
     get:
@@ -33,13 +33,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CurrencyList'
+                $ref: "#/components/schemas/CurrencyList"
           description: Success
         "404":
           description: Error
       summary: Currencies list
       tags:
-      - public
+        - public
   /fxinstruments:
     get:
       description: Returns list of available fx instruments
@@ -49,13 +49,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FxInstrumentList'
+                $ref: "#/components/schemas/FxInstrumentList"
           description: Success
         "404":
           description: Not found
       summary: Fx instrument list
       tags:
-      - public
+        - public
   /instruments:
     get:
       description: Returns list of available instruments
@@ -65,139 +65,139 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InstrumentList'
+                $ref: "#/components/schemas/InstrumentList"
           description: Success
         "404":
           description: Not found
       summary: Instrument list
       tags:
-      - public
+        - public
   /order_books/{instrument_name}:
     get:
       description: Returns an order book for an specific instrument
       operationId: getOrderBook
       parameters:
-      - explode: false
-        in: path
-        name: instrument_name
-        required: true
-        schema:
-          $ref: '#/components/schemas/InstrumentName'
-        style: simple
+        - explode: false
+          in: path
+          name: instrument_name
+          required: true
+          schema:
+            $ref: "#/components/schemas/InstrumentName"
+          style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderBook'
+                $ref: "#/components/schemas/OrderBook"
           description: order book
         "404":
           description: Order book not found for instrument
       summary: Get order book
       tags:
-      - public
+        - public
   /book_orders/{trading_account_id}:
     get:
       description: Returns list of user's trade orders currently on the order book
       operationId: getBookOrders
       parameters:
-      - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: "#/components/parameters/TradingAccountId"
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeOrderList'
+                $ref: "#/components/schemas/TradeOrderList"
           description: Success
         "404":
           description: Error
       summary: Get book orders
       tags:
-      - user
+        - user
   /payment-accounts/{app_entity_id}:
     get:
       description: Returns list of user's payment accounts
       operationId: getPaymentAccounts
       parameters:
-      - explode: false
-        in: path
-        name: app_entity_id
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
-        style: simple
+        - explode: false
+          in: path
+          name: app_entity_id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+          style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentAccountList'
+                $ref: "#/components/schemas/PaymentAccountList"
           description: Success
         "404":
           description: Error
       summary: Get payment accounts
       tags:
-      - user
+        - user
   /trades/{trading_account_id}/id/{trade_id}:
     get:
       description: Returns a trade by id
       operationId: getTradeById
       parameters:
-      - $ref: '#/components/parameters/TradingAccountId'
-      - $ref: '#/components/parameters/TradeId'
+        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/TradeId"
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trade'
+                $ref: "#/components/schemas/Trade"
           description: Success
         "404":
           description: Error
       summary: Get trade
       tags:
-      - user
+        - user
   /trades/{trading_account_id}:
     get:
       description: Returns list of entity's trades
       operationId: getTrades
       parameters:
-      - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: "#/components/parameters/TradingAccountId"
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeList'
+                $ref: "#/components/schemas/TradeList"
           description: Success
         "404":
           description: Error
       summary: Trades list
       tags:
-      - user
+        - user
   /trade_orders/{trading_account_id}:
     get:
       description: Returns list of user's trade orders
       operationId: getTradeOrders
       parameters:
-      - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: "#/components/parameters/TradingAccountId"
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeOrderList'
+                $ref: "#/components/schemas/TradeOrderList"
           description: Success
         "404":
           description: Error
       summary: Get trade orders
       tags:
-      - user
+        - user
     post:
       description: Creates a trade order
       operationId: createTrade
       parameters:
-      - $ref: '#/components/parameters/TradingAccountId'
+        - $ref: "#/components/parameters/TradingAccountId"
       requestBody:
         content:
           application/json:
@@ -209,27 +209,27 @@ paths:
               amount: "100"
               price: "100.00"
             schema:
-              $ref: '#/components/schemas/createTrade_request'
+              $ref: "#/components/schemas/createTrade_request"
         required: true
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeOrder'
+                $ref: "#/components/schemas/TradeOrder"
           description: Success
         "404":
           description: Error
       summary: Create trade order
       tags:
-      - user
+        - user
   /trade_orders/{trading_account_id}/id/{trade_order_id}:
     delete:
       description: Cancels a trade order by id
       operationId: deleteTradeOrderById
       parameters:
-      - $ref: '#/components/parameters/TradingAccountId'
-      - $ref: '#/components/parameters/TradeOrderId'
+        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/TradeOrderId"
       responses:
         "204":
           description: Success
@@ -237,73 +237,73 @@ paths:
           description: Error
       summary: Cancel trade order
       tags:
-      - user
+        - user
     get:
       description: Returns user's trade order
       operationId: getTradeOrderById
       parameters:
-      - $ref: '#/components/parameters/TradingAccountId'
-      - $ref: '#/components/parameters/TradeOrderId'
+        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/TradeOrderId"
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradeOrder'
+                $ref: "#/components/schemas/TradeOrder"
           description: Success
         "404":
           description: Error
       summary: Get trade order
       tags:
-      - user
+        - user
   /trading_account/{trading_account_id}:
     get:
       description: Returns user's trading account
       operationId: getTradingAccount
       parameters:
-      - explode: false
-        in: path
-        name: trading_account_id
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
-        style: simple
+        - explode: false
+          in: path
+          name: trading_account_id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+          style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TradingAccount'
+                $ref: "#/components/schemas/TradingAccount"
           description: Success
         "404":
           description: Error
       summary: Get trading account
       tags:
-      - user
+        - user
   /apps/{app_entity_id}:
     get:
       description: Return registered user by external id
       operationId: getAppEntity
       parameters:
-      - explode: false
-        in: path
-        name: app_entity_id
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
-        style: simple
+        - explode: false
+          in: path
+          name: app_entity_id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+          style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AppEntity'
+                $ref: "#/components/schemas/AppEntity"
           description: Success
         "404":
           description: Error
       summary: Get application entity
       tags:
-      - admin
+        - admin
   /apps:
     get:
       description: Return a list of registered users
@@ -313,37 +313,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AppEntityList'
+                $ref: "#/components/schemas/AppEntityList"
           description: Success
         "404":
           description: Error
       summary: Get application entities
       tags:
-      - admin
+        - admin
   /apps/payments/{payment_id}:
     post:
       description: Returns payment information
       operationId: getAdminPaymentById
       parameters:
-      - explode: false
-        in: path
-        name: payment_id
-        required: true
-        schema:
-          $ref: '#/components/schemas/Id'
-        style: simple
+        - explode: false
+          in: path
+          name: payment_id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+          style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Payment'
+                $ref: "#/components/schemas/Payment"
           description: Success
         "404":
           description: Error
       summary: Get payment
       tags:
-      - admin
+        - admin
   /apps/payments:
     post:
       description: Creates a payment on user's account
@@ -353,13 +353,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Payment'
+                $ref: "#/components/schemas/Payment"
           description: Success
         "404":
           description: Error
       summary: Create admin payment
       tags:
-      - admin
+        - admin
 components:
   parameters:
     TradingAccountId:
@@ -368,7 +368,7 @@ components:
       name: trading_account_id
       required: true
       schema:
-        $ref: '#/components/schemas/Id'
+        $ref: "#/components/schemas/Id"
       style: simple
     TradeId:
       explode: false
@@ -376,7 +376,7 @@ components:
       name: trade_id
       required: true
       schema:
-        $ref: '#/components/schemas/Id'
+        $ref: "#/components/schemas/Id"
       style: simple
     TradeOrderId:
       explode: false
@@ -384,7 +384,7 @@ components:
       name: trade_order_id
       required: true
       schema:
-        $ref: '#/components/schemas/Id'
+        $ref: "#/components/schemas/Id"
       style: simple
   schemas:
     CurrencyName:
@@ -406,21 +406,22 @@ components:
       description: List of currencies supported by app
       example:
         data:
-        - name: USD
-          precision: 2
-        - name: BTC
-          precision: 5
+          - name: USD
+            precision: 2
+          - name: BTC
+            precision: 5
       properties:
         data:
           items:
-            $ref: '#/components/schemas/Currency'
+            $ref: "#/components/schemas/Currency"
           type: array
     Id:
       example: 29b6e916-0d74-41c3-b004-eb8373bca606
       format: uuid
       type: string
     InstrumentName:
-      description: "Ticker-like name of the instrument. For monetary instruments,\
+      description:
+        "Ticker-like name of the instrument. For monetary instruments,\
         \ a currency pair is used."
       example: BTC-EUR
       type: string
@@ -441,7 +442,8 @@ components:
           format: uuid
           type: string
         name:
-          description: "Ticker-like name of the instrument. For monetary instruments,\
+          description:
+            "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
           type: string
@@ -459,7 +461,7 @@ components:
           type: boolean
     FxInstrumentList:
       items:
-        $ref: '#/components/schemas/FxInstrument'
+        $ref: "#/components/schemas/FxInstrument"
       type: array
     Instrument:
       example:
@@ -473,7 +475,8 @@ components:
           format: uuid
           type: string
         name:
-          description: "Ticker-like name of the instrument. For monetary instruments,\
+          description:
+            "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
           type: string
@@ -487,7 +490,7 @@ components:
           type: boolean
     InstrumentList:
       items:
-        $ref: '#/components/schemas/Instrument'
+        $ref: "#/components/schemas/Instrument"
       type: array
     PriceVolume:
       example:
@@ -503,47 +506,47 @@ components:
     OrderBook:
       example:
         sell:
-        - volume: 80
-          price: 120
-        - volume: 80
-          price: 120
+          - volume: 80
+            price: 120
+          - volume: 80
+            price: 120
         buy: ""
       properties:
         sell:
           items:
-            $ref: '#/components/schemas/PriceVolume'
+            $ref: "#/components/schemas/PriceVolume"
           type: array
         buy:
           items:
-            $ref: '#/components/schemas/PriceVolume'
+            $ref: "#/components/schemas/PriceVolume"
     TradeOrderSide:
       enum:
-      - SELL
-      - BUY
+        - SELL
+        - BUY
       type: string
     TradeOrderType:
       enum:
-      - LIMIT
-      - MARKET
-      - STOPLOSS
-      - STOPLIMIT
+        - LIMIT
+        - MARKET
+        - STOPLOSS
+        - STOPLIMIT
       type: string
     TradeOrderTimeInForce:
       enum:
-      - GTC
-      - IOC
-      - FOK
-      - GTD
-      - GTT
+        - GTC
+        - IOC
+        - FOK
+        - GTD
+        - GTT
       type: string
     TradeOrderStatus:
       enum:
-      - OPEN
-      - REJECTED
-      - CANCELLED
-      - PARTIALLY_CANCELLED
-      - PARTIALLY_REJECTED
-      - FILLED
+        - OPEN
+        - REJECTED
+        - CANCELLED
+        - PARTIALLY_CANCELLED
+        - PARTIALLY_REJECTED
+        - FILLED
       type: string
     MoneyAmount:
       example: "100.50"
@@ -571,18 +574,19 @@ components:
           format: uuid
           type: string
         instrument:
-          description: "Ticker-like name of the instrument. For monetary instruments,\
+          description:
+            "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
           type: string
         side:
-          $ref: '#/components/schemas/TradeOrderSide'
+          $ref: "#/components/schemas/TradeOrderSide"
         type:
-          $ref: '#/components/schemas/TradeOrderType'
+          $ref: "#/components/schemas/TradeOrderType"
         timeInForce:
-          $ref: '#/components/schemas/TradeOrderTimeInForce'
+          $ref: "#/components/schemas/TradeOrderTimeInForce"
         status:
-          $ref: '#/components/schemas/TradeOrderStatus'
+          $ref: "#/components/schemas/TradeOrderStatus"
         price:
           example: "100.50"
           format: decimal
@@ -601,7 +605,7 @@ components:
           type: string
     TradeOrderList:
       items:
-        $ref: '#/components/schemas/TradeOrder'
+        $ref: "#/components/schemas/TradeOrder"
       type: array
     PaymentAccount:
       description: Payment account available to user
@@ -630,14 +634,14 @@ components:
       description: List of payment accounts available to user
       example:
         data:
-        - name: USD
-          precision: 2
-        - name: BTC
-          precision: 5
+          - name: USD
+            precision: 2
+          - name: BTC
+            precision: 5
       properties:
         data:
           items:
-            $ref: '#/components/schemas/PaymentAccount'
+            $ref: "#/components/schemas/PaymentAccount"
           type: array
     Trade:
       description: Executed trade
@@ -650,7 +654,7 @@ components:
           type: string
     TradeList:
       items:
-        $ref: '#/components/schemas/Trade'
+        $ref: "#/components/schemas/Trade"
       type: array
     TradingAccountInstrument:
       example:
@@ -662,7 +666,8 @@ components:
         value: "100.50"
       properties:
         name:
-          description: "Ticker-like name of the instrument. For monetary instruments,\
+          description:
+            "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
           type: string
@@ -687,27 +692,27 @@ components:
           example: USD
           type: string
       required:
-      - amount
-      - amountAvailable
-      - amountReserved
-      - currency
-      - name
-      - value
+        - amount
+        - amountAvailable
+        - amountReserved
+        - currency
+        - name
+        - value
     TradingAccount:
       example:
         instruments:
-        - amount: "100.50"
-          amountAvailable: "100.50"
-          name: BTC-EUR
-          amountReserved: "100.50"
-          currency: USD
-          value: "100.50"
-        - amount: "100.50"
-          amountAvailable: "100.50"
-          name: BTC-EUR
-          amountReserved: "100.50"
-          currency: USD
-          value: "100.50"
+          - amount: "100.50"
+            amountAvailable: "100.50"
+            name: BTC-EUR
+            amountReserved: "100.50"
+            currency: USD
+            value: "100.50"
+          - amount: "100.50"
+            amountAvailable: "100.50"
+            name: BTC-EUR
+            amountReserved: "100.50"
+            currency: USD
+            value: "100.50"
         id: 29b6e916-0d74-41c3-b004-eb8373bca606
       properties:
         id:
@@ -716,11 +721,11 @@ components:
           type: string
         instruments:
           items:
-            $ref: '#/components/schemas/TradingAccountInstrument'
+            $ref: "#/components/schemas/TradingAccountInstrument"
           type: array
       required:
-      - id
-      - instruments
+        - id
+        - instruments
     AppEntityExternalId:
       description: External id
       type: string
@@ -739,16 +744,16 @@ components:
           type: string
     AppEntityList:
       items:
-        $ref: '#/components/schemas/AppEntity'
+        $ref: "#/components/schemas/AppEntity"
       type: array
     PaymentType:
       enum:
-      - DEPOSIT
-      - WITHDRAWAL
-      - TRANSFER
-      - INSTRUMENT_BUY
-      - INSTRUMENT_SELL
-      - CHARGE
+        - DEPOSIT
+        - WITHDRAWAL
+        - TRANSFER
+        - INSTRUMENT_BUY
+        - INSTRUMENT_SELL
+        - CHARGE
       type: string
     PaymentDetails:
       example: Bank deposit Bank REF123456
@@ -775,7 +780,7 @@ components:
           format: uuid
           type: string
         type:
-          $ref: '#/components/schemas/PaymentType'
+          $ref: "#/components/schemas/PaymentType"
         amount:
           example: "100.50"
           format: decimal
@@ -809,28 +814,29 @@ components:
           format: decimal
           type: string
       required:
-      - amount
-      - beneficiaryAccountId
-      - currency
-      - details
-      - externalReferenceNumber
-      - id
-      - senderAccountId
-      - status
-      - type
+        - amount
+        - beneficiaryAccountId
+        - currency
+        - details
+        - externalReferenceNumber
+        - id
+        - senderAccountId
+        - status
+        - type
     createTrade_request:
       properties:
         instrument:
-          description: "Ticker-like name of the instrument. For monetary instruments,\
+          description:
+            "Ticker-like name of the instrument. For monetary instruments,\
             \ a currency pair is used."
           example: BTC-EUR
           type: string
         side:
-          $ref: '#/components/schemas/TradeOrderSide'
+          $ref: "#/components/schemas/TradeOrderSide"
         type:
-          $ref: '#/components/schemas/TradeOrderType'
+          $ref: "#/components/schemas/TradeOrderType"
         timeInForce:
-          $ref: '#/components/schemas/TradeOrderTimeInForce'
+          $ref: "#/components/schemas/TradeOrderTimeInForce"
         amount:
           example: "100.50"
           format: decimal
@@ -840,8 +846,8 @@ components:
           format: decimal
           type: string
       required:
-      - amount
-      - instrument
-      - side
-      - timeInForce
-      - type
+        - amount
+        - instrument
+        - side
+        - timeInForce
+        - type

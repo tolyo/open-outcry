@@ -12,11 +12,11 @@ post:
           type: object
           properties:
             name:
-              $ref: '../../models/instrument.yaml#/components/schemas/InstrumentName'
+              $ref: "../../models/instrument.yaml#/components/schemas/InstrumentName"
             quote_currency:
-              $ref: '../../models/currency.yaml#/components/schemas/CurrencyName'
+              $ref: "../../models/currency.yaml#/components/schemas/CurrencyName"
             base_currency:
-              $ref: '../../models/currency.yaml#/components/schemas/CurrencyName'
+              $ref: "../../models/currency.yaml#/components/schemas/CurrencyName"
 
   responses:
     "201":
@@ -24,6 +24,6 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../models/instrument.yaml#/components/schemas/InstrumentId'
+            $ref: "../../models/instrument.yaml#/components/schemas/InstrumentId"
     "422":
       description: Error

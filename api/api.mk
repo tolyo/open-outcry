@@ -11,14 +11,13 @@ bundle-api:
 		$(INPUT_YAML) \
 		--output $(OUTPUT_YAML)
 
-validate-api:
-	make bundle-api
+validate-api: bundle-api
 	npx @redocly/cli lint \
 		$(OUTPUT_YAML) \
 		--format=checkstyle
 
-generate-api: ## Generate server bindings, move model files, fix imports
-	make validate-api
+## Generate server bindings, move model files, fix imports 
+generate-api: validate-api
 	npx @openapitools/openapi-generator-cli generate \
 		-i $(OUTPUT_YAML) \
 		-g go-server \
