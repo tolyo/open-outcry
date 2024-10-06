@@ -13,9 +13,9 @@ import (
 	"context"
 	"testing"
 
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	openapiclient "open-outcry/demo/pkg/api"
 )
 
 func Test_api_UserAPIService(t *testing.T) {

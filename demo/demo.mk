@@ -4,10 +4,11 @@ NPM_PREFIX = --prefix demo
 
 setup-demo:
 	@npm $(NPM_PREFIX) i
+	@go get ./...
 
 # Run server in dev mode
 serve-demo:
-	@npm $(NPM_PREFIX) run serve
+	@go run main.go
 
 # Run prettier source
 pretty-demo:

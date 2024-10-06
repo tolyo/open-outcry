@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"fmt"
 	"open-outcry/pkg/conf"
 	"reflect"
 
@@ -70,14 +71,14 @@ func QueryList[T interface{}](query string, args ...any) []T {
 }
 
 func GetCount(tableName string) int {
-	return QueryVal[int](
-		"SELECT COUNT(*) FROM " + tableName,
-	)
+	query := fmt.Sprintf("SELECT COUNT(*) FROM %s", tableName)
+	return QueryVal[int](query)
 }
 
 func DeleteAll(tableName string) {
+	query := fmt.Sprintf("DELETE FROM %s", tableName)
 	_, err := Instance().ExecContext(context.Background(),
-		"DELETE FROM "+tableName,
+		query,
 	)
 	if err != nil {
 		log.Fatal(err)

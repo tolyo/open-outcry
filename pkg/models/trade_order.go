@@ -1,6 +1,9 @@
 package models
 
-import "open-outcry/pkg/db"
+import (
+	log "github.com/sirupsen/logrus"
+	"open-outcry/pkg/db"
+)
 
 type OrderTimeInForce string
 
@@ -93,7 +96,7 @@ const tradeOrderBaseQuery = `
 
 func GetTradeOrder(id TradeOrderId) TradeOrder {
 	var order TradeOrder
-	db.Instance().QueryRow(tradeOrderBaseQuery+`WHERE t.pub_id = $1`, id).Scan(
+	err := db.Instance().QueryRow(tradeOrderBaseQuery+`WHERE t.pub_id = $1`, id).Scan(
 		&order.Id,
 		&order.TradingAccountId,
 		&order.InstrumentName,
@@ -106,5 +109,8 @@ func GetTradeOrder(id TradeOrderId) TradeOrder {
 		&order.TimeInForce,
 		&order.Created,
 	)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return order
 }

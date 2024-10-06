@@ -1,6 +1,7 @@
 package models
 
 import (
+	"log"
 	"open-outcry/pkg/db"
 
 	"github.com/shopspring/decimal"
@@ -40,9 +41,12 @@ func FindTradingAccountByApplicationEntityId(appEntityId AppEntityId) *TradingAc
 
 func helper(query string, arg any) *TradingAccount {
 	var tradingAccount TradingAccount
-	db.Instance().QueryRow(
+	err := db.Instance().QueryRow(
 		query, arg,
 	).Scan(&tradingAccount.Id, &tradingAccount.AppEntityId)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return &tradingAccount
 }

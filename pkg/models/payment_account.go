@@ -57,7 +57,7 @@ func FindPaymentAccountByAppEntityIdAndCurrencyName(
 	currencyName CurrencyName,
 ) *PaymentAccount {
 	var paymentAccount PaymentAccount
-	db.Instance().QueryRow(
+	err := db.Instance().QueryRow(
 		basePaymentAccountQuery+`WHERE ae.pub_id = $1 AND c.name = $2`,
 		appEntityId,
 		currencyName,
@@ -69,11 +69,17 @@ func FindPaymentAccountByAppEntityIdAndCurrencyName(
 		&paymentAccount.AmountAvailable,
 		&paymentAccount.Currency,
 	)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return &paymentAccount
 }
 
 func CreatePaymentAccount(appEntityId AppEntityId, currencyName CurrencyName) PaymentAccountId {
 	var id string
-	db.Instance().QueryRow("SELECT create_payment_account($1, $2)", appEntityId, currencyName).Scan(&id)
+	err := db.Instance().QueryRow("SELECT create_payment_account($1, $2)", appEntityId, currencyName).Scan(&id)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return PaymentAccountId(id)
 }
