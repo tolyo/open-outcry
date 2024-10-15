@@ -20,6 +20,7 @@ BEGIN
             ON b.trade_order_id = t.id
         WHERE t.side = side_param
         AND t.trading_account_id = trading_account_id_param
+        AND t.instrument_id = instrument_id_param
         AND t.price <=  price_param 
         INTO acc;
     ELSE
@@ -29,6 +30,7 @@ BEGIN
             ON b.trade_order_id = t.id
         WHERE t.side = side_param
         AND t.trading_account_id = trading_account_id_param
+        AND t.instrument_id = instrument_id_param
         AND (t.price >=  price_param OR t.price = 0.00)
         INTO acc;        
     END IF;
