@@ -33,7 +33,7 @@ func QueryVal[T interface{}](query string, args ...any) T {
 	var val T
 	kind := reflect.ValueOf(val)
 	if kind.Kind() == reflect.Struct {
-		err := db.Get(val, query, args...)
+		err := db.Get(&val, query, args...)
 		if err != nil {
 			log.Fatal(err)
 		}

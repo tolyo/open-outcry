@@ -2,9 +2,9 @@
 
 ## Properties
 
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**Id** | Pointer to **string** |  | [optional] 
+ Name   | Type                  | Description | Notes
+--------|-----------------------|-------------|------------
+ **Id** | Pointer to **string** |             | [optional]
 
 ## Methods
 

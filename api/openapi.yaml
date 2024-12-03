@@ -59,7 +59,7 @@ paths:
   /trading-accounts/{trading_account_id}:
     $ref: ./endpoints/user/trading_account_by_id.yaml
 
-  #  # ADMIN OPERATIONS
+  # ADMIN OPERATIONS
   /apps/{app_entity_id}:
     $ref: ./endpoints/admin/apps_by_id.yaml
   /apps:

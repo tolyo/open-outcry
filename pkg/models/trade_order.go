@@ -1,8 +1,9 @@
 package models
 
 import (
-	log "github.com/sirupsen/logrus"
 	"open-outcry/pkg/db"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type OrderTimeInForce string

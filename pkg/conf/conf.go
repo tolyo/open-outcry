@@ -67,7 +67,7 @@ func LoadConfig(conf string) (*Configuration, error) {
 			viper.GetString("POSTGRES_PORT"),
 		),
 		UpdateFees: viper.GetBool("UPDATE_FEES"),
-		RestPort:   viper.GetString("REST_PORT"),
+		RestPort:   viper.GetString("HTTP_PORT"),
 	}
 
 	return config, nil

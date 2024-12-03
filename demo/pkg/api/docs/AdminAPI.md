@@ -2,12 +2,12 @@
 
 All URIs are relative to *http://localhost:4000*
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**CreateAdminPayment**](AdminAPI.md#CreateAdminPayment) | **Post** /apps/payments | Create admin payment
-[**GetAdminPaymentById**](AdminAPI.md#GetAdminPaymentById) | **Post** /apps/payments/{payment_id} | Get payment
-[**GetAppEntities**](AdminAPI.md#GetAppEntities) | **Get** /apps | Get application entities
-[**GetAppEntity**](AdminAPI.md#GetAppEntity) | **Get** /apps/{app_entity_id} | Get application entity
+ Method                                                     | HTTP request                         | Description
+------------------------------------------------------------|--------------------------------------|--------------------------
+ [**CreateAdminPayment**](AdminAPI.md#CreateAdminPayment)   | **Post** /apps/payments              | Create admin payment
+ [**GetAdminPaymentById**](AdminAPI.md#GetAdminPaymentById) | **Post** /apps/payments/{payment_id} | Get payment
+ [**GetAppEntities**](AdminAPI.md#GetAppEntities)           | **Get** /apps                        | Get application entities
+ [**GetAppEntity**](AdminAPI.md#GetAppEntity)               | **Get** /apps/{app_entity_id}        | Get application entity
 
 
 
@@ -93,7 +93,7 @@ import (
 )
 
 func main() {
-    paymentId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | 
+    paymentId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -110,18 +110,18 @@ func main() {
 ### Path Parameters
 
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**paymentId** | **string** |  | 
+ Name          | Type                | Description                                                                 | Notes
+---------------|---------------------|-----------------------------------------------------------------------------|-------
+ **ctx**       | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **paymentId** | **string**          |                                                                             |
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiGetAdminPaymentByIdRequest struct via the builder pattern
 
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
+ Name | Type | Description | Notes
+------|------|-------------|-------
 
 
 ### Return type
@@ -224,7 +224,7 @@ import (
 )
 
 func main() {
-    appEntityId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | 
+    appEntityId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
@@ -241,18 +241,18 @@ func main() {
 ### Path Parameters
 
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**appEntityId** | **string** |  | 
+ Name            | Type                | Description                                                                 | Notes
+-----------------|---------------------|-----------------------------------------------------------------------------|-------
+ **ctx**         | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **appEntityId** | **string**          |                                                                             |
 
 ### Other Parameters
 
 Other parameters are passed through a pointer to a apiGetAppEntityRequest struct via the builder pattern
 
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
+ Name | Type | Description | Notes
+------|------|-------------|-------
 
 
 ### Return type
