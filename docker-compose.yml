@@ -1,13 +1,11 @@
-version: "3.4"
-
 volumes:
   postgres-storage:
 services:
   db:
     container_name: exchange_db
-    image: postgres:16.1-alpine
+    image: postgres:17.2
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - postgres-storage:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -26,4 +24,4 @@ services:
       - ./pkg/conf/dev.env
       - ./pkg/conf/docker.env
     ports:
-      - "4000:4000"
+      - 4000:4000
