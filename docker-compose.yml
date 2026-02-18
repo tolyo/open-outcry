@@ -3,11 +3,11 @@ volumes:
 services:
   db:
     container_name: exchange_db
-    image: postgres:17.2
+    image: postgres:18.2
     ports:
       - 5432:5432
     volumes:
-      - postgres-storage:/var/lib/postgresql/data
+      - postgres-storage:/var/lib/postgresql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
       - ./pkg/conf/dev.env
