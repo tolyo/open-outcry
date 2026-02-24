@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS fee (
      min                                NUMERIC NULL,
      max                                NUMERIC NULL,
      percentage                         NUMERIC NULL,
-     updated_at                         TIMESTAMP default current_timestamp NOT NULL,
-     created_at                         TIMESTAMP default current_timestamp NOT NULL,
+     updated_at                         TIMESTAMPTZ default current_timestamp NOT NULL,
+     created_at                         TIMESTAMPTZ default current_timestamp NOT NULL,
      PRIMARY KEY(type, currency_name)
 );
 

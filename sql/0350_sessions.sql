@@ -9,7 +9,7 @@ CREATE TABLE sessions (
   targetsubid VARCHAR(64) NOT NULL,
   targetlocid VARCHAR(64) NOT NULL,
   session_qualifier VARCHAR(64) NOT NULL,
-  creation_time TIMESTAMP WITH TIME ZONE NOT NULL,
+  creation_time TIMESTAMPTZ NOT NULL,
   incoming_seqnum INTEGER NOT NULL, 
   outgoing_seqnum INTEGER NOT NULL,
   PRIMARY KEY (beginstring, sendercompid, sendersubid, senderlocid, 

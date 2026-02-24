@@ -8,8 +8,8 @@ CREATE TABLE payment_account (
     amount_reserved         NUMERIC default 0.00 NOT NULL
                             CHECK (amount_reserved >= 0 and amount_reserved <= amount),
     currency_name           TEXT REFERENCES currency(name) NOT NULL,
-    updated_at              TIMESTAMP default current_timestamp NOT NULL,
-    created_at              TIMESTAMP default current_timestamp NOT NULL,
+    updated_at              TIMESTAMPTZ default current_timestamp NOT NULL,
+    created_at              TIMESTAMPTZ default current_timestamp NOT NULL,
 
     -- enforce one currency account per application entity
     UNIQUE (app_entity_id, currency_name)

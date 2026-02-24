@@ -11,8 +11,8 @@ CREATE TABLE trade_order(
     amount              DECIMAL NOT NULL,
     open_amount         DECIMAL NOT NULL,
     status              trade_order_status NOT NULL default 'OPEN',
-    updated_at          TIMESTAMP default current_timestamp NOT NULL,
-    created_at          TIMESTAMP default current_timestamp NOT NULL
+    updated_at          TIMESTAMPTZ default current_timestamp NOT NULL,
+    created_at          TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
 -- +goose Down

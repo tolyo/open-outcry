@@ -16,8 +16,8 @@ CREATE TABLE payment (
        -- Resulting credit balance amount including reserved funds
        credit_balance_amount                NUMERIC default 0.00 NOT NULL
                                             CHECK (credit_balance_amount >= 0),
-       updated_at                           TIMESTAMP default current_timestamp NOT NULL,
-       created_at                           TIMESTAMP default current_timestamp NOT NULL
+       updated_at                           TIMESTAMPTZ default current_timestamp NOT NULL,
+       created_at                           TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
 -- +goose Down

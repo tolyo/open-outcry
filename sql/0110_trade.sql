@@ -8,8 +8,8 @@ CREATE TABLE trade (
     seller_order_id BIGINT REFERENCES trade_order(id) NOT NULL,
     buyer_order_id  BIGINT REFERENCES trade_order(id) NOT NULL,
     taker_order_id  BIGINT REFERENCES trade_order(id) NOT NULL, -- the order acting opposite of maker
-    updated_at      TIMESTAMP default current_timestamp NOT NULL,
-    created_at      TIMESTAMP default current_timestamp NOT NULL
+    updated_at      TIMESTAMPTZ default current_timestamp NOT NULL,
+    created_at      TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
 -- +goose Down

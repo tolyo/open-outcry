@@ -10,8 +10,8 @@ CREATE TABLE trading_account_instrument (
         CHECK (amount >= 0),
     
     instrument_id           BIGINT REFERENCES instrument(id) NOT NULL,
-    updated_at              TIMESTAMP default current_timestamp NOT NULL,
-    created_at              TIMESTAMP default current_timestamp NOT NULL,
+    updated_at              TIMESTAMPTZ default current_timestamp NOT NULL,
+    created_at              TIMESTAMPTZ default current_timestamp NOT NULL,
     
     -- enforce one trading_account_instrument per trading_account
     UNIQUE (trading_account, instrument_id) 

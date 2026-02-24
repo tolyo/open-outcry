@@ -14,8 +14,8 @@ CREATE TABLE trading_account_transfer (
        debit_instrument_amount            INTEGER default 0 NOT NULL CHECK (debit_instrument_amount >= 0), 
        -- Resulting credit instrument amount
        credit_instrument_amount           INTEGER default 0 NOT NULL CHECK (credit_instrument_amount >= 0),
-       updated_at                         TIMESTAMP default current_timestamp NOT NULL,
-       created_at                         TIMESTAMP default current_timestamp NOT NULL
+       updated_at                         TIMESTAMPTZ default current_timestamp NOT NULL,
+       created_at                         TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
 -- +goose Down
