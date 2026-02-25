@@ -11,8 +11,9 @@ package api
 
 import (
 	"context"
-	"errors"
 	"net/http"
+	"open-outcry/pkg/models"
+	"open-outcry/pkg/services"
 )
 
 // PublicAPIService is a service that implements the logic for the PublicAPIServicer
@@ -28,56 +29,69 @@ func NewPublicAPIService() PublicAPIServicer {
 
 // GetCurrencies - Currencies list
 func (s *PublicAPIService) GetCurrencies(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetCurrencies with the required logic for this service method.
-	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, CurrencyList{}) or use other options such as http.Ok ...
-	// return Response(200, CurrencyList{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetCurrencies method not implemented")
+	currencies := models.GetCurrencies()
+	var result []Currency
+	for _, c := range currencies {
+		result = append(result, Currency{
+			Name:      string(c.Name),
+			Precision: int32(c.Precision),
+		})
+	}
+	return Response(http.StatusOK, CurrencyList{Data: result}), nil
 }
 
 // GetFxInstruments - Fx instrument list
 func (s *PublicAPIService) GetFxInstruments(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetFxInstruments with the required logic for this service method.
-	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, []FxInstrument{}) or use other options such as http.Ok ...
-	// return Response(200, []FxInstrument{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetFxInstruments method not implemented")
+	instruments := models.GetFxInstruments()
+	var result []FxInstrument
+	for _, i := range instruments {
+		result = append(result, FxInstrument{
+			Id:            string(i.Id),
+			Name:          string(i.Name),
+			BaseCurrency:  string(i.BaseCurrency),
+			QuoteCurrency: string(i.QuoteCurrency),
+		})
+	}
+	return Response(http.StatusOK, result), nil
 }
 
 // GetInstruments - Instrument list
 func (s *PublicAPIService) GetInstruments(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetInstruments with the required logic for this service method.
-	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, []Instrument{}) or use other options such as http.Ok ...
-	// return Response(200, []Instrument{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetInstruments method not implemented")
+	instruments := models.GetInstruments()
+	var result []Instrument
+	for _, i := range instruments {
+		result = append(result, Instrument{
+			Id:            string(i.Id),
+			Name:          string(i.Name),
+			QuoteCurrency: string(i.QuoteCurrency),
+		})
+	}
+	return Response(http.StatusOK, result), nil
 }
 
 // GetOrderBook - Get order book
 func (s *PublicAPIService) GetOrderBook(ctx context.Context, instrumentName string) (ImplResponse, error) {
-	// TODO - update GetOrderBook with the required logic for this service method.
-	// Add api_public_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+	ob := services.GetOrderBook(models.InstrumentName(instrumentName))
 
-	// TODO: Uncomment the next line to return response Response(200, OrderBook{}) or use other options such as http.Ok ...
-	// return Response(200, OrderBook{}), nil
+	var sellSide []PriceVolume
+	for _, pv := range ob.SellSide {
+		sellSide = append(sellSide, PriceVolume{
+			Price:  float32(pv.Price),
+			Volume: float32(pv.Volume),
+		})
+	}
 
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
+	var buySide []PriceVolume
+	for _, pv := range ob.BuySide {
+		buySide = append(buySide, PriceVolume{
+			Price:  float32(pv.Price),
+			Volume: float32(pv.Volume),
+		})
+	}
 
-	return Response(http.StatusNotImplemented, nil), errors.New("GetOrderBook method not implemented")
+	var buySideInterface interface{} = buySide
+	return Response(http.StatusOK, OrderBook{
+		Sell: sellSide,
+		Buy:  &buySideInterface,
+	}), nil
 }

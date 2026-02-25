@@ -11,8 +11,8 @@ package api
 
 import (
 	"context"
-	"errors"
 	"net/http"
+	"open-outcry/pkg/models"
 )
 
 // AdminAPIService is a service that implements the logic for the AdminAPIServicer
@@ -28,56 +28,53 @@ func NewAdminAPIService() AdminAPIServicer {
 
 // CreateAdminPayment - Create admin payment
 func (s *AdminAPIService) CreateAdminPayment(ctx context.Context) (ImplResponse, error) {
-	// TODO - update CreateAdminPayment with the required logic for this service method.
-	// Add api_admin_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Payment{}) or use other options such as http.Ok ...
-	// return Response(200, Payment{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("CreateAdminPayment method not implemented")
+	// Admin payment creation requires a request body which is not passed through the interface.
+	// Return not implemented for now since the controller doesn't parse a body for this endpoint.
+	return Response(http.StatusNotImplemented, nil), nil
 }
 
 // GetAdminPaymentById - Get payment
 func (s *AdminAPIService) GetAdminPaymentById(ctx context.Context, paymentId string) (ImplResponse, error) {
-	// TODO - update GetAdminPaymentById with the required logic for this service method.
-	// Add api_admin_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Payment{}) or use other options such as http.Ok ...
-	// return Response(200, Payment{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetAdminPaymentById method not implemented")
+	payment := models.GetPayment(paymentId)
+	if payment == nil {
+		return Response(http.StatusNotFound, nil), nil
+	}
+	return Response(http.StatusOK, Payment{
+		Id:                      payment.Id,
+		Type:                    PaymentType(payment.Type),
+		Amount:                  payment.Amount,
+		Currency:                string(payment.Currency),
+		SenderAccountId:         string(payment.SenderAccountId),
+		BeneficiaryAccountId:    string(payment.BeneficiaryAccountId),
+		Details:                 string(payment.Details),
+		ExternalReferenceNumber: string(payment.ExternalReferenceNumber),
+		Status:                  payment.Status,
+		DebitBalanceAmount:      payment.DebitBalanceAmount,
+		CreditBalanceAmount:     payment.CreditBalanceAmount,
+	}), nil
 }
 
 // GetAppEntities - Get application entities
 func (s *AdminAPIService) GetAppEntities(ctx context.Context) (ImplResponse, error) {
-	// TODO - update GetAppEntities with the required logic for this service method.
-	// Add api_admin_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, []AppEntity{}) or use other options such as http.Ok ...
-	// return Response(200, []AppEntity{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetAppEntities method not implemented")
+	entities := models.GetAppEntities()
+	var result []AppEntity
+	for _, e := range entities {
+		result = append(result, AppEntity{
+			Id:         string(e.Id),
+			ExternalId: string(e.ExternalId),
+		})
+	}
+	return Response(http.StatusOK, result), nil
 }
 
 // GetAppEntity - Get application entity
 func (s *AdminAPIService) GetAppEntity(ctx context.Context, appEntityId string) (ImplResponse, error) {
-	// TODO - update GetAppEntity with the required logic for this service method.
-	// Add api_admin_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, AppEntity{}) or use other options such as http.Ok ...
-	// return Response(200, AppEntity{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetAppEntity method not implemented")
+	entity := models.GetAppEntity(models.AppEntityId(appEntityId))
+	if entity == nil {
+		return Response(http.StatusNotFound, nil), nil
+	}
+	return Response(http.StatusOK, AppEntity{
+		Id:         string(entity.Id),
+		ExternalId: string(entity.ExternalId),
+	}), nil
 }

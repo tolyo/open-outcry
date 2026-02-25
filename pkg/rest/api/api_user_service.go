@@ -11,8 +11,10 @@ package api
 
 import (
 	"context"
-	"errors"
 	"net/http"
+	"open-outcry/pkg/models"
+	"open-outcry/pkg/services"
+	"time"
 )
 
 // UserAPIService is a service that implements the logic for the UserAPIServicer
@@ -27,127 +29,132 @@ func NewUserAPIService() UserAPIServicer {
 }
 
 // CreateTrade - Create trade order
-func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId string, createTradeRequest CreateTradeRequest) (ImplResponse, error) {
-	// TODO - update CreateTrade with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId string, req CreateTradeRequest) (ImplResponse, error) {
+	orderId, err := services.ProcessTradeOrder(
+		models.TradingAccountId(tradingAccountId),
+		models.InstrumentName(req.Instrument),
+		models.OrderType(req.Type),
+		models.OrderSide(req.Side),
+		models.OrderPrice(req.Price),
+		req.Amount,
+		models.OrderTimeInForce(req.TimeInForce),
+	)
+	if err != nil {
+		return Response(http.StatusBadRequest, nil), err
+	}
 
-	// TODO: Uncomment the next line to return response Response(200, TradeOrder{}) or use other options such as http.Ok ...
-	// return Response(200, TradeOrder{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("CreateTrade method not implemented")
+	order := models.GetTradeOrder(orderId)
+	return Response(http.StatusOK, mapTradeOrder(order)), nil
 }
 
 // DeleteTradeOrderById - Cancel trade order
 func (s *UserAPIService) DeleteTradeOrderById(ctx context.Context, tradingAccountId string, tradeOrderId string) (ImplResponse, error) {
-	// TODO - update DeleteTradeOrderById with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(204, {}) or use other options such as http.Ok ...
-	// return Response(204, nil),nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("DeleteTradeOrderById method not implemented")
+	err := services.CancelTradeOrder(models.TradeOrderId(tradeOrderId))
+	if err != nil {
+		return Response(http.StatusNotFound, nil), err
+	}
+	return Response(http.StatusNoContent, nil), nil
 }
 
 // GetBookOrders - Get book orders
 func (s *UserAPIService) GetBookOrders(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
-	// TODO - update GetBookOrders with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, []TradeOrder{}) or use other options such as http.Ok ...
-	// return Response(200, []TradeOrder{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetBookOrders method not implemented")
+	orders := models.GetBookOrdersByTradingAccount(models.TradingAccountId(tradingAccountId))
+	var result []TradeOrder
+	for _, o := range orders {
+		result = append(result, mapTradeOrder(o))
+	}
+	return Response(http.StatusOK, result), nil
 }
 
 // GetPaymentAccounts - Get payment accounts
 func (s *UserAPIService) GetPaymentAccounts(ctx context.Context, appEntityId string) (ImplResponse, error) {
-	// TODO - update GetPaymentAccounts with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, PaymentAccountList{}) or use other options such as http.Ok ...
-	// return Response(200, PaymentAccountList{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetPaymentAccounts method not implemented")
+	accounts := models.GetPaymentAccountsByAppEntity(models.AppEntityId(appEntityId))
+	var result []PaymentAccount
+	for _, a := range accounts {
+		result = append(result, PaymentAccount{
+			Id:              string(a.Id),
+			Currency:        string(a.Currency),
+			Amount:          a.Amount,
+			AmountReserved:  a.AmountReserved,
+			AmountAvailable: a.AmountAvailable,
+		})
+	}
+	return Response(http.StatusOK, PaymentAccountList{Data: result}), nil
 }
 
 // GetTradeById - Get trade
 func (s *UserAPIService) GetTradeById(ctx context.Context, tradingAccountId string, tradeId string) (ImplResponse, error) {
-	// TODO - update GetTradeById with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, Trade{}) or use other options such as http.Ok ...
-	// return Response(200, Trade{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetTradeById method not implemented")
+	trade := models.GetTrade(tradeId)
+	if trade == nil {
+		return Response(http.StatusNotFound, nil), nil
+	}
+	return Response(http.StatusOK, Trade{Id: trade.Id}), nil
 }
 
 // GetTradeOrderById - Get trade order
 func (s *UserAPIService) GetTradeOrderById(ctx context.Context, tradingAccountId string, tradeOrderId string) (ImplResponse, error) {
-	// TODO - update GetTradeOrderById with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, TradeOrder{}) or use other options such as http.Ok ...
-	// return Response(200, TradeOrder{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetTradeOrderById method not implemented")
+	order := models.GetTradeOrder(models.TradeOrderId(tradeOrderId))
+	return Response(http.StatusOK, mapTradeOrder(order)), nil
 }
 
 // GetTradeOrders - Get trade orders
 func (s *UserAPIService) GetTradeOrders(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
-	// TODO - update GetTradeOrders with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, []TradeOrder{}) or use other options such as http.Ok ...
-	// return Response(200, []TradeOrder{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetTradeOrders method not implemented")
+	orders := models.GetTradeOrdersByTradingAccount(models.TradingAccountId(tradingAccountId))
+	var result []TradeOrder
+	for _, o := range orders {
+		result = append(result, mapTradeOrder(o))
+	}
+	return Response(http.StatusOK, result), nil
 }
 
 // GetTrades - Trades list
 func (s *UserAPIService) GetTrades(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
-	// TODO - update GetTrades with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
-
-	// TODO: Uncomment the next line to return response Response(200, []Trade{}) or use other options such as http.Ok ...
-	// return Response(200, []Trade{}), nil
-
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
-
-	return Response(http.StatusNotImplemented, nil), errors.New("GetTrades method not implemented")
+	trades := models.GetTradesByTradingAccount(models.TradingAccountId(tradingAccountId))
+	var result []Trade
+	for _, t := range trades {
+		result = append(result, Trade{Id: t.Id})
+	}
+	return Response(http.StatusOK, result), nil
 }
 
 // GetTradingAccount - Get trading account
 func (s *UserAPIService) GetTradingAccount(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
-	// TODO - update GetTradingAccount with the required logic for this service method.
-	// Add api_user_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+	account := models.GetTradingAccount(models.TradingAccountId(tradingAccountId))
+	if account == nil {
+		return Response(http.StatusNotFound, nil), nil
+	}
 
-	// TODO: Uncomment the next line to return response Response(200, TradingAccount{}) or use other options such as http.Ok ...
-	// return Response(200, TradingAccount{}), nil
+	instruments := models.GetTradingAccountInstruments(models.TradingAccountId(tradingAccountId))
+	var apiInstruments []TradingAccountInstrument
+	for _, inst := range instruments {
+		apiInstruments = append(apiInstruments, TradingAccountInstrument{
+			Name:            string(inst.Name),
+			Amount:          inst.AmountAvailable + inst.AmountReserved,
+			AmountReserved:  inst.AmountReserved,
+			AmountAvailable: inst.AmountAvailable,
+			Value:           inst.Value,
+			Currency:        string(inst.Currency),
+		})
+	}
 
-	// TODO: Uncomment the next line to return response Response(404, {}) or use other options such as http.Ok ...
-	// return Response(404, nil),nil
+	return Response(http.StatusOK, TradingAccount{
+		Id:          string(account.Id),
+		Instruments: apiInstruments,
+	}), nil
+}
 
-	return Response(http.StatusNotImplemented, nil), errors.New("GetTradingAccount method not implemented")
+func mapTradeOrder(o models.TradeOrder) TradeOrder {
+	created, _ := time.Parse(time.RFC3339Nano, o.Created)
+	return TradeOrder{
+		Id:          string(o.Id),
+		Instrument:  string(o.InstrumentName),
+		Side:        TradeOrderSide(o.Side),
+		Type:        TradeOrderType(o.Type),
+		TimeInForce: TradeOrderTimeInForce(o.TimeInForce),
+		Status:      TradeOrderStatus(o.Status),
+		Price:       float64(o.Price),
+		Amount:      o.Amount,
+		OpenAmount:  o.OpenAmount,
+		Created:     created,
+	}
 }

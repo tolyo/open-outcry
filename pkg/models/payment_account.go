@@ -83,3 +83,28 @@ func CreatePaymentAccount(appEntityId AppEntityId, currencyName CurrencyName) Pa
 	}
 	return PaymentAccountId(id)
 }
+
+func GetPaymentAccountsByAppEntity(appEntityId AppEntityId) []PaymentAccount {
+	query := basePaymentAccountQuery + `WHERE ae.pub_id = $1`
+	rows, err := db.Instance().Query(query, appEntityId)
+	if err != nil {
+		log.Error(err)
+		return nil
+	}
+	defer rows.Close()
+
+	var accounts []PaymentAccount
+	for rows.Next() {
+		var a PaymentAccount
+		err := rows.Scan(
+			&a.Id, &a.AppEntityId, &a.Amount,
+			&a.AmountReserved, &a.AmountAvailable, &a.Currency,
+		)
+		if err != nil {
+			log.Error(err)
+			continue
+		}
+		accounts = append(accounts, a)
+	}
+	return accounts
+}
