@@ -12,7 +12,7 @@ func CreatePaymentDeposit(appEntityId models.AppEntityId,
 	currency models.CurrencyName,
 	reference string,
 	details string,
-) models.PaymentId {
+) models.PaymentJournalId {
 	return CreatePaymentDepositCustomFee(appEntityId, amount, currency, reference, details, "DEPOSIT_FEE")
 }
 
@@ -22,7 +22,7 @@ func CreatePaymentDepositCustomFee(appEntityId models.AppEntityId,
 	reference string,
 	details string,
 	feeType any,
-) models.PaymentId {
+) models.PaymentJournalId {
 	var id string
 	err := db.Instance().QueryRow(
 		"SELECT process_payment('DEPOSIT', 'MASTER', $2, $3, $1, $4, $5, $6)",
@@ -31,5 +31,5 @@ func CreatePaymentDepositCustomFee(appEntityId models.AppEntityId,
 	if err != nil {
 		log.Fatal(err)
 	}
-	return models.PaymentId(id)
+	return models.PaymentJournalId(id)
 }

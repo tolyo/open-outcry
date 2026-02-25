@@ -39,6 +39,7 @@ func (assert *ServiceTestSuite) SetupTest() {
 
 func (assert *ServiceTestSuite) TearDownTest() {
 	utils.Each([]string{"stop_order",
+		"trading_account_ledger_entry",
 		"trading_account_transfer",
 		"trade",
 		"trade_order",

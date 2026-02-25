@@ -2,7 +2,7 @@ package models
 
 import "github.com/shopspring/decimal"
 
-type PaymentId string
+type PaymentJournalId string
 
 type PaymentType string
 
@@ -21,17 +21,26 @@ type PaymentDetails string
 
 type PaymentExternalReferenceNumber string
 
-type Payment struct {
+// PaymentJournal represents a double-entry journal for monetary transfers.
+// Each journal groups exactly two PaymentJournalEntry records that must balance.
+type PaymentJournal struct {
 	Id                      string
 	Type                    PaymentType
-	Amount                  PaymentAmount
 	Currency                CurrencyName
-	SenderAccountId         PaymentAccountId
-	BeneficiaryAccountId    PaymentAccountId
 	Details                 PaymentDetails
 	ExternalReferenceNumber PaymentExternalReferenceNumber
 	Status                  string
-	DebitBalanceAmount      string
-	CreditBalanceAmount     string
 	CreatedAt               string
+}
+
+// PaymentJournalEntry represents one side of a double-entry monetary transfer.
+// Positive amount = debit (increase), negative amount = credit (decrease).
+type PaymentJournalEntry struct {
+	Id               string
+	JournalId        string
+	PaymentAccountId PaymentAccountId
+	Currency         CurrencyName
+	Amount           decimal.Decimal
+	ResultingBalance decimal.Decimal
+	CreatedAt        string
 }
