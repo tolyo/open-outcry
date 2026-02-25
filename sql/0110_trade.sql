@@ -12,5 +12,10 @@ CREATE TABLE trade (
     created_at      TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
+CREATE INDEX idx_trade_instrument_created ON trade(instrument_id, created_at DESC);
+CREATE INDEX idx_trade_seller_order ON trade(seller_order_id);
+CREATE INDEX idx_trade_buyer_order ON trade(buyer_order_id);
+CREATE INDEX idx_trade_taker_order ON trade(taker_order_id);
+
 -- +goose Down
 DROP TABLE trade;

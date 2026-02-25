@@ -15,5 +15,7 @@ CREATE TABLE payment_account (
     UNIQUE (app_entity_id, currency_name)
 );
 
+CREATE INDEX idx_payment_account_currency_name ON payment_account(currency_name);
+
 -- +goose Down
 DROP TABLE payment_account CASCADE;

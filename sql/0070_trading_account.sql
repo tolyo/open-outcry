@@ -8,5 +8,7 @@ CREATE TABLE trading_account (
     created_at              TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
+CREATE INDEX idx_trading_account_app_entity_id ON trading_account(app_entity_id);
+
 -- +goose Down
 DROP TABLE  trading_account CASCADE;

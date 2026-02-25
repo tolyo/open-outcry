@@ -20,5 +20,8 @@ CREATE TABLE payment (
        created_at                           TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
+CREATE INDEX idx_payment_sender_account ON payment(sender_payment_account_id);
+CREATE INDEX idx_payment_beneficiary_account ON payment(beneficiary_payment_account_id);
+
 -- +goose Down
 DROP TABLE payment CASCADE;

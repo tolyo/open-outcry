@@ -15,5 +15,8 @@ CREATE TABLE trade_order(
     created_at          TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
+CREATE INDEX idx_trade_order_instrument_side_status ON trade_order(instrument_id, side, status);
+CREATE INDEX idx_trade_order_trading_account_id ON trade_order(trading_account_id);
+
 -- +goose Down
 DROP TABLE trade_order CASCADE;

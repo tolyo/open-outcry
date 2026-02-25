@@ -33,6 +33,10 @@ CREATE TABLE trading_account_ledger_entry (
        created_at                         TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
+CREATE INDEX idx_tat_instrument_id ON trading_account_transfer(instrument_id);
+CREATE INDEX idx_tale_transfer_id ON trading_account_ledger_entry(transfer_id);
+CREATE INDEX idx_tale_tai_id ON trading_account_ledger_entry(trading_account_instrument_id);
+
 -- +goose Down
 DROP TABLE trading_account_ledger_entry CASCADE;
 DROP TABLE trading_account_transfer CASCADE;

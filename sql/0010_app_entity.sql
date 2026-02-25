@@ -10,5 +10,8 @@ CREATE TABLE app_entity
     created_at          TIMESTAMPTZ default current_timestamp NOT NULL
 );
 
+CREATE INDEX idx_app_entity_type ON app_entity(type);
+CREATE INDEX idx_app_entity_external_id ON app_entity(external_id);
+
 -- +goose Down
 DROP TABLE app_entity;

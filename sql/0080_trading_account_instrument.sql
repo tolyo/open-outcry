@@ -17,5 +17,7 @@ CREATE TABLE trading_account_instrument (
     UNIQUE (trading_account, instrument_id) 
 );
 
+CREATE INDEX idx_tai_instrument_id ON trading_account_instrument(instrument_id);
+
 -- +goose Down
 DROP TABLE  trading_account_instrument CASCADE;
