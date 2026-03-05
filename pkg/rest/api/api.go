@@ -18,8 +18,8 @@ import (
 // The AdminAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a AdminAPIServicer to perform the required actions, then write the service results to the http response.
 type AdminAPIRouter interface {
-	CreateAdminPayment(http.ResponseWriter, *http.Request)
-	GetAdminPaymentById(http.ResponseWriter, *http.Request)
+	CreateAdminTransfer(http.ResponseWriter, *http.Request)
+	GetAdminTransferById(http.ResponseWriter, *http.Request)
 	GetAppEntities(http.ResponseWriter, *http.Request)
 	GetAppEntity(http.ResponseWriter, *http.Request)
 }
@@ -41,12 +41,12 @@ type UserAPIRouter interface {
 	CreateTrade(http.ResponseWriter, *http.Request)
 	DeleteTradeOrderById(http.ResponseWriter, *http.Request)
 	GetBookOrders(http.ResponseWriter, *http.Request)
-	GetPaymentAccounts(http.ResponseWriter, *http.Request)
+	GetCurrencyAccounts(http.ResponseWriter, *http.Request)
 	GetTradeById(http.ResponseWriter, *http.Request)
 	GetTradeOrderById(http.ResponseWriter, *http.Request)
 	GetTradeOrders(http.ResponseWriter, *http.Request)
 	GetTrades(http.ResponseWriter, *http.Request)
-	GetTradingAccount(http.ResponseWriter, *http.Request)
+	GetInstrumentAccount(http.ResponseWriter, *http.Request)
 }
 
 // AdminAPIServicer defines the api actions for the AdminAPI service
@@ -54,8 +54,8 @@ type UserAPIRouter interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type AdminAPIServicer interface {
-	CreateAdminPayment(context.Context) (ImplResponse, error)
-	GetAdminPaymentById(context.Context, string) (ImplResponse, error)
+	CreateAdminTransfer(context.Context) (ImplResponse, error)
+	GetAdminTransferById(context.Context, string) (ImplResponse, error)
 	GetAppEntities(context.Context) (ImplResponse, error)
 	GetAppEntity(context.Context, string) (ImplResponse, error)
 }
@@ -79,10 +79,10 @@ type UserAPIServicer interface {
 	CreateTrade(context.Context, string, CreateTradeRequest) (ImplResponse, error)
 	DeleteTradeOrderById(context.Context, string, string) (ImplResponse, error)
 	GetBookOrders(context.Context, string) (ImplResponse, error)
-	GetPaymentAccounts(context.Context, string) (ImplResponse, error)
+	GetCurrencyAccounts(context.Context, string) (ImplResponse, error)
 	GetTradeById(context.Context, string, string) (ImplResponse, error)
 	GetTradeOrderById(context.Context, string, string) (ImplResponse, error)
 	GetTradeOrders(context.Context, string) (ImplResponse, error)
 	GetTrades(context.Context, string) (ImplResponse, error)
-	GetTradingAccount(context.Context, string) (ImplResponse, error)
+	GetInstrumentAccount(context.Context, string) (ImplResponse, error)
 }

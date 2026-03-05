@@ -7,7 +7,7 @@ import (
 
 func (assert *ServiceTestSuite) TestGetVolumeAtPrice() {
 	// when: a single sell limit order is added to the order book
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.6, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.6, 100, "GTC")
 
 	// then:
 	assert.Equal(100.0, GetVolumeAtPrice("BTC_EUR", models.Sell, 10.6))
@@ -21,7 +21,7 @@ func (assert *ServiceTestSuite) TestGetVolumeAtPrice() {
 	  `))
 
 	// when: a single buy limit order is added to the order book
-	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 9.5, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount2, "BTC_EUR", "LIMIT", models.Buy, 9.5, 100, "GTC")
 
 	// then:
 	assert.Equal(100.0, GetVolumeAtPrice("BTC_EUR", models.Buy, 9.5))
@@ -38,10 +38,10 @@ func (assert *ServiceTestSuite) TestGetVolumeAtPrice() {
 func (assert *ServiceTestSuite) TestGetVolumeSellSide() {
 
 	// when
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.6, 100, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.4, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.6, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.4, 100, "GTC")
 
 	// then should be sorted with cheapest orders first
 	assert.Equal([]models.PriceVolume{
@@ -54,10 +54,10 @@ func (assert *ServiceTestSuite) TestGetVolumeSellSide() {
 func (assert *ServiceTestSuite) TestGetVolumeBuySide() {
 
 	// when
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.6, 10, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.4, 10, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.6, 10, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.4, 10, "GTC")
 
 	// then should be sorted with most expensive orders first
 	assert.Equal([]models.PriceVolume{
@@ -75,10 +75,10 @@ func (assert *ServiceTestSuite) TestGetOrderBook() {
 	assert.Len(res.BuySide, 0)
 
 	// when
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.6, 10, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.4, 10, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.6, 10, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.7, 10, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 1.4, 10, "GTC")
 
 	// then should be sorted with most expensive orders first
 	assert.Equal(models.OrderBook{
@@ -90,10 +90,10 @@ func (assert *ServiceTestSuite) TestGetOrderBook() {
 		SellSide: []models.PriceVolume{},
 	}, GetOrderBook("BTC_EUR"))
 
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.6, 100, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.4, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.6, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.7, 100, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.4, 100, "GTC")
 
 	assert.Equal(models.OrderBook{
 		BuySide: []models.PriceVolume{

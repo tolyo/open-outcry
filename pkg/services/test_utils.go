@@ -4,10 +4,10 @@ import (
 	"open-outcry/pkg/models"
 )
 
-// AppState represents the expected payment account state for both test entities
+// AppState represents the expected transfer account state for both test entities
 type AppState struct {
-	entity1         []models.PaymentAccount
-	entity2         []models.PaymentAccount
+	entity1         []models.CurrencyAccount
+	entity2         []models.CurrencyAccount
 	tradeCount      int
 	orderBookStates models.OrderBook
 }
@@ -25,11 +25,11 @@ type MatchingServiceTestCase struct {
 }
 
 // Acc shorthand methods
-func Acc(v string) (models.AppEntityId, models.TradingAccountId) {
+func Acc(v string) (models.AppEntityId, models.InstrumentAccountId) {
 	appEntityId := CreateAppEntity(models.AppEntityExternalId(v))
-	models.CreatePaymentAccount(appEntityId, "BTC")
-	CreatePaymentDeposit(appEntityId, 1000, "BTC", "Test", "Test")
-	CreatePaymentDeposit(appEntityId, 1000, "EUR", "Test", "Test")
-	tradingAccount := models.FindTradingAccountByApplicationEntityId(appEntityId)
-	return appEntityId, tradingAccount.Id
+	models.CreateCurrencyAccount(appEntityId, "BTC")
+	CreateTransferDeposit(appEntityId, 1000, "BTC", "Test", "Test")
+	CreateTransferDeposit(appEntityId, 1000, "EUR", "Test", "Test")
+	instrumentAccount := models.FindInstrumentAccountByApplicationEntityId(appEntityId)
+	return appEntityId, instrumentAccount.Id
 }

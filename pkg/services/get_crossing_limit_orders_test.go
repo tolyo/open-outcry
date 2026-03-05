@@ -8,42 +8,42 @@ func (assert *ServiceTestSuite) TestGetCrossingLimitOrdersSellSidePrice() {
 	assert.Equal(0, GetCrossingLimitOrders(1, models.Sell, 10.00))
 
 	// when given a new order
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 1, "GTC")
 	// then count should increase
 	assert.Equal(1, GetCrossingLimitOrders(1, models.Sell, 10.00))
 
 	// when given another new order
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 1, "GTC")
 
 	// then count should increase
 	assert.Equal(2, GetCrossingLimitOrders(1, models.Sell, 10.00))
 
 	// when given another new order with crossing price
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 9.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 9.00, 1, "GTC")
 
 	// then count should increase
 	assert.Equal(3, GetCrossingLimitOrders(1, models.Sell, 10.00))
 
 	// when given another new order non crossing price
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 19.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 19.00, 1, "GTC")
 
 	// then count should not change
 	assert.Equal(3, GetCrossingLimitOrders(1, models.Sell, 10.00))
 
 	// when given another new order with crossing price for buy side
-	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount2, "BTC_EUR", "LIMIT", models.Buy, 10.00, 1, "GTC")
 
 	// then count should decrease
 	assert.Equal(2, GetCrossingLimitOrders(1, models.Sell, 10.00))
 
 	// when given another new order non crossing price
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.01, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.01, 1, "GTC")
 
 	// then count should not increase
 	assert.Equal(2, GetCrossingLimitOrders(1, models.Sell, 10.00))
 
 	// when given another new order with crossing price
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.000-0.000001, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.000-0.000001, 1, "GTC")
 
 	// then count should increase because buy side is emtpy
 	assert.Equal(3, GetCrossingLimitOrders(1, models.Sell, 10.00))
@@ -54,44 +54,44 @@ func (assert *ServiceTestSuite) TestGetCrossingLimitOrdersPriceBuySide() {
 	assert.Equal(0, GetCrossingLimitOrders(1, models.Buy, 10.00))
 	// when given a new order
 	// given:
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 10.00, 1, "GTC")
 
 	// then count should increase
 	assert.Equal(1, GetCrossingLimitOrders(1, models.Buy, 10.00))
 
 	// when given another new order
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 10.00, 1, "GTC")
 
 	// then count should increase
 	assert.Equal(2, GetCrossingLimitOrders(1, models.Buy, 10.00))
 
 	// when given another new order with crossing price
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 11.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 11.00, 1, "GTC")
 
 	// then count should increase
 	assert.Equal(3, GetCrossingLimitOrders(1, models.Buy, 10.00))
 
 	// when given another new order non crossing price
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 9.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 9.00, 1, "GTC")
 
 	// then count should not change
 	assert.Equal(3, GetCrossingLimitOrders(1, models.Buy, 10.00))
 
 	//  when given another new order with crossing price for sell side
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 1, "GTC")
 
 	//  then count should not change
 	assert.Equal(3, GetCrossingLimitOrders(1, models.Buy, 10.00))
 
 	// when given another new order non crossing price
 	//    ProcessTradeOrder(%TradeOrder{order | price: 9.99999})
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 9.99999, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Sell, 9.99999, 1, "GTC")
 
 	// then count should not change
 	assert.Equal(3, GetCrossingLimitOrders(1, models.Buy, 10.00))
 
 	// when given another new order with crossing price
-	ProcessTradeOrder(assert.tradingAccount1, "BTC_EUR", "LIMIT", models.Buy, 10.000001, 1, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", models.Buy, 10.000001, 1, "GTC")
 
 	// then count should increase
 	assert.Equal(4, GetCrossingLimitOrders(1, models.Buy, 10.00))

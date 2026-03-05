@@ -8,8 +8,8 @@ VALUES ('EUR',2),
 INSERT INTO app_entity (pub_id, external_id, type)
 VALUES ('MASTER','MASTER','MASTER');
 
-SELECT create_payment_account('MASTER','EUR');
-SELECT create_payment_account('MASTER','BTC');
+SELECT create_currency_account('MASTER','EUR');
+SELECT create_currency_account('MASTER','BTC');
 
 INSERT INTO instrument(name, base_currency, quote_currency, fx_instrument)
 VALUES ('BTC_EUR', 'BTC', 'EUR', TRUE);

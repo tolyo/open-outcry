@@ -22,7 +22,7 @@ components:
 
     Currency:
       type: object
-      description: Currency of payment account
+      description: Currency of transfer account
       properties:
         name:
           $ref: "#/components/schemas/CurrencyName"

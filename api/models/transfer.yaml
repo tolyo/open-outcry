@@ -1,0 +1,104 @@
+components:
+  schemas:
+    TransferId:
+      $ref: "./shared.yaml#/components/schemas/Id"
+    TransferType:
+      type: string
+      enum:
+        - DEPOSIT
+        - WITHDRAWAL
+        - TRANSFER
+        - INSTRUMENT_BUY
+        - INSTRUMENT_SELL
+        - CHARGE
+
+    TransferDetails:
+      type: string
+      example: "Bank deposit Bank REF123456"
+
+    TransferExternalReferenceNumber:
+      type: string
+      example: "REF123456"
+
+    CurrencyAccountId:
+      $ref: "./shared.yaml#/components/schemas/Id"
+
+    LedgerEntryType:
+      type: string
+      enum:
+        - DEBIT
+        - CREDIT
+
+    Transfer:
+      type: object
+      description: >
+        Double-entry transfer journal. Each transfer produces exactly two
+        ledger entries (DEBIT + CREDIT). The senderAccountId and
+        beneficiaryAccountId are derived from the DEBIT and CREDIT ledger
+        entries respectively.
+      properties:
+        id:
+          $ref: "#/components/schemas/TransferId"
+        type:
+          $ref: "#/components/schemas/TransferType"
+        amount:
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
+        currency:
+          $ref: "./currency.yaml#/components/schemas/CurrencyName"
+        senderAccountId:
+          description: "Transfer account on the DEBIT side"
+          $ref: "#/components/schemas/CurrencyAccountId"
+        beneficiaryAccountId:
+          description: "Transfer account on the CREDIT side"
+          $ref: "#/components/schemas/CurrencyAccountId"
+        details:
+          $ref: "#/components/schemas/TransferDetails"
+        externalReferenceNumber:
+          $ref: "#/components/schemas/TransferExternalReferenceNumber"
+        status:
+          type: string
+        debitBalanceAmount:
+          description: "Resulting balance of the sender account after the DEBIT entry"
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
+        creditBalanceAmount:
+          description: "Resulting balance of the beneficiary account after the CREDIT entry"
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
+      required:
+        - id
+        - type
+        - amount
+        - currency
+        - senderAccountId
+        - beneficiaryAccountId
+        - details
+        - externalReferenceNumber
+        - status
+
+    TransferLedgerEntry:
+      type: object
+      description: "One side of a double-entry monetary transfer"
+      properties:
+        id:
+          $ref: "./shared.yaml#/components/schemas/Id"
+        transferId:
+          $ref: "#/components/schemas/TransferId"
+        transferAccountId:
+          $ref: "#/components/schemas/CurrencyAccountId"
+        entryType:
+          $ref: "#/components/schemas/LedgerEntryType"
+        amount:
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
+        resultingBalance:
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - transferId
+        - transferAccountId
+        - entryType
+        - amount
+        - resultingBalance
+        - createdAt
+

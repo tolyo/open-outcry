@@ -24,11 +24,11 @@ func Test_api_AdminAPIService(t *testing.T) {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test AdminAPIService CreateAdminPayment", func(t *testing.T) {
+	t.Run("Test AdminAPIService CreateAdminTransfer", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.AdminAPI.CreateAdminPayment(context.Background()).Execute()
+		resp, httpRes, err := apiClient.AdminAPI.CreateAdminTransfer(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -36,13 +36,13 @@ func Test_api_AdminAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test AdminAPIService GetAdminPaymentById", func(t *testing.T) {
+	t.Run("Test AdminAPIService GetAdminTransferById", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var paymentId string
+		var transferId string
 
-		resp, httpRes, err := apiClient.AdminAPI.GetAdminPaymentById(context.Background(), paymentId).Execute()
+		resp, httpRes, err := apiClient.AdminAPI.GetAdminTransferById(context.Background(), transferId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

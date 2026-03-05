@@ -34,7 +34,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrder() {
 
 	for _, data := range testData {
 		// given: an existing trade limit order
-		tradeOrder, err := ProcessTradeOrder(assert.tradingAccount1,
+		tradeOrder, err := ProcessTradeOrder(assert.instrumentAccount1,
 			"BTC_EUR",
 			"LIMIT",
 			data.side,
@@ -52,9 +52,9 @@ func (assert *ServiceTestSuite) TestCancelTradeOrder() {
 		res := models.GetTradeOrder(tradeOrder)
 		assert.Equal(models.Open, res.Status)
 		assert.Equal(data.expectedBtcReserveAmount,
-			models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC").AmountReserved)
+			models.FindCurrencyAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC").AmountReserved)
 		assert.Equal(data.expectedEurReserveAmount,
-			models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR").AmountReserved)
+			models.FindCurrencyAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR").AmountReserved)
 
 		// when: order is cancelled
 		CancelTradeOrder(tradeOrder)
@@ -67,26 +67,26 @@ func (assert *ServiceTestSuite) TestCancelTradeOrder() {
 		res = models.GetTradeOrder(tradeOrder)
 		assert.Equal(models.Cancelled, res.Status)
 		assert.Equal(0.00,
-			models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC").AmountReserved)
+			models.FindCurrencyAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC").AmountReserved)
 		assert.Equal(0.00,
-			models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR").AmountReserved)
+			models.FindCurrencyAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "EUR").AmountReserved)
 	}
 
 }
 
 func (assert *ServiceTestSuite) TestCancelTradeOrderWithMultipleOrders() {
 	// given
-	assert.Equal(0.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC").AmountReserved)
+	assert.Equal(0.0, models.FindCurrencyAccountByAppEntityIdAndCurrencyName(assert.appEntity1, "BTC").AmountReserved)
 
-	tradeOrderId, _ := ProcessTradeOrder(assert.tradingAccount1,
+	tradeOrderId, _ := ProcessTradeOrder(assert.instrumentAccount1,
 		"BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
 
-	tradeOrderId2, _ := ProcessTradeOrder(assert.tradingAccount1,
+	tradeOrderId2, _ := ProcessTradeOrder(assert.instrumentAccount1,
 		"BTC_EUR", "LIMIT", models.Sell, 5, 100, "GTC")
 
 	assert.Equal(2, GetSellBookOrderCount())
 
-	assert.Equal(200.00, models.FindPaymentAccountByAppEntityIdAndCurrencyName(
+	assert.Equal(200.00, models.FindCurrencyAccountByAppEntityIdAndCurrencyName(
 		assert.appEntity1,
 		"BTC",
 	).AmountReserved)
@@ -101,7 +101,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithMultipleOrders() {
 	assert.Equal(models.Cancelled, models.GetTradeOrder(tradeOrderId).Status)
 
 	//  and: funds are released
-	assert.Equal(100.00, models.FindPaymentAccountByAppEntityIdAndCurrencyName(
+	assert.Equal(100.00, models.FindCurrencyAccountByAppEntityIdAndCurrencyName(
 		assert.appEntity1,
 		"BTC",
 	).AmountReserved)
@@ -113,7 +113,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithMultipleOrders() {
 	// and: its status is cancelled
 	assert.Equal(models.Cancelled, models.GetTradeOrder(tradeOrderId2).Status)
 	// and: funds are released
-	assert.Equal(0.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(
+	assert.Equal(0.0, models.FindCurrencyAccountByAppEntityIdAndCurrencyName(
 		assert.appEntity1,
 		"BTC",
 	).AmountReserved)
@@ -122,25 +122,25 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithMultipleOrders() {
 func (assert *ServiceTestSuite) TestCancelTradeOrderWithPartiallyExecutedOrder() {
 	// given: an existing trade limit order
 
-	assert.Equal(0.0, models.FindPaymentAccountByAppEntityIdAndCurrencyName(
+	assert.Equal(0.0, models.FindCurrencyAccountByAppEntityIdAndCurrencyName(
 		assert.appEntity1,
 		"BTC",
 	).AmountReserved)
 
-	tradeOrderId, _ := ProcessTradeOrder(assert.tradingAccount1,
+	tradeOrderId, _ := ProcessTradeOrder(assert.instrumentAccount1,
 		"BTC_EUR", "LIMIT", models.Sell, 10, 100, "GTC")
 
 	assert.Equal(1, GetSellBookOrderCount())
 
-	assert.Equal(100.00, models.FindPaymentAccountByAppEntityIdAndCurrencyName(
+	assert.Equal(100.00, models.FindCurrencyAccountByAppEntityIdAndCurrencyName(
 		assert.appEntity1,
 		"BTC",
 	).AmountReserved)
 
 	// when: it is partially matched against another order and then cancelled
-	ProcessTradeOrder(assert.tradingAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 50, "GTC")
+	ProcessTradeOrder(assert.instrumentAccount2, "BTC_EUR", "LIMIT", models.Buy, 10, 50, "GTC")
 
-	assert.Equal(50.00, models.FindPaymentAccountByAppEntityIdAndCurrencyName(
+	assert.Equal(50.00, models.FindCurrencyAccountByAppEntityIdAndCurrencyName(
 		assert.appEntity1,
 		"BTC",
 	).AmountReserved)
@@ -153,7 +153,7 @@ func (assert *ServiceTestSuite) TestCancelTradeOrderWithPartiallyExecutedOrder()
 	// and: its status is partially cancelled
 	assert.Equal(models.PartiallyCancelled, models.GetTradeOrder(tradeOrderId).Status)
 	// and: funds are released
-	assert.Equal(0.00, models.FindPaymentAccountByAppEntityIdAndCurrencyName(
+	assert.Equal(0.00, models.FindCurrencyAccountByAppEntityIdAndCurrencyName(
 		assert.appEntity1,
 		"BTC",
 	).AmountReserved)

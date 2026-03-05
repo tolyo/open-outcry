@@ -25,7 +25,7 @@ type UserAPIService service
 type ApiCreateTradeRequest struct {
 	ctx                context.Context
 	ApiService         *UserAPIService
-	tradingAccountId   string
+	instrumentAccountId   string
 	createTradeRequest *CreateTradeRequest
 }
 
@@ -44,14 +44,14 @@ CreateTrade Create trade order
 Creates a trade order
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param tradingAccountId
+	@param instrumentAccountId
 	@return ApiCreateTradeRequest
 */
-func (a *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId string) ApiCreateTradeRequest {
+func (a *UserAPIService) CreateTrade(ctx context.Context, instrumentAccountId string) ApiCreateTradeRequest {
 	return ApiCreateTradeRequest{
 		ApiService:       a,
 		ctx:              ctx,
-		tradingAccountId: tradingAccountId,
+		instrumentAccountId: instrumentAccountId,
 	}
 }
 
@@ -71,8 +71,8 @@ func (a *UserAPIService) CreateTradeExecute(r ApiCreateTradeRequest) (*TradeOrde
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/trade-orders/{trading_account_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"trading_account_id"+"}", url.PathEscape(parameterValueToString(r.tradingAccountId, "tradingAccountId")), -1)
+	localVarPath := localBasePath + "/trade-orders/{instrument_account_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"instrument_account_id"+"}", url.PathEscape(parameterValueToString(r.instrumentAccountId, "instrumentAccountId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -140,7 +140,7 @@ func (a *UserAPIService) CreateTradeExecute(r ApiCreateTradeRequest) (*TradeOrde
 type ApiDeleteTradeOrderByIdRequest struct {
 	ctx              context.Context
 	ApiService       *UserAPIService
-	tradingAccountId string
+	instrumentAccountId string
 	tradeOrderId     string
 }
 
@@ -154,15 +154,15 @@ DeleteTradeOrderById Cancel trade order
 Cancels a trade order by id
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param tradingAccountId
+	@param instrumentAccountId
 	@param tradeOrderId
 	@return ApiDeleteTradeOrderByIdRequest
 */
-func (a *UserAPIService) DeleteTradeOrderById(ctx context.Context, tradingAccountId string, tradeOrderId string) ApiDeleteTradeOrderByIdRequest {
+func (a *UserAPIService) DeleteTradeOrderById(ctx context.Context, instrumentAccountId string, tradeOrderId string) ApiDeleteTradeOrderByIdRequest {
 	return ApiDeleteTradeOrderByIdRequest{
 		ApiService:       a,
 		ctx:              ctx,
-		tradingAccountId: tradingAccountId,
+		instrumentAccountId: instrumentAccountId,
 		tradeOrderId:     tradeOrderId,
 	}
 }
@@ -180,8 +180,8 @@ func (a *UserAPIService) DeleteTradeOrderByIdExecute(r ApiDeleteTradeOrderByIdRe
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/trade-orders/{trading_account_id}/id/{trade_order_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"trading_account_id"+"}", url.PathEscape(parameterValueToString(r.tradingAccountId, "tradingAccountId")), -1)
+	localVarPath := localBasePath + "/trade-orders/{instrument_account_id}/id/{trade_order_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"instrument_account_id"+"}", url.PathEscape(parameterValueToString(r.instrumentAccountId, "instrumentAccountId")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"trade_order_id"+"}", url.PathEscape(parameterValueToString(r.tradeOrderId, "tradeOrderId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -236,7 +236,7 @@ func (a *UserAPIService) DeleteTradeOrderByIdExecute(r ApiDeleteTradeOrderByIdRe
 type ApiGetBookOrdersRequest struct {
 	ctx              context.Context
 	ApiService       *UserAPIService
-	tradingAccountId string
+	instrumentAccountId string
 }
 
 func (r ApiGetBookOrdersRequest) Execute() ([]TradeOrder, *http.Response, error) {
@@ -249,14 +249,14 @@ GetBookOrders Get book orders
 Returns list of user's trade orders currently on the order book
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param tradingAccountId
+	@param instrumentAccountId
 	@return ApiGetBookOrdersRequest
 */
-func (a *UserAPIService) GetBookOrders(ctx context.Context, tradingAccountId string) ApiGetBookOrdersRequest {
+func (a *UserAPIService) GetBookOrders(ctx context.Context, instrumentAccountId string) ApiGetBookOrdersRequest {
 	return ApiGetBookOrdersRequest{
 		ApiService:       a,
 		ctx:              ctx,
-		tradingAccountId: tradingAccountId,
+		instrumentAccountId: instrumentAccountId,
 	}
 }
 
@@ -276,8 +276,8 @@ func (a *UserAPIService) GetBookOrdersExecute(r ApiGetBookOrdersRequest) ([]Trad
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/book-orders/{trading_account_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"trading_account_id"+"}", url.PathEscape(parameterValueToString(r.tradingAccountId, "tradingAccountId")), -1)
+	localVarPath := localBasePath + "/book-orders/{instrument_account_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"instrument_account_id"+"}", url.PathEscape(parameterValueToString(r.instrumentAccountId, "instrumentAccountId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -337,27 +337,27 @@ func (a *UserAPIService) GetBookOrdersExecute(r ApiGetBookOrdersRequest) ([]Trad
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetPaymentAccountsRequest struct {
+type ApiGetCurrencyAccountsRequest struct {
 	ctx         context.Context
 	ApiService  *UserAPIService
 	appEntityId string
 }
 
-func (r ApiGetPaymentAccountsRequest) Execute() (*PaymentAccountList, *http.Response, error) {
-	return r.ApiService.GetPaymentAccountsExecute(r)
+func (r ApiGetCurrencyAccountsRequest) Execute() (*CurrencyAccountList, *http.Response, error) {
+	return r.ApiService.GetCurrencyAccountsExecute(r)
 }
 
 /*
-GetPaymentAccounts Get payment accounts
+GetCurrencyAccounts Get transfer accounts
 
-Returns list of user's payment accounts
+Returns list of user's transfer accounts
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param appEntityId
-	@return ApiGetPaymentAccountsRequest
+	@return ApiGetCurrencyAccountsRequest
 */
-func (a *UserAPIService) GetPaymentAccounts(ctx context.Context, appEntityId string) ApiGetPaymentAccountsRequest {
-	return ApiGetPaymentAccountsRequest{
+func (a *UserAPIService) GetCurrencyAccounts(ctx context.Context, appEntityId string) ApiGetCurrencyAccountsRequest {
+	return ApiGetCurrencyAccountsRequest{
 		ApiService:  a,
 		ctx:         ctx,
 		appEntityId: appEntityId,
@@ -366,21 +366,21 @@ func (a *UserAPIService) GetPaymentAccounts(ctx context.Context, appEntityId str
 
 // Execute executes the request
 //
-//	@return PaymentAccountList
-func (a *UserAPIService) GetPaymentAccountsExecute(r ApiGetPaymentAccountsRequest) (*PaymentAccountList, *http.Response, error) {
+//	@return CurrencyAccountList
+func (a *UserAPIService) GetCurrencyAccountsExecute(r ApiGetCurrencyAccountsRequest) (*CurrencyAccountList, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *PaymentAccountList
+		localVarReturnValue *CurrencyAccountList
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetPaymentAccounts")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetCurrencyAccounts")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/payment-accounts/{app_entity_id}"
+	localVarPath := localBasePath + "/currency-accounts/{app_entity_id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"app_entity_id"+"}", url.PathEscape(parameterValueToString(r.appEntityId, "appEntityId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -444,7 +444,7 @@ func (a *UserAPIService) GetPaymentAccountsExecute(r ApiGetPaymentAccountsReques
 type ApiGetTradeByIdRequest struct {
 	ctx              context.Context
 	ApiService       *UserAPIService
-	tradingAccountId string
+	instrumentAccountId string
 	tradeId          string
 }
 
@@ -458,15 +458,15 @@ GetTradeById Get trade
 Returns a trade by id
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param tradingAccountId
+	@param instrumentAccountId
 	@param tradeId
 	@return ApiGetTradeByIdRequest
 */
-func (a *UserAPIService) GetTradeById(ctx context.Context, tradingAccountId string, tradeId string) ApiGetTradeByIdRequest {
+func (a *UserAPIService) GetTradeById(ctx context.Context, instrumentAccountId string, tradeId string) ApiGetTradeByIdRequest {
 	return ApiGetTradeByIdRequest{
 		ApiService:       a,
 		ctx:              ctx,
-		tradingAccountId: tradingAccountId,
+		instrumentAccountId: instrumentAccountId,
 		tradeId:          tradeId,
 	}
 }
@@ -487,8 +487,8 @@ func (a *UserAPIService) GetTradeByIdExecute(r ApiGetTradeByIdRequest) (*Trade, 
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/trades/{trading_account_id}/id/{trade_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"trading_account_id"+"}", url.PathEscape(parameterValueToString(r.tradingAccountId, "tradingAccountId")), -1)
+	localVarPath := localBasePath + "/trades/{instrument_account_id}/id/{trade_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"instrument_account_id"+"}", url.PathEscape(parameterValueToString(r.instrumentAccountId, "instrumentAccountId")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"trade_id"+"}", url.PathEscape(parameterValueToString(r.tradeId, "tradeId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -552,7 +552,7 @@ func (a *UserAPIService) GetTradeByIdExecute(r ApiGetTradeByIdRequest) (*Trade, 
 type ApiGetTradeOrderByIdRequest struct {
 	ctx              context.Context
 	ApiService       *UserAPIService
-	tradingAccountId string
+	instrumentAccountId string
 	tradeOrderId     string
 }
 
@@ -566,15 +566,15 @@ GetTradeOrderById Get trade order
 Returns user's trade order
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param tradingAccountId
+	@param instrumentAccountId
 	@param tradeOrderId
 	@return ApiGetTradeOrderByIdRequest
 */
-func (a *UserAPIService) GetTradeOrderById(ctx context.Context, tradingAccountId string, tradeOrderId string) ApiGetTradeOrderByIdRequest {
+func (a *UserAPIService) GetTradeOrderById(ctx context.Context, instrumentAccountId string, tradeOrderId string) ApiGetTradeOrderByIdRequest {
 	return ApiGetTradeOrderByIdRequest{
 		ApiService:       a,
 		ctx:              ctx,
-		tradingAccountId: tradingAccountId,
+		instrumentAccountId: instrumentAccountId,
 		tradeOrderId:     tradeOrderId,
 	}
 }
@@ -595,8 +595,8 @@ func (a *UserAPIService) GetTradeOrderByIdExecute(r ApiGetTradeOrderByIdRequest)
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/trade-orders/{trading_account_id}/id/{trade_order_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"trading_account_id"+"}", url.PathEscape(parameterValueToString(r.tradingAccountId, "tradingAccountId")), -1)
+	localVarPath := localBasePath + "/trade-orders/{instrument_account_id}/id/{trade_order_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"instrument_account_id"+"}", url.PathEscape(parameterValueToString(r.instrumentAccountId, "instrumentAccountId")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"trade_order_id"+"}", url.PathEscape(parameterValueToString(r.tradeOrderId, "tradeOrderId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -660,7 +660,7 @@ func (a *UserAPIService) GetTradeOrderByIdExecute(r ApiGetTradeOrderByIdRequest)
 type ApiGetTradeOrdersRequest struct {
 	ctx              context.Context
 	ApiService       *UserAPIService
-	tradingAccountId string
+	instrumentAccountId string
 }
 
 func (r ApiGetTradeOrdersRequest) Execute() ([]TradeOrder, *http.Response, error) {
@@ -673,14 +673,14 @@ GetTradeOrders Get trade orders
 Returns list of user's trade orders
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param tradingAccountId
+	@param instrumentAccountId
 	@return ApiGetTradeOrdersRequest
 */
-func (a *UserAPIService) GetTradeOrders(ctx context.Context, tradingAccountId string) ApiGetTradeOrdersRequest {
+func (a *UserAPIService) GetTradeOrders(ctx context.Context, instrumentAccountId string) ApiGetTradeOrdersRequest {
 	return ApiGetTradeOrdersRequest{
 		ApiService:       a,
 		ctx:              ctx,
-		tradingAccountId: tradingAccountId,
+		instrumentAccountId: instrumentAccountId,
 	}
 }
 
@@ -700,8 +700,8 @@ func (a *UserAPIService) GetTradeOrdersExecute(r ApiGetTradeOrdersRequest) ([]Tr
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/trade-orders/{trading_account_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"trading_account_id"+"}", url.PathEscape(parameterValueToString(r.tradingAccountId, "tradingAccountId")), -1)
+	localVarPath := localBasePath + "/trade-orders/{instrument_account_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"instrument_account_id"+"}", url.PathEscape(parameterValueToString(r.instrumentAccountId, "instrumentAccountId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -764,7 +764,7 @@ func (a *UserAPIService) GetTradeOrdersExecute(r ApiGetTradeOrdersRequest) ([]Tr
 type ApiGetTradesRequest struct {
 	ctx              context.Context
 	ApiService       *UserAPIService
-	tradingAccountId string
+	instrumentAccountId string
 }
 
 func (r ApiGetTradesRequest) Execute() ([]Trade, *http.Response, error) {
@@ -777,14 +777,14 @@ GetTrades Trades list
 Returns list of entity's trades
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param tradingAccountId
+	@param instrumentAccountId
 	@return ApiGetTradesRequest
 */
-func (a *UserAPIService) GetTrades(ctx context.Context, tradingAccountId string) ApiGetTradesRequest {
+func (a *UserAPIService) GetTrades(ctx context.Context, instrumentAccountId string) ApiGetTradesRequest {
 	return ApiGetTradesRequest{
 		ApiService:       a,
 		ctx:              ctx,
-		tradingAccountId: tradingAccountId,
+		instrumentAccountId: instrumentAccountId,
 	}
 }
 
@@ -804,8 +804,8 @@ func (a *UserAPIService) GetTradesExecute(r ApiGetTradesRequest) ([]Trade, *http
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/trades/{trading_account_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"trading_account_id"+"}", url.PathEscape(parameterValueToString(r.tradingAccountId, "tradingAccountId")), -1)
+	localVarPath := localBasePath + "/trades/{instrument_account_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"instrument_account_id"+"}", url.PathEscape(parameterValueToString(r.instrumentAccountId, "instrumentAccountId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -865,51 +865,51 @@ func (a *UserAPIService) GetTradesExecute(r ApiGetTradesRequest) ([]Trade, *http
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetTradingAccountRequest struct {
+type ApiGetInstrumentAccountRequest struct {
 	ctx              context.Context
 	ApiService       *UserAPIService
-	tradingAccountId string
+	instrumentAccountId string
 }
 
-func (r ApiGetTradingAccountRequest) Execute() (*TradingAccount, *http.Response, error) {
-	return r.ApiService.GetTradingAccountExecute(r)
+func (r ApiGetInstrumentAccountRequest) Execute() (*InstrumentAccount, *http.Response, error) {
+	return r.ApiService.GetInstrumentAccountExecute(r)
 }
 
 /*
-GetTradingAccount Get trading account
+GetInstrumentAccount Get trading account
 
 Returns user's trading account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param tradingAccountId
-	@return ApiGetTradingAccountRequest
+	@param instrumentAccountId
+	@return ApiGetInstrumentAccountRequest
 */
-func (a *UserAPIService) GetTradingAccount(ctx context.Context, tradingAccountId string) ApiGetTradingAccountRequest {
-	return ApiGetTradingAccountRequest{
+func (a *UserAPIService) GetInstrumentAccount(ctx context.Context, instrumentAccountId string) ApiGetInstrumentAccountRequest {
+	return ApiGetInstrumentAccountRequest{
 		ApiService:       a,
 		ctx:              ctx,
-		tradingAccountId: tradingAccountId,
+		instrumentAccountId: instrumentAccountId,
 	}
 }
 
 // Execute executes the request
 //
-//	@return TradingAccount
-func (a *UserAPIService) GetTradingAccountExecute(r ApiGetTradingAccountRequest) (*TradingAccount, *http.Response, error) {
+//	@return InstrumentAccount
+func (a *UserAPIService) GetInstrumentAccountExecute(r ApiGetInstrumentAccountRequest) (*InstrumentAccount, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *TradingAccount
+		localVarReturnValue *InstrumentAccount
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetTradingAccount")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetInstrumentAccount")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/trading-accounts/{trading_account_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"trading_account_id"+"}", url.PathEscape(parameterValueToString(r.tradingAccountId, "tradingAccountId")), -1)
+	localVarPath := localBasePath + "/instrument-accounts/{instrument_account_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"instrument_account_id"+"}", url.PathEscape(parameterValueToString(r.instrumentAccountId, "instrumentAccountId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

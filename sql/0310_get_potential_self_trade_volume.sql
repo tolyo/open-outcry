@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION
     get_potential_self_trade_volume(
         instrument_id_param BIGINT, 
         side_param order_side, 
-        trading_account_id_param BIGINT, 
+        instrument_account_id_param BIGINT, 
         price_param NUMERIC
     )
     RETURNS NUMERIC
@@ -19,7 +19,7 @@ BEGIN
         INNER JOIN book_order b
             ON b.trade_order_id = t.id
         WHERE t.side = side_param
-        AND t.trading_account_id = trading_account_id_param
+        AND t.instrument_account_id = instrument_account_id_param
         AND t.instrument_id = instrument_id_param
         AND t.price <=  price_param 
         INTO acc;
@@ -29,7 +29,7 @@ BEGIN
         INNER JOIN book_order b
             ON b.trade_order_id = t.id
         WHERE t.side = side_param
-        AND t.trading_account_id = trading_account_id_param
+        AND t.instrument_account_id = instrument_account_id_param
         AND t.instrument_id = instrument_id_param
         AND (t.price >=  price_param OR t.price = 0.00)
         INTO acc;        

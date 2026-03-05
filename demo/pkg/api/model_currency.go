@@ -17,7 +17,7 @@ import (
 // checks if the Currency type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &Currency{}
 
-// Currency Currency of payment account
+// Currency Currency of transfer account
 type Currency struct {
 	// ISO 4217 Currency symbol
 	Name *string `json:"name,omitempty"`

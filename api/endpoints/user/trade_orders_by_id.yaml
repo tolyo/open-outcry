@@ -5,7 +5,7 @@ get:
   description: Returns user's trade order
   operationId: getTradeOrderById
   parameters:
-    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/instrument_account.yaml#/components/parameters/InstrumentAccountId"
     - $ref: "../../models/trade_order.yaml#/components/parameters/TradeOrderId"
 
   responses:
@@ -25,7 +25,7 @@ delete:
   description: Cancels a trade order by id
   operationId: deleteTradeOrderById
   parameters:
-    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/instrument_account.yaml#/components/parameters/InstrumentAccountId"
     - $ref: "../../models/trade_order.yaml#/components/parameters/TradeOrderId"
   responses:
     "204":

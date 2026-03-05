@@ -64,12 +64,12 @@ BEGIN
         update_amount_var = trade_order_instance.open_amount * trade_order_instance.price;
     END IF;
 
-    UPDATE payment_account
+    UPDATE currency_account
     SET amount_reserved = amount_reserved - update_amount_var
     WHERE currency_name = order_currency_var
     AND app_entity_id = (
-        SELECT app_entity_id FROM trading_account ta
-        WHERE ta.id = trade_order_instance.trading_account_id
+        SELECT app_entity_id FROM instrument_account ta
+        WHERE ta.id = trade_order_instance.instrument_account_id
     );
 
     -- delete book order

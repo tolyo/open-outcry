@@ -29,9 +29,9 @@ func NewUserAPIService() UserAPIServicer {
 }
 
 // CreateTrade - Create trade order
-func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId string, req CreateTradeRequest) (ImplResponse, error) {
+func (s *UserAPIService) CreateTrade(ctx context.Context, instrumentAccountId string, req CreateTradeRequest) (ImplResponse, error) {
 	orderId, err := services.ProcessTradeOrder(
-		models.TradingAccountId(tradingAccountId),
+		models.InstrumentAccountId(instrumentAccountId),
 		models.InstrumentName(req.Instrument),
 		models.OrderType(req.Type),
 		models.OrderSide(req.Side),
@@ -48,7 +48,7 @@ func (s *UserAPIService) CreateTrade(ctx context.Context, tradingAccountId strin
 }
 
 // DeleteTradeOrderById - Cancel trade order
-func (s *UserAPIService) DeleteTradeOrderById(ctx context.Context, tradingAccountId string, tradeOrderId string) (ImplResponse, error) {
+func (s *UserAPIService) DeleteTradeOrderById(ctx context.Context, instrumentAccountId string, tradeOrderId string) (ImplResponse, error) {
 	err := services.CancelTradeOrder(models.TradeOrderId(tradeOrderId))
 	if err != nil {
 		return Response(http.StatusNotFound, nil), err
@@ -57,8 +57,8 @@ func (s *UserAPIService) DeleteTradeOrderById(ctx context.Context, tradingAccoun
 }
 
 // GetBookOrders - Get book orders
-func (s *UserAPIService) GetBookOrders(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
-	orders := models.GetBookOrdersByTradingAccount(models.TradingAccountId(tradingAccountId))
+func (s *UserAPIService) GetBookOrders(ctx context.Context, instrumentAccountId string) (ImplResponse, error) {
+	orders := models.GetBookOrdersByInstrumentAccount(models.InstrumentAccountId(instrumentAccountId))
 	var result []TradeOrder
 	for _, o := range orders {
 		result = append(result, mapTradeOrder(o))
@@ -66,12 +66,12 @@ func (s *UserAPIService) GetBookOrders(ctx context.Context, tradingAccountId str
 	return Response(http.StatusOK, result), nil
 }
 
-// GetPaymentAccounts - Get payment accounts
-func (s *UserAPIService) GetPaymentAccounts(ctx context.Context, appEntityId string) (ImplResponse, error) {
-	accounts := models.GetPaymentAccountsByAppEntity(models.AppEntityId(appEntityId))
-	var result []PaymentAccount
+// GetCurrencyAccounts - Get transfer accounts
+func (s *UserAPIService) GetCurrencyAccounts(ctx context.Context, appEntityId string) (ImplResponse, error) {
+	accounts := models.GetCurrencyAccountsByAppEntity(models.AppEntityId(appEntityId))
+	var result []CurrencyAccount
 	for _, a := range accounts {
-		result = append(result, PaymentAccount{
+		result = append(result, CurrencyAccount{
 			Id:              string(a.Id),
 			Currency:        string(a.Currency),
 			Amount:          a.Amount,
@@ -79,11 +79,11 @@ func (s *UserAPIService) GetPaymentAccounts(ctx context.Context, appEntityId str
 			AmountAvailable: a.AmountAvailable,
 		})
 	}
-	return Response(http.StatusOK, PaymentAccountList{Data: result}), nil
+	return Response(http.StatusOK, CurrencyAccountList{Data: result}), nil
 }
 
 // GetTradeById - Get trade
-func (s *UserAPIService) GetTradeById(ctx context.Context, tradingAccountId string, tradeId string) (ImplResponse, error) {
+func (s *UserAPIService) GetTradeById(ctx context.Context, instrumentAccountId string, tradeId string) (ImplResponse, error) {
 	trade := models.GetTrade(tradeId)
 	if trade == nil {
 		return Response(http.StatusNotFound, nil), nil
@@ -92,14 +92,14 @@ func (s *UserAPIService) GetTradeById(ctx context.Context, tradingAccountId stri
 }
 
 // GetTradeOrderById - Get trade order
-func (s *UserAPIService) GetTradeOrderById(ctx context.Context, tradingAccountId string, tradeOrderId string) (ImplResponse, error) {
+func (s *UserAPIService) GetTradeOrderById(ctx context.Context, instrumentAccountId string, tradeOrderId string) (ImplResponse, error) {
 	order := models.GetTradeOrder(models.TradeOrderId(tradeOrderId))
 	return Response(http.StatusOK, mapTradeOrder(order)), nil
 }
 
 // GetTradeOrders - Get trade orders
-func (s *UserAPIService) GetTradeOrders(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
-	orders := models.GetTradeOrdersByTradingAccount(models.TradingAccountId(tradingAccountId))
+func (s *UserAPIService) GetTradeOrders(ctx context.Context, instrumentAccountId string) (ImplResponse, error) {
+	orders := models.GetTradeOrdersByInstrumentAccount(models.InstrumentAccountId(instrumentAccountId))
 	var result []TradeOrder
 	for _, o := range orders {
 		result = append(result, mapTradeOrder(o))
@@ -108,8 +108,8 @@ func (s *UserAPIService) GetTradeOrders(ctx context.Context, tradingAccountId st
 }
 
 // GetTrades - Trades list
-func (s *UserAPIService) GetTrades(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
-	trades := models.GetTradesByTradingAccount(models.TradingAccountId(tradingAccountId))
+func (s *UserAPIService) GetTrades(ctx context.Context, instrumentAccountId string) (ImplResponse, error) {
+	trades := models.GetTradesByInstrumentAccount(models.InstrumentAccountId(instrumentAccountId))
 	var result []Trade
 	for _, t := range trades {
 		result = append(result, Trade{Id: t.Id})
@@ -117,17 +117,17 @@ func (s *UserAPIService) GetTrades(ctx context.Context, tradingAccountId string)
 	return Response(http.StatusOK, result), nil
 }
 
-// GetTradingAccount - Get trading account
-func (s *UserAPIService) GetTradingAccount(ctx context.Context, tradingAccountId string) (ImplResponse, error) {
-	account := models.GetTradingAccount(models.TradingAccountId(tradingAccountId))
+// GetInstrumentAccount - Get instrument account
+func (s *UserAPIService) GetInstrumentAccount(ctx context.Context, instrumentAccountId string) (ImplResponse, error) {
+	account := models.GetInstrumentAccount(models.InstrumentAccountId(instrumentAccountId))
 	if account == nil {
 		return Response(http.StatusNotFound, nil), nil
 	}
 
-	instruments := models.GetTradingAccountInstruments(models.TradingAccountId(tradingAccountId))
-	var apiInstruments []TradingAccountInstrument
+	instruments := models.GetInstrumentAccountHoldings(models.InstrumentAccountId(instrumentAccountId))
+	var apiInstruments []InstrumentAccountHolding
 	for _, inst := range instruments {
-		apiInstruments = append(apiInstruments, TradingAccountInstrument{
+		apiInstruments = append(apiInstruments, InstrumentAccountHolding{
 			Name:            string(inst.Name),
 			Amount:          inst.AmountAvailable + inst.AmountReserved,
 			AmountReserved:  inst.AmountReserved,
@@ -137,7 +137,7 @@ func (s *UserAPIService) GetTradingAccount(ctx context.Context, tradingAccountId
 		})
 	}
 
-	return Response(http.StatusOK, TradingAccount{
+	return Response(http.StatusOK, InstrumentAccount{
 		Id:          string(account.Id),
 		Instruments: apiInstruments,
 	}), nil

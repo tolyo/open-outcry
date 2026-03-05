@@ -95,7 +95,7 @@ paths:
                 $ref: "#/components/schemas/OrderBook"
         "404":
           description: Order book not found for instrument
-  /book_orders/{trading_account_id}:
+  /book_orders/{instrument_account_id}:
     get:
       tags:
         - user
@@ -103,7 +103,7 @@ paths:
       description: Returns list of user's trade orders currently on the order book
       operationId: getBookOrders
       parameters:
-        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/InstrumentAccountId"
       responses:
         "200":
           description: Success
@@ -113,13 +113,13 @@ paths:
                 $ref: "#/components/schemas/TradeOrderList"
         "404":
           description: Error
-  /payment-accounts/{app_entity_id}:
+  /currency-accounts/{app_entity_id}:
     get:
       tags:
         - user
-      summary: Get payment accounts
-      description: Returns list of user's payment accounts
-      operationId: getPaymentAccounts
+      summary: Get transfer accounts
+      description: Returns list of user's transfer accounts
+      operationId: getCurrencyAccounts
       parameters:
         - in: path
           name: app_entity_id
@@ -132,10 +132,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaymentAccountList"
+                $ref: "#/components/schemas/CurrencyAccountList"
         "404":
           description: Error
-  /trades/{trading_account_id}/id/{trade_id}:
+  /trades/{instrument_account_id}/id/{trade_id}:
     get:
       tags:
         - user
@@ -143,7 +143,7 @@ paths:
       description: Returns a trade by id
       operationId: getTradeById
       parameters:
-        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/InstrumentAccountId"
         - $ref: "#/components/parameters/TradeId"
       responses:
         "200":
@@ -161,14 +161,14 @@ paths:
       description: Cancels a trade order by id
       operationId: deleteTradeById
       parameters:
-        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/InstrumentAccountId"
         - $ref: "#/components/parameters/TradeId"
       responses:
         "204":
           description: Success
         "404":
           description: Error
-  /trades/{trading_account_id}:
+  /trades/{instrument_account_id}:
     get:
       tags:
         - user
@@ -176,7 +176,7 @@ paths:
       description: Returns list of entity's trades
       operationId: getTrades
       parameters:
-        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/InstrumentAccountId"
       responses:
         "200":
           description: Success
@@ -186,7 +186,7 @@ paths:
                 $ref: "#/components/schemas/TradeList"
         "404":
           description: Error
-  /trade_orders/{trading_account_id}:
+  /trade_orders/{instrument_account_id}:
     get:
       tags:
         - user
@@ -194,7 +194,7 @@ paths:
       description: Returns list of user's trade orders
       operationId: getTradeOrders
       parameters:
-        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/InstrumentAccountId"
       responses:
         "200":
           description: Success
@@ -211,7 +211,7 @@ paths:
       description: Creates a trade order
       operationId: createTrade
       parameters:
-        - $ref: "#/components/parameters/TradingAccountId"
+        - $ref: "#/components/parameters/InstrumentAccountId"
       requestBody:
         required: true
         content:
@@ -253,16 +253,16 @@ paths:
                 $ref: "#/components/schemas/TradeOrder"
         "404":
           description: Error
-  /trading_account/{trading_account_id}:
+  /instrument_account/{instrument_account_id}:
     get:
       tags:
         - user
       summary: Get trading account
       description: Returns user's trading account
-      operationId: getTradingAccount
+      operationId: getInstrumentAccount
       parameters:
         - in: path
-          name: trading_account_id
+          name: instrument_account_id
           required: true
           schema:
             $ref: "#/components/schemas/Id"
@@ -272,7 +272,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TradingAccount"
+                $ref: "#/components/schemas/InstrumentAccount"
         "404":
           description: Error
   /apps/{app_entity_id}:
@@ -313,16 +313,16 @@ paths:
                 $ref: "#/components/schemas/AppEntityList"
         "404":
           description: Error
-  /apps/payments/{payment_id}:
+  /apps/transfers/{transfer_id}:
     post:
       tags:
         - admin
-      summary: Get payment
-      description: Returns payment information
-      operationId: getAdminPaymentById
+      summary: Get transfer
+      description: Returns transfer information
+      operationId: getAdminTransferById
       parameters:
         - in: path
-          name: payment_id
+          name: transfer_id
           required: true
           schema:
             $ref: "#/components/schemas/Id"
@@ -332,23 +332,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Payment"
+                $ref: "#/components/schemas/Transfer"
         "404":
           description: Error
-  /apps/payments:
+  /apps/transfers:
     post:
       tags:
         - admin
-      summary: Create admin payment
-      description: Creates a payment on user's account
-      operationId: createAdminPayment
+      summary: Create admin transfer
+      description: Creates a transfer on user's account
+      operationId: createAdminTransfer
       responses:
         "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Payment"
+                $ref: "#/components/schemas/Transfer"
         "404":
           description: Error
 components:
@@ -359,7 +359,7 @@ components:
       example: USD
     Currency:
       type: object
-      description: Currency of payment account
+      description: Currency of transfer account
       properties:
         name:
           $ref: "#/components/schemas/CurrencyName"
@@ -510,9 +510,9 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/TradeOrder"
-    PaymentAccount:
+    CurrencyAccount:
       type: object
-      description: Payment account available to user
+      description: Transfer account available to user
       properties:
         id:
           $ref: "#/components/schemas/Id"
@@ -524,14 +524,14 @@ components:
           $ref: "#/components/schemas/MoneyAmount"
         amountAvailable:
           $ref: "#/components/schemas/MoneyAmount"
-    PaymentAccountList:
+    CurrencyAccountList:
       type: object
-      description: List of payment accounts available to user
+      description: List of transfer accounts available to user
       properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/PaymentAccount"
+            $ref: "#/components/schemas/CurrencyAccount"
       example:
         data:
           - name: USD
@@ -549,7 +549,7 @@ components:
       description: List of executed trades
       items:
         $ref: "#/components/schemas/Trade"
-    TradingAccountInstrument:
+    InstrumentAccountHolding:
       type: object
       properties:
         name:
@@ -571,7 +571,7 @@ components:
         - amountAvailable
         - value
         - currency
-    TradingAccount:
+    InstrumentAccount:
       type: object
       properties:
         id:
@@ -579,7 +579,7 @@ components:
         instruments:
           type: array
           items:
-            $ref: "#/components/schemas/TradingAccountInstrument"
+            $ref: "#/components/schemas/InstrumentAccountHolding"
       required:
         - id
         - instruments
@@ -599,7 +599,7 @@ components:
       description: List of registered users
       items:
         $ref: "#/components/schemas/AppEntity"
-    PaymentType:
+    TransferType:
       type: string
       enum:
         - DEPOSIT
@@ -608,19 +608,19 @@ components:
         - INSTRUMENT_BUY
         - INSTRUMENT_SELL
         - CHARGE
-    PaymentDetails:
+    TransferDetails:
       type: string
       example: Bank deposit Bank REF123456
-    PaymentExternalReferenceNumber:
+    TransferExternalReferenceNumber:
       type: string
       example: REF123456
-    Payment:
+    Transfer:
       type: object
       properties:
         id:
           $ref: "#/components/schemas/Id"
         type:
-          $ref: "#/components/schemas/PaymentType"
+          $ref: "#/components/schemas/TransferType"
         amount:
           $ref: "#/components/schemas/MoneyAmount"
         currency:
@@ -630,9 +630,9 @@ components:
         beneficiaryAccountId:
           $ref: "#/components/schemas/Id"
         details:
-          $ref: "#/components/schemas/PaymentDetails"
+          $ref: "#/components/schemas/TransferDetails"
         externalReferenceNumber:
-          $ref: "#/components/schemas/PaymentExternalReferenceNumber"
+          $ref: "#/components/schemas/TransferExternalReferenceNumber"
         status:
           type: string
         debitBalanceAmount:
@@ -650,8 +650,8 @@ components:
         - externalReferenceNumber
         - status
   parameters:
-    TradingAccountId:
-      name: trading_account_id
+    InstrumentAccountId:
+      name: instrument_account_id
       in: path
       required: true
       schema:

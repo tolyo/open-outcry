@@ -9,7 +9,7 @@
 
 package api
 
-// Currency - Currency of payment account
+// Currency - Currency of transfer account
 type Currency struct {
 
 	// ISO 4217 Currency symbol

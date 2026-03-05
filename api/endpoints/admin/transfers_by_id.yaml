@@ -1,0 +1,22 @@
+post:
+  tags:
+    - admin
+  summary: Get transfer
+  description: Returns transfer information
+  operationId: getAdminTransferById
+  parameters:
+    - in: path
+      name: transfer_id
+      required: true
+      schema:
+        $ref: "../../models/transfer.yaml#/components/schemas/TransferId"
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "../../models/transfer.yaml#/components/schemas/Transfer"
+    "404":
+      description: Error

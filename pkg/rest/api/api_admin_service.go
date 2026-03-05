@@ -26,31 +26,31 @@ func NewAdminAPIService() AdminAPIServicer {
 	return &AdminAPIService{}
 }
 
-// CreateAdminPayment - Create admin payment
-func (s *AdminAPIService) CreateAdminPayment(ctx context.Context) (ImplResponse, error) {
-	// Admin payment creation requires a request body which is not passed through the interface.
+// CreateAdminTransfer - Create admin transfer
+func (s *AdminAPIService) CreateAdminTransfer(ctx context.Context) (ImplResponse, error) {
+	// Admin transfer creation requires a request body which is not passed through the interface.
 	// Return not implemented for now since the controller doesn't parse a body for this endpoint.
 	return Response(http.StatusNotImplemented, nil), nil
 }
 
-// GetAdminPaymentById - Get payment
-func (s *AdminAPIService) GetAdminPaymentById(ctx context.Context, paymentId string) (ImplResponse, error) {
-	payment := models.GetPayment(paymentId)
-	if payment == nil {
+// GetAdminTransferById - Get transfer
+func (s *AdminAPIService) GetAdminTransferById(ctx context.Context, transferId string) (ImplResponse, error) {
+	transfer := models.GetTransfer(transferId)
+	if transfer == nil {
 		return Response(http.StatusNotFound, nil), nil
 	}
-	return Response(http.StatusOK, Payment{
-		Id:                      payment.Id,
-		Type:                    PaymentType(payment.Type),
-		Amount:                  payment.Amount,
-		Currency:                string(payment.Currency),
-		SenderAccountId:         string(payment.SenderAccountId),
-		BeneficiaryAccountId:    string(payment.BeneficiaryAccountId),
-		Details:                 string(payment.Details),
-		ExternalReferenceNumber: string(payment.ExternalReferenceNumber),
-		Status:                  payment.Status,
-		DebitBalanceAmount:      payment.DebitBalanceAmount,
-		CreditBalanceAmount:     payment.CreditBalanceAmount,
+	return Response(http.StatusOK, TransferEntry{
+		Id:                      transfer.Id,
+		Type:                    TransferType(transfer.Type),
+		Amount:                  transfer.Amount,
+		Currency:                string(transfer.Currency),
+		SenderAccountId:         string(transfer.SenderAccountId),
+		BeneficiaryAccountId:    string(transfer.BeneficiaryAccountId),
+		Details:                 string(transfer.Details),
+		ExternalReferenceNumber: string(transfer.ExternalReferenceNumber),
+		Status:                  transfer.Status,
+		DebitBalanceAmount:      transfer.DebitBalanceAmount,
+		CreditBalanceAmount:     transfer.CreditBalanceAmount,
 	}), nil
 }
 

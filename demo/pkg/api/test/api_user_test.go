@@ -28,9 +28,9 @@ func Test_api_UserAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var tradingAccountId string
+		var instrumentAccountId string
 
-		resp, httpRes, err := apiClient.UserAPI.CreateTrade(context.Background(), tradingAccountId).Execute()
+		resp, httpRes, err := apiClient.UserAPI.CreateTrade(context.Background(), instrumentAccountId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -42,10 +42,10 @@ func Test_api_UserAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var tradingAccountId string
+		var instrumentAccountId string
 		var tradeOrderId string
 
-		httpRes, err := apiClient.UserAPI.DeleteTradeOrderById(context.Background(), tradingAccountId, tradeOrderId).Execute()
+		httpRes, err := apiClient.UserAPI.DeleteTradeOrderById(context.Background(), instrumentAccountId, tradeOrderId).Execute()
 
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
@@ -56,9 +56,9 @@ func Test_api_UserAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var tradingAccountId string
+		var instrumentAccountId string
 
-		resp, httpRes, err := apiClient.UserAPI.GetBookOrders(context.Background(), tradingAccountId).Execute()
+		resp, httpRes, err := apiClient.UserAPI.GetBookOrders(context.Background(), instrumentAccountId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -66,13 +66,13 @@ func Test_api_UserAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test UserAPIService GetPaymentAccounts", func(t *testing.T) {
+	t.Run("Test UserAPIService GetCurrencyAccounts", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
 		var appEntityId string
 
-		resp, httpRes, err := apiClient.UserAPI.GetPaymentAccounts(context.Background(), appEntityId).Execute()
+		resp, httpRes, err := apiClient.UserAPI.GetCurrencyAccounts(context.Background(), appEntityId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -84,10 +84,10 @@ func Test_api_UserAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var tradingAccountId string
+		var instrumentAccountId string
 		var tradeId string
 
-		resp, httpRes, err := apiClient.UserAPI.GetTradeById(context.Background(), tradingAccountId, tradeId).Execute()
+		resp, httpRes, err := apiClient.UserAPI.GetTradeById(context.Background(), instrumentAccountId, tradeId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -99,10 +99,10 @@ func Test_api_UserAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var tradingAccountId string
+		var instrumentAccountId string
 		var tradeOrderId string
 
-		resp, httpRes, err := apiClient.UserAPI.GetTradeOrderById(context.Background(), tradingAccountId, tradeOrderId).Execute()
+		resp, httpRes, err := apiClient.UserAPI.GetTradeOrderById(context.Background(), instrumentAccountId, tradeOrderId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -114,9 +114,9 @@ func Test_api_UserAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var tradingAccountId string
+		var instrumentAccountId string
 
-		resp, httpRes, err := apiClient.UserAPI.GetTradeOrders(context.Background(), tradingAccountId).Execute()
+		resp, httpRes, err := apiClient.UserAPI.GetTradeOrders(context.Background(), instrumentAccountId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -128,9 +128,9 @@ func Test_api_UserAPIService(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var tradingAccountId string
+		var instrumentAccountId string
 
-		resp, httpRes, err := apiClient.UserAPI.GetTrades(context.Background(), tradingAccountId).Execute()
+		resp, httpRes, err := apiClient.UserAPI.GetTrades(context.Background(), instrumentAccountId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -138,13 +138,13 @@ func Test_api_UserAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test UserAPIService GetTradingAccount", func(t *testing.T) {
+	t.Run("Test UserAPIService GetInstrumentAccount", func(t *testing.T) {
 
 		t.Skip("skip test") // remove to run test
 
-		var tradingAccountId string
+		var instrumentAccountId string
 
-		resp, httpRes, err := apiClient.UserAPI.GetTradingAccount(context.Background(), tradingAccountId).Execute()
+		resp, httpRes, err := apiClient.UserAPI.GetInstrumentAccount(context.Background(), instrumentAccountId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

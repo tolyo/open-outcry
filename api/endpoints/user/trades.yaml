@@ -5,7 +5,7 @@ get:
   description: Returns list of entity's trades
   operationId: getTrades
   parameters:
-    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/instrument_account.yaml#/components/parameters/InstrumentAccountId"
   responses:
     "200":
       description: Success

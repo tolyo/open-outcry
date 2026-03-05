@@ -1,6 +1,6 @@
 -- +goose Up
 -- Model of states that a trade order can undergo during its
--- lifecycle. Transitional states hold funds in `payment_account.amount_reserved`
+-- lifecycle. Transitional states hold funds in `currency_account.amount_reserved`
 -- Final states should release all reserved funds.
 CREATE TYPE trade_order_status AS ENUM(
     -- TRANSITIONAL STATES

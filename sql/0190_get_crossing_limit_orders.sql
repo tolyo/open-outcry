@@ -32,7 +32,7 @@ BEGIN
                 ON b.trade_order_id = t.id
             WHERE t.instrument_id = instrument_id_param
                 AND t.side = side_param
-                AND t.trading_account_id != trade_account_id_param
+                AND t.instrument_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
             -- order first by price then by date created
             ORDER BY t.price, t.created_at;
@@ -42,7 +42,7 @@ BEGIN
                 ON b.trade_order_id = t.id
             WHERE t.instrument_id = instrument_id_param
                 AND t.side = side_param
-                AND t.trading_account_id != trade_account_id_param
+                AND t.instrument_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
             -- order first by price then by date created
             ORDER BY t.price DESC, t.created_at;
@@ -55,7 +55,7 @@ BEGIN
                 ON b.trade_order_id = t.id
             WHERE t.instrument_id = instrument_id_param
                 AND t.side = side_param
-                AND t.trading_account_id != trade_account_id_param
+                AND t.instrument_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
                 AND t.price <= price_param
             -- order first by price then by date created
@@ -66,7 +66,7 @@ BEGIN
                 ON b.trade_order_id = t.id
             WHERE t.instrument_id = instrument_id_param
                 AND t.side = side_param
-                AND t.trading_account_id != trade_account_id_param
+                AND t.instrument_account_id != trade_account_id_param
                 AND t.order_type = 'LIMIT'::order_type
                 AND t.price >= price_param
             -- order first by price then by date created

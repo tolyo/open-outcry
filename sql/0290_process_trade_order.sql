@@ -3,7 +3,7 @@
 
 CREATE OR REPLACE FUNCTION
     process_trade_order(
-        trading_account_id_param text,
+        instrument_account_id_param text,
         instrument_name_param text,
         order_type_param text,
         side_param order_side,
@@ -16,8 +16,8 @@ CREATE OR REPLACE FUNCTION
     LANGUAGE 'plpgsql'
 AS $$
 DECLARE
-trading_account_instance trading_account%ROWTYPE;
-    payment_account_instance payment_account%ROWTYPE;
+instrument_account_instance instrument_account%ROWTYPE;
+    currency_account_instance currency_account%ROWTYPE;
     taker_trade_order_instance trade_order%ROWTYPE; -- saved
     maker_book_order_instance trade_order%ROWTYPE;
     book_order_instance book_order%ROWTYPE;
@@ -58,14 +58,14 @@ END IF;
     remaining_amount := amount_param;
 
     -- load trading account (external mode)
-    IF trading_account_id_param != 'VOID' THEN
+    IF instrument_account_id_param != 'VOID' THEN
 SELECT *
-FROM trading_account
-WHERE pub_id = trading_account_id_param
-    INTO trading_account_instance;
+FROM instrument_account
+WHERE pub_id = instrument_account_id_param
+    INTO instrument_account_instance;
 
 IF NOT FOUND THEN
-            RAISE EXCEPTION 'trading_account_instance_not_found';
+            RAISE EXCEPTION 'instrument_account_instance_not_found';
 END IF;
 END IF;
 
@@ -107,19 +107,19 @@ IF NOT FOUND THEN
         RAISE EXCEPTION 'quote_currency_precision_not_found';
 END IF;
 
-    IF trading_account_id_param != 'VOID' THEN
-        -- find and lock payment account row to avoid reservation races
+    IF instrument_account_id_param != 'VOID' THEN
+        -- find and lock transfer account row to avoid reservation races
 SELECT pa.*
-FROM payment_account pa
+FROM currency_account pa
          INNER JOIN app_entity ae
                     ON pa.app_entity_id = ae.id
-WHERE ae.id = trading_account_instance.app_entity_id
+WHERE ae.id = instrument_account_instance.app_entity_id
   AND pa.currency_name = order_currency_var
     FOR UPDATE
-    INTO payment_account_instance;
+    INTO currency_account_instance;
 
 IF NOT FOUND THEN
-            RAISE EXCEPTION 'payment_account_instance_not_found';
+            RAISE EXCEPTION 'currency_account_instance_not_found';
 END IF;
 
         -- normalize inputs to currency precisions
@@ -133,37 +133,37 @@ END IF;
         -- reserve funds (fix precision usage and stable error token)
         IF side_param = 'SELL' OR (side_param = 'BUY' AND order_type_param = 'MARKET') THEN
             reserve_amount := remaining_amount; -- base for SELL, quote for BUY\+MARKET in this model
-            IF payment_account_instance.amount - payment_account_instance.amount_reserved < reserve_amount THEN
+            IF currency_account_instance.amount - currency_account_instance.amount_reserved < reserve_amount THEN
                 RAISE EXCEPTION 'insufficient_funds'
                     USING DETAIL = format(
                         'available=%s required=%s',
-                        payment_account_instance.amount - payment_account_instance.amount_reserved,
+                        currency_account_instance.amount - currency_account_instance.amount_reserved,
                         reserve_amount
                     );
 END IF;
 
-UPDATE payment_account
-SET amount_reserved = round(payment_account.amount_reserved + reserve_amount, base_currency_precision)
-WHERE id = payment_account_instance.id;
+UPDATE currency_account
+SET amount_reserved = round(currency_account.amount_reserved + reserve_amount, base_currency_precision)
+WHERE id = currency_account_instance.id;
 ELSE
             reserve_amount := banker_round(remaining_amount * price_param, quote_currency_precision);
-            IF payment_account_instance.amount - payment_account_instance.amount_reserved < reserve_amount THEN
+            IF currency_account_instance.amount - currency_account_instance.amount_reserved < reserve_amount THEN
                 RAISE EXCEPTION 'insufficient_funds'
                     USING DETAIL = format(
                         'available=%s required=%s',
-                        payment_account_instance.amount - payment_account_instance.amount_reserved,
+                        currency_account_instance.amount - currency_account_instance.amount_reserved,
                         reserve_amount
                     );
 END IF;
 
-UPDATE payment_account
-SET amount_reserved = round(payment_account.amount_reserved + reserve_amount, quote_currency_precision)
-WHERE id = payment_account_instance.id;
+UPDATE currency_account
+SET amount_reserved = round(currency_account.amount_reserved + reserve_amount, quote_currency_precision)
+WHERE id = currency_account_instance.id;
 END IF;
 
         -- create trade order
 INSERT INTO trade_order (
-    trading_account_id,
+    instrument_account_id,
     instrument_id,
     order_type,
     side,
@@ -173,7 +173,7 @@ INSERT INTO trade_order (
     time_in_force
 )
 VALUES (
-           trading_account_instance.id,
+           instrument_account_instance.id,
            instrument_instance.id,
            order_type_param::order_type,
            side_param,
@@ -192,9 +192,9 @@ WHERE id = trade_order_id_param
     INTO taker_trade_order_instance;
 
 SELECT *
-FROM trading_account
-WHERE id = taker_trade_order_instance.trading_account_id
-    INTO trading_account_instance;
+FROM instrument_account
+WHERE id = taker_trade_order_instance.instrument_account_id
+    INTO instrument_account_instance;
 
 -- in internal mode, remaining\_amount should start from persisted open\_amount
 remaining_amount := taker_trade_order_instance.open_amount;
@@ -221,7 +221,7 @@ END IF;
         total_available_volume_var =
             get_available_market_volume(instrument_instance.id, opposite_side_var)
             + get_available_limit_volume(instrument_instance.id, opposite_side_var, price_param)
-            - get_potential_self_trade_volume(instrument_instance.id, opposite_side_var, trading_account_instance.id, price_param);
+            - get_potential_self_trade_volume(instrument_instance.id, opposite_side_var, instrument_account_instance.id, price_param);
 
         IF taker_trade_order_instance.time_in_force = 'FOK'::order_time_in_force
            AND total_available_volume_var < remaining_amount THEN
@@ -230,17 +230,17 @@ UPDATE trade_order
 SET status = 'REJECTED'::trade_order_status
 WHERE id = taker_trade_order_instance.id;
 
-IF trading_account_id_param != 'VOID' THEN
+IF instrument_account_id_param != 'VOID' THEN
                 IF side_param = 'SELL' OR (side_param = 'BUY' AND order_type_param = 'MARKET') THEN
                     release_amount := remaining_amount;
-UPDATE payment_account
-SET amount_reserved = round(payment_account.amount_reserved - release_amount, base_currency_precision)
-WHERE id = payment_account_instance.id;
+UPDATE currency_account
+SET amount_reserved = round(currency_account.amount_reserved - release_amount, base_currency_precision)
+WHERE id = currency_account_instance.id;
 ELSE
                     release_amount := banker_round(remaining_amount * price_param, quote_currency_precision);
-UPDATE payment_account
-SET amount_reserved = round(payment_account.amount_reserved - release_amount, quote_currency_precision)
-WHERE id = payment_account_instance.id;
+UPDATE currency_account
+SET amount_reserved = round(currency_account.amount_reserved - release_amount, quote_currency_precision)
+WHERE id = currency_account_instance.id;
 END IF;
 END IF;
 
@@ -255,7 +255,7 @@ END IF;
                         INNER JOIN book_order b
                                    ON b.trade_order_id = t.id
                WHERE t.instrument_id = instrument_instance.id
-                 AND t.trading_account_id != trading_account_instance.id
+                 AND t.instrument_account_id != instrument_account_instance.id
                  AND t.side = opposite_side_var
                  AND t.order_type = 'MARKET'::order_type
                ORDER BY t.created_at
@@ -352,7 +352,7 @@ END LOOP;
                                 instrument_instance.id,
                                 opposite_side_var,
                                 price_param,
-                                trading_account_instance.id
+                                instrument_account_instance.id
                         )
                             LOOP
 SELECT *
@@ -456,16 +456,16 @@ WHERE id = taker_trade_order_instance.id
     RETURNING * INTO taker_trade_order_instance;
 END IF;
 
-            IF trading_account_id_param != 'VOID' THEN
+            IF instrument_account_id_param != 'VOID' THEN
                 IF side_param = 'SELL' OR (side_param = 'BUY' AND order_type_param = 'MARKET') THEN
-UPDATE payment_account
-SET amount_reserved = round(payment_account.amount_reserved - remaining_amount, base_currency_precision)
-WHERE id = payment_account_instance.id;
+UPDATE currency_account
+SET amount_reserved = round(currency_account.amount_reserved - remaining_amount, base_currency_precision)
+WHERE id = currency_account_instance.id;
 ELSE
-UPDATE payment_account
+UPDATE currency_account
 SET amount_reserved =
-        round(payment_account.amount_reserved - banker_round(remaining_amount * price_param, quote_currency_precision), quote_currency_precision)
-WHERE id = payment_account_instance.id;
+        round(currency_account.amount_reserved - banker_round(remaining_amount * price_param, quote_currency_precision), quote_currency_precision)
+WHERE id = currency_account_instance.id;
 END IF;
 END IF;
 ELSE

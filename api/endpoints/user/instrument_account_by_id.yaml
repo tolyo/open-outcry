@@ -1,0 +1,22 @@
+get:
+  tags:
+    - user
+  summary: Get instrument account
+  description: Returns user's instrument account
+  operationId: getInstrumentAccount
+  parameters:
+    - in: path
+      name: instrument_account_id
+      required: true
+      schema:
+        $ref: "../../models/instrument_account.yaml#/components/schemas/InstrumentAccountId"
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "../../models/instrument_account.yaml#/components/schemas/InstrumentAccount"
+    "404":
+      description: Error

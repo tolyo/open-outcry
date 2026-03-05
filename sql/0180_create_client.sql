@@ -19,11 +19,11 @@ BEGIN
   VALUES (external_id_param, 'CUSTOMER')
   RETURNING * INTO app_entity_instance;
 
-  -- attach payment account for some default currency - assume 'EUR' for now
-  PERFORM create_payment_account(app_entity_instance.pub_id, 'EUR');
+  -- attach currency account for some default currency - assume 'EUR' for now
+  PERFORM create_currency_account(app_entity_instance.pub_id, 'EUR');
 
-  -- attach trading account
-  INSERT INTO trading_account(app_entity_id)
+  -- attach instrument account
+  INSERT INTO instrument_account(app_entity_id)
   VALUES (app_entity_instance.id);
 
   -- TO{ onboarding state

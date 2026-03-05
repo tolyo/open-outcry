@@ -1,0 +1,22 @@
+get:
+  tags:
+    - user
+  summary: Get currency accounts
+  description: Returns list of user's currency accounts
+  operationId: getCurrencyAccounts
+  parameters:
+    - in: path
+      name: app_entity_id
+      required: true
+      schema:
+        $ref: "../../models/app_entity.yaml#/components/schemas/AppEntityId"
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "../../models/currency_account.yaml#/components/schemas/CurrencyAccountList"
+    "404":
+      description: Error

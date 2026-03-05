@@ -61,7 +61,7 @@ type OrderPrice float64
 
 type TradeOrder struct {
 	Id               TradeOrderId
-	TradingAccountId TradingAccountId
+	InstrumentAccountId InstrumentAccountId
 	InstrumentName   InstrumentName
 	Side             OrderSide
 	Type             OrderType
@@ -89,8 +89,8 @@ const tradeOrderBaseQuery = `
       t.created_at
 
     FROM trade_order AS t
-    INNER JOIN trading_account ta
-      ON ta.id = t.trading_account_id
+    INNER JOIN instrument_account ta
+      ON ta.id = t.instrument_account_id
     INNER JOIN instrument i
       ON t.instrument_id = i.id
   `
@@ -99,7 +99,7 @@ func GetTradeOrder(id TradeOrderId) TradeOrder {
 	var order TradeOrder
 	err := db.Instance().QueryRow(tradeOrderBaseQuery+`WHERE t.pub_id = $1`, id).Scan(
 		&order.Id,
-		&order.TradingAccountId,
+		&order.InstrumentAccountId,
 		&order.InstrumentName,
 		&order.Side,
 		&order.Type,
@@ -116,9 +116,9 @@ func GetTradeOrder(id TradeOrderId) TradeOrder {
 	return order
 }
 
-func GetTradeOrdersByTradingAccount(tradingAccountId TradingAccountId) []TradeOrder {
+func GetTradeOrdersByInstrumentAccount(instrumentAccountId InstrumentAccountId) []TradeOrder {
 	query := tradeOrderBaseQuery + `WHERE ta.pub_id = $1 ORDER BY t.created_at DESC`
-	rows, err := db.Instance().Query(query, tradingAccountId)
+	rows, err := db.Instance().Query(query, instrumentAccountId)
 	if err != nil {
 		log.Error(err)
 		return nil
@@ -129,7 +129,7 @@ func GetTradeOrdersByTradingAccount(tradingAccountId TradingAccountId) []TradeOr
 	for rows.Next() {
 		var o TradeOrder
 		err := rows.Scan(
-			&o.Id, &o.TradingAccountId, &o.InstrumentName,
+			&o.Id, &o.InstrumentAccountId, &o.InstrumentName,
 			&o.Side, &o.Type, &o.Price, &o.Amount, &o.OpenAmount,
 			&o.Status, &o.TimeInForce, &o.Created,
 		)
@@ -142,13 +142,13 @@ func GetTradeOrdersByTradingAccount(tradingAccountId TradingAccountId) []TradeOr
 	return orders
 }
 
-func GetBookOrdersByTradingAccount(tradingAccountId TradingAccountId) []TradeOrder {
+func GetBookOrdersByInstrumentAccount(instrumentAccountId InstrumentAccountId) []TradeOrder {
 	query := tradeOrderBaseQuery + `
 		INNER JOIN book_order b ON b.trade_order_id = t.id
 		WHERE ta.pub_id = $1
 		ORDER BY t.created_at DESC
 	`
-	rows, err := db.Instance().Query(query, tradingAccountId)
+	rows, err := db.Instance().Query(query, instrumentAccountId)
 	if err != nil {
 		log.Error(err)
 		return nil
@@ -159,7 +159,7 @@ func GetBookOrdersByTradingAccount(tradingAccountId TradingAccountId) []TradeOrd
 	for rows.Next() {
 		var o TradeOrder
 		err := rows.Scan(
-			&o.Id, &o.TradingAccountId, &o.InstrumentName,
+			&o.Id, &o.InstrumentAccountId, &o.InstrumentName,
 			&o.Side, &o.Type, &o.Price, &o.Amount, &o.OpenAmount,
 			&o.Status, &o.TimeInForce, &o.Created,
 		)
@@ -211,13 +211,13 @@ func GetTrade(id string) *Trade {
 	return &t
 }
 
-func GetTradesByTradingAccount(tradingAccountId TradingAccountId) []Trade {
+func GetTradesByInstrumentAccount(instrumentAccountId InstrumentAccountId) []Trade {
 	query := tradeBaseQuery + `
-		WHERE so.trading_account_id = (SELECT id FROM trading_account WHERE pub_id = $1)
-		   OR bo.trading_account_id = (SELECT id FROM trading_account WHERE pub_id = $1)
+		WHERE so.instrument_account_id = (SELECT id FROM instrument_account WHERE pub_id = $1)
+		   OR bo.instrument_account_id = (SELECT id FROM instrument_account WHERE pub_id = $1)
 		ORDER BY tr.created_at DESC
 	`
-	rows, err := db.Instance().Query(query, tradingAccountId)
+	rows, err := db.Instance().Query(query, instrumentAccountId)
 	if err != nil {
 		log.Error(err)
 		return nil

@@ -1,0 +1,16 @@
+post:
+  tags:
+    - admin
+  summary: Create admin transfer
+  description: Creates a transfer on user's account
+  operationId: createAdminTransfer
+
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "../../models/transfer.yaml#/components/schemas/Transfer"
+    "404":
+      description: Error

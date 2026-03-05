@@ -5,7 +5,7 @@ get:
   description: Returns list of user's trade orders currently on the order book
   operationId: getBookOrders
   parameters:
-    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/instrument_account.yaml#/components/parameters/InstrumentAccountId"
 
   responses:
     "200":

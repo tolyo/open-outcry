@@ -5,7 +5,7 @@ get:
   description: Returns list of user's trade orders
   operationId: getTradeOrders
   parameters:
-    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/instrument_account.yaml#/components/parameters/InstrumentAccountId"
 
   responses:
     "200":
@@ -24,7 +24,7 @@ post:
   description: Creates a trade order
   operationId: createTrade
   parameters:
-    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/instrument_account.yaml#/components/parameters/InstrumentAccountId"
   requestBody:
     required: true
     content:

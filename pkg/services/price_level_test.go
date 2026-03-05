@@ -9,7 +9,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	// given:
 	// when given a new saved limit order
 	_, err := ProcessTradeOrder(
-		assert.tradingAccount1,
+		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
 		models.Buy,
@@ -24,7 +24,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 
 	// when give another order for smaller amount
-	ProcessTradeOrder(assert.tradingAccount1,
+	ProcessTradeOrder(assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
 		models.Buy,
@@ -38,7 +38,7 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	assert.Equal(15.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 
 	// when give another order for different price
-	ProcessTradeOrder(assert.tradingAccount1,
+	ProcessTradeOrder(assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT", models.Buy,
 		5.00,
@@ -54,7 +54,7 @@ func (assert *ServiceTestSuite) TestCancelWithSingle() {
 	// when given a new saved limit order
 
 	id, _ := ProcessTradeOrder(
-		assert.tradingAccount1,
+		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
 		models.Buy,
@@ -78,7 +78,7 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersOfSameSize() {
 	// when given a new saved limit order
 
 	id, _ := ProcessTradeOrder(
-		assert.tradingAccount1,
+		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
 		models.Buy,
@@ -88,7 +88,7 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersOfSameSize() {
 	)
 
 	ProcessTradeOrder(
-		assert.tradingAccount1,
+		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
 		models.Buy,
@@ -113,7 +113,7 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersWithDiffPrice() {
 	// when given a new saved limit order
 
 	id, _ := ProcessTradeOrder(
-		assert.tradingAccount1,
+		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
 		models.Buy,
@@ -123,7 +123,7 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersWithDiffPrice() {
 	)
 
 	ProcessTradeOrder(
-		assert.tradingAccount1,
+		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
 		models.Buy,

@@ -49,15 +49,15 @@ func NewAdminAPIController(s AdminAPIServicer, opts ...AdminAPIOption) Router {
 // Routes returns all the api routes for the AdminAPIController
 func (c *AdminAPIController) Routes() Routes {
 	return Routes{
-		"CreateAdminPayment": Route{
+		"CreateAdminTransfer": Route{
 			strings.ToUpper("Post"),
-			"/apps/payments",
-			c.CreateAdminPayment,
+			"/apps/transfers",
+			c.CreateAdminTransfer,
 		},
-		"GetAdminPaymentById": Route{
+		"GetAdminTransferById": Route{
 			strings.ToUpper("Post"),
-			"/apps/payments/{payment_id}",
-			c.GetAdminPaymentById,
+			"/apps/transfers/{transfer_id}",
+			c.GetAdminTransferById,
 		},
 		"GetAppEntities": Route{
 			strings.ToUpper("Get"),
@@ -72,9 +72,9 @@ func (c *AdminAPIController) Routes() Routes {
 	}
 }
 
-// CreateAdminPayment - Create admin payment
-func (c *AdminAPIController) CreateAdminPayment(w http.ResponseWriter, r *http.Request) {
-	result, err := c.service.CreateAdminPayment(r.Context())
+// CreateAdminTransfer - Create admin transfer
+func (c *AdminAPIController) CreateAdminTransfer(w http.ResponseWriter, r *http.Request) {
+	result, err := c.service.CreateAdminTransfer(r.Context())
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -84,15 +84,15 @@ func (c *AdminAPIController) CreateAdminPayment(w http.ResponseWriter, r *http.R
 	EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
-// GetAdminPaymentById - Get payment
-func (c *AdminAPIController) GetAdminPaymentById(w http.ResponseWriter, r *http.Request) {
+// GetAdminTransferById - Get transfer
+func (c *AdminAPIController) GetAdminTransferById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	paymentIdParam := params["payment_id"]
-	if paymentIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"payment_id"}, nil)
+	transferIdParam := params["transfer_id"]
+	if transferIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"transfer_id"}, nil)
 		return
 	}
-	result, err := c.service.GetAdminPaymentById(r.Context(), paymentIdParam)
+	result, err := c.service.GetAdminTransferById(r.Context(), transferIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

@@ -13,7 +13,7 @@ import (
 //   - For BUY side, the amount must be allocated in quote currency.
 //   - For SELL side the amount must be allocated in base currency
 func ProcessTradeOrder(
-	tradingAccountId models.TradingAccountId,
+	instrumentAccountId models.InstrumentAccountId,
 	instrumentName models.InstrumentName,
 	orderType models.OrderType,
 	side models.OrderSide,
@@ -28,7 +28,7 @@ func ProcessTradeOrder(
 	}
 
 	err = tx.QueryRow("SELECT process_trade_order($1, $2, $3, $4, $5, $6, $7, 0)",
-		tradingAccountId,
+		instrumentAccountId,
 		instrumentName,
 		orderType,
 		side,

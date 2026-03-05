@@ -22,25 +22,25 @@ import (
 // AdminAPIService AdminAPI service
 type AdminAPIService service
 
-type ApiCreateAdminPaymentRequest struct {
+type ApiCreateAdminTransferRequest struct {
 	ctx        context.Context
 	ApiService *AdminAPIService
 }
 
-func (r ApiCreateAdminPaymentRequest) Execute() (*Payment, *http.Response, error) {
-	return r.ApiService.CreateAdminPaymentExecute(r)
+func (r ApiCreateAdminTransferRequest) Execute() (*TransferEntry, *http.Response, error) {
+	return r.ApiService.CreateAdminTransferExecute(r)
 }
 
 /*
-CreateAdminPayment Create admin payment
+CreateAdminTransfer Create admin transfer
 
-Creates a payment on user's account
+Creates a transfer on user's account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiCreateAdminPaymentRequest
+	@return ApiCreateAdminTransferRequest
 */
-func (a *AdminAPIService) CreateAdminPayment(ctx context.Context) ApiCreateAdminPaymentRequest {
-	return ApiCreateAdminPaymentRequest{
+func (a *AdminAPIService) CreateAdminTransfer(ctx context.Context) ApiCreateAdminTransferRequest {
+	return ApiCreateAdminTransferRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -48,21 +48,21 @@ func (a *AdminAPIService) CreateAdminPayment(ctx context.Context) ApiCreateAdmin
 
 // Execute executes the request
 //
-//	@return Payment
-func (a *AdminAPIService) CreateAdminPaymentExecute(r ApiCreateAdminPaymentRequest) (*Payment, *http.Response, error) {
+//	@return TransferEntry
+func (a *AdminAPIService) CreateAdminTransferExecute(r ApiCreateAdminTransferRequest) (*TransferEntry, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *Payment
+		localVarReturnValue *TransferEntry
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AdminAPIService.CreateAdminPayment")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AdminAPIService.CreateAdminTransfer")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/apps/payments"
+	localVarPath := localBasePath + "/apps/transfers"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -122,51 +122,51 @@ func (a *AdminAPIService) CreateAdminPaymentExecute(r ApiCreateAdminPaymentReque
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiGetAdminPaymentByIdRequest struct {
+type ApiGetAdminTransferByIdRequest struct {
 	ctx        context.Context
 	ApiService *AdminAPIService
-	paymentId  string
+	transferId  string
 }
 
-func (r ApiGetAdminPaymentByIdRequest) Execute() (*Payment, *http.Response, error) {
-	return r.ApiService.GetAdminPaymentByIdExecute(r)
+func (r ApiGetAdminTransferByIdRequest) Execute() (*TransferEntry, *http.Response, error) {
+	return r.ApiService.GetAdminTransferByIdExecute(r)
 }
 
 /*
-GetAdminPaymentById Get payment
+GetAdminTransferById Get transfer
 
-Returns payment information
+Returns transfer information
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param paymentId
-	@return ApiGetAdminPaymentByIdRequest
+	@param transferId
+	@return ApiGetAdminTransferByIdRequest
 */
-func (a *AdminAPIService) GetAdminPaymentById(ctx context.Context, paymentId string) ApiGetAdminPaymentByIdRequest {
-	return ApiGetAdminPaymentByIdRequest{
+func (a *AdminAPIService) GetAdminTransferById(ctx context.Context, transferId string) ApiGetAdminTransferByIdRequest {
+	return ApiGetAdminTransferByIdRequest{
 		ApiService: a,
 		ctx:        ctx,
-		paymentId:  paymentId,
+		transferId:  transferId,
 	}
 }
 
 // Execute executes the request
 //
-//	@return Payment
-func (a *AdminAPIService) GetAdminPaymentByIdExecute(r ApiGetAdminPaymentByIdRequest) (*Payment, *http.Response, error) {
+//	@return TransferEntry
+func (a *AdminAPIService) GetAdminTransferByIdExecute(r ApiGetAdminTransferByIdRequest) (*TransferEntry, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *Payment
+		localVarReturnValue *TransferEntry
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AdminAPIService.GetAdminPaymentById")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AdminAPIService.GetAdminTransferById")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/apps/payments/{payment_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"payment_id"+"}", url.PathEscape(parameterValueToString(r.paymentId, "paymentId")), -1)
+	localVarPath := localBasePath + "/apps/transfers/{transfer_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"transfer_id"+"}", url.PathEscape(parameterValueToString(r.transferId, "transferId")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

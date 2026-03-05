@@ -5,7 +5,7 @@ get:
   description: Returns a trade by id
   operationId: getTradeById
   parameters:
-    - $ref: "../../models/trading_account.yaml#/components/parameters/TradingAccountId"
+    - $ref: "../../models/instrument_account.yaml#/components/parameters/InstrumentAccountId"
     - $ref: "../../models/trade.yaml#/components/parameters/TradeId"
   responses:
     "200":

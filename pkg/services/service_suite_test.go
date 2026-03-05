@@ -14,9 +14,9 @@ import (
 type ServiceTestSuite struct {
 	suite.Suite
 	appEntity1      models.AppEntityId
-	tradingAccount1 models.TradingAccountId // seller
+	instrumentAccount1 models.InstrumentAccountId // seller
 	appEntity2      models.AppEntityId
-	tradingAccount2 models.TradingAccountId // buyer
+	instrumentAccount2 models.InstrumentAccountId // buyer
 }
 
 func TestServiceTestSuite(t *testing.T) {
@@ -33,20 +33,21 @@ func (assert *ServiceTestSuite) SetupSuite() {
 }
 
 func (assert *ServiceTestSuite) SetupTest() {
-	assert.appEntity1, assert.tradingAccount1 = Acc("test")
-	assert.appEntity2, assert.tradingAccount2 = Acc("test2")
+	assert.appEntity1, assert.instrumentAccount1 = Acc("test")
+	assert.appEntity2, assert.instrumentAccount2 = Acc("test2")
 }
 
 func (assert *ServiceTestSuite) TearDownTest() {
 	utils.Each([]string{"stop_order",
-		"trading_account_ledger_entry",
-		"trading_account_transfer",
+		"instrument_account_ledger_entry",
+		"instrument_account_transfer",
 		"trade",
 		"trade_order",
 		"price_level",
-		"payment",
-		"payment_account WHERE app_entity_id != 1",
-		"trading_account",
+		"transfer_ledger_entry",
+		"transfer",
+		"currency_account WHERE app_entity_id != 1",
+		"instrument_account",
 		"app_entity WHERE pub_id != 'MASTER'",
 	}, db.DeleteAll)
 }

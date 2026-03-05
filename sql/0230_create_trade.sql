@@ -56,10 +56,10 @@ BEGIN
 
     -- set up seller
     SELECT * FROM app_entity
-    INNER JOIN trading_account
-        ON trading_account.app_entity_id = app_entity.id
+    INNER JOIN instrument_account
+        ON instrument_account.app_entity_id = app_entity.id
     INNER JOIN trade_order
-        ON trade_order.trading_account_id = trading_account.id
+        ON trade_order.instrument_account_id = instrument_account.id
     WHERE trade_order.id = seller_trade_order_param.id
     INTO seller_app_entity_instance;
 
@@ -69,10 +69,10 @@ BEGIN
 
     -- set up buyer
     SELECT * FROM app_entity
-    INNER JOIN trading_account
-        ON trading_account.app_entity_id = app_entity.id
+    INNER JOIN instrument_account
+        ON instrument_account.app_entity_id = app_entity.id
     INNER JOIN trade_order
-        ON trade_order.trading_account_id = trading_account.id
+        ON trade_order.instrument_account_id = instrument_account.id
     WHERE trade_order.id = buyer_trade_order_param.id
     INTO buyer_app_entity_instance;
 
@@ -80,10 +80,10 @@ BEGIN
         RAISE EXCEPTION 'buyer_app_entity_instance_not_found';
     END IF;
 
-    -- EXECUTE PAYMENTS FOR SELLER IF INSTRUMENT IS FX
+    -- EXECUTE TRANSFERS FOR SELLER IF INSTRUMENT IS FX
     IF instrument_param.fx_instrument IS TRUE THEN
-        PERFORM process_payment(
-            'INSTRUMENT_SELL'::payment_type,
+        PERFORM process_transfer(
+            'INSTRUMENT_SELL'::transfer_type,
             seller_app_entity_instance.pub_id,
             amount_param,
             instrument_param.base_currency,
@@ -93,8 +93,8 @@ BEGIN
             NULL
         );
 
-        PERFORM process_payment(
-            'INSTRUMENT_BUY'::payment_type,
+        PERFORM process_transfer(
+            'INSTRUMENT_BUY'::transfer_type,
             'MASTER',
             amount_param * price_param,
             instrument_param.quote_currency,
@@ -108,9 +108,9 @@ BEGIN
         );
     ELSE
         -- transfer instruments directly between two accounts
-        PERFORM create_trading_account_transfer(
-            (SELECT pub_id FROM trading_account WHERE app_entity_id = seller_app_entity_instance.id),
-            (SELECT pub_id FROM trading_account WHERE app_entity_id = buyer_app_entity_instance.id),
+        PERFORM create_instrument_account_transfer(
+            (SELECT pub_id FROM instrument_account WHERE app_entity_id = seller_app_entity_instance.id),
+            (SELECT pub_id FROM instrument_account WHERE app_entity_id = buyer_app_entity_instance.id),
             instrument_param,
             amount_param
         );
@@ -120,9 +120,9 @@ BEGIN
 
 
 
-    -- EXECUTE PAYMENTS FOR BUYER
-    PERFORM process_payment(
-        'INSTRUMENT_BUY'::payment_type,
+    -- EXECUTE TRANSFERS FOR BUYER
+    PERFORM process_transfer(
+        'INSTRUMENT_BUY'::transfer_type,
         buyer_app_entity_instance.pub_id,
         amount_param * price_param,
         instrument_param.quote_currency,
@@ -132,8 +132,8 @@ BEGIN
         NULL
     );
 
-    PERFORM process_payment(
-        'INSTRUMENT_BUY'::payment_type,
+    PERFORM process_transfer(
+        'INSTRUMENT_BUY'::transfer_type,
         'MASTER',
         amount_param,
         instrument_param.base_currency,

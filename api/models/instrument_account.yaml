@@ -1,0 +1,53 @@
+components:
+  schemas:
+    InstrumentAccountList:
+      type: array
+      items:
+        $ref: "#/components/schemas/InstrumentAccount"
+
+    InstrumentAccountId:
+      $ref: "./shared.yaml#/components/schemas/Id"
+
+    InstrumentAccountHolding:
+      type: object
+      properties:
+        name:
+          $ref: "./instrument.yaml#/components/schemas/InstrumentName"
+        amount:
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
+        amountReserved:
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
+        amountAvailable:
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
+        value:
+          $ref: "./shared.yaml#/components/schemas/MoneyAmount"
+        currency:
+          $ref: "./currency.yaml#/components/schemas/CurrencyName"
+      required:
+        - name
+        - amount
+        - amountReserved
+        - amountAvailable
+        - value
+        - currency
+
+    InstrumentAccount:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/InstrumentAccountId"
+        instruments:
+          type: array
+          items:
+            $ref: "#/components/schemas/InstrumentAccountHolding"
+      required:
+        - id
+        - instruments
+
+  parameters:
+    InstrumentAccountId:
+      name: instrument_account_id
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/InstrumentAccountId"

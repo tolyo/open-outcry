@@ -17,6 +17,7 @@ components:
         - FOK
         - GTD
         - GTT
+
     TradeOrderType:
       type: string
       enum:
