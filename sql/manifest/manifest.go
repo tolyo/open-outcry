@@ -2,6 +2,7 @@ package manifest
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 )
@@ -62,14 +63,18 @@ var migrationSources = []string{
 	"pkg/fix/messages.sql",
 	"pkg/fix/messages_log.sql",
 	"pkg/fix/event_log_table.sql",
+}
 
-	// Seed data.
-	"pkg/db/seeds.sql",
+var envSeedSources = map[string][]string{
+	"DEV": {
+		"pkg/conf/seeds_dev.sql",
+	},
 }
 
 func MigrationSources() []string {
-	sources := make([]string, len(migrationSources))
-	copy(sources, migrationSources)
+	sources := make([]string, 0, len(migrationSources)+len(envSeedSources[currentEnv()]))
+	sources = append(sources, migrationSources...)
+	sources = append(sources, envSeedSources[currentEnv()]...)
 	return sources
 }
 
@@ -77,4 +82,8 @@ func GeneratedMigrationName(index int, source string) string {
 	name := strings.TrimSuffix(filepath.ToSlash(source), filepath.Ext(source))
 	name = strings.ReplaceAll(name, "/", "_")
 	return fmt.Sprintf("%04d_%s.sql", index+1, name)
+}
+
+func currentEnv() string {
+	return strings.ToUpper(strings.TrimSpace(os.Getenv("ENV")))
 }

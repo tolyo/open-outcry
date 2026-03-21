@@ -10,6 +10,7 @@ GOIMPORTS_BIN := $(GOBIN)/goimports
 STATICCHECK_BIN := $(GOBIN)/staticcheck
 GO_VERSION := $(shell go env GOVERSION)
 MIGRATION_DIR_ENV := OPEN_OUTCRY_MIGRATION_DIR
+ENV ?= DEV
 
 setup:
 	go install golang.org/x/tools/cmd/goimports@latest
@@ -28,8 +29,8 @@ run: ## Start dev mode
 test:
 	tmpdir=$$(mktemp -d); \
 	trap 'rm -rf "$$tmpdir"' EXIT; \
-	go run ./cmd/migrationgen -out "$$tmpdir"; \
-	$(MIGRATION_DIR_ENV)="$$tmpdir" go test $(TEST_PACKAGES) -v -cover -p 1
+	ENV=TEST go run ./cmd/migrationgen -out "$$tmpdir"; \
+	ENV=TEST $(MIGRATION_DIR_ENV)="$$tmpdir" go test $(TEST_PACKAGES) -v -cover -p 1
 
 ensure-goimports:
 	@if [ ! -x "$(GOIMPORTS_BIN)" ]; then \
@@ -56,13 +57,13 @@ MIGRATE_OPTIONS=-allow-missing
 db-up: ## Migrate database up
 	tmpdir=$$(mktemp -d); \
 	trap 'rm -rf "$$tmpdir"' EXIT; \
-	go run ./cmd/migrationgen -out "$$tmpdir"; \
+	ENV=$(ENV) go run ./cmd/migrationgen -out "$$tmpdir"; \
 	goose -v $(MIGRATE_OPTIONS) -dir="$$tmpdir" postgres $(DB_DSN) up
 
 db-down: ## Reset database migrations
 	tmpdir=$$(mktemp -d); \
 	trap 'rm -rf "$$tmpdir"' EXIT; \
-	go run ./cmd/migrationgen -out "$$tmpdir"; \
+	ENV=$(ENV) go run ./cmd/migrationgen -out "$$tmpdir"; \
 	goose -v $(MIGRATE_OPTIONS) -dir="$$tmpdir" postgres $(DB_DSN) reset
 
 db-rebuild: ## Reset the database
