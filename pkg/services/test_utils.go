@@ -1,16 +1,15 @@
 package services
 
 import (
-	"open-outcry/pkg/models/app_entity"
-	"open-outcry/pkg/models/currency_account"
-	"open-outcry/pkg/models/instrument_account"
-	"open-outcry/pkg/models/order_book"
-	"open-outcry/pkg/models/trade_order"
+	appentity "open-outcry/pkg/models/app_entity"
+	currencyaccount "open-outcry/pkg/models/currency_account"
+	instrumentaccount "open-outcry/pkg/models/instrument_account"
+	orderbook "open-outcry/pkg/models/order_book"
+	tradeorder "open-outcry/pkg/models/trade_order"
 )
 
 type AppState struct {
 	entity1         []currencyaccount.CurrencyAccount
-	entity2         []currencyaccount.CurrencyAccount
 	tradeCount      int
 	orderBookStates orderbook.OrderBook
 }

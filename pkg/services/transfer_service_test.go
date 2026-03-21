@@ -2,7 +2,7 @@ package services
 
 import (
 	"open-outcry/pkg/db"
-	"open-outcry/pkg/models/currency_account"
+	currencyaccount "open-outcry/pkg/models/currency_account"
 )
 
 func (assert *ServiceTestSuite) TestDepositTransfer() {

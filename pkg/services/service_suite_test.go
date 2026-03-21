@@ -3,8 +3,8 @@ package services
 import (
 	"open-outcry/pkg/conf"
 	"open-outcry/pkg/db"
-	"open-outcry/pkg/models/app_entity"
-	"open-outcry/pkg/models/instrument_account"
+	appentity "open-outcry/pkg/models/app_entity"
+	instrumentaccount "open-outcry/pkg/models/instrument_account"
 	"open-outcry/pkg/utils"
 	"open-outcry/sql"
 	"testing"

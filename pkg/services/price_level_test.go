@@ -2,7 +2,7 @@ package services
 
 import (
 	"open-outcry/pkg/db"
-	"open-outcry/pkg/models/trade_order"
+	tradeorder "open-outcry/pkg/models/trade_order"
 )
 
 func (assert *ServiceTestSuite) TestCreatePriceLevel() {

@@ -1,12 +1,12 @@
 package services
 
 import (
-	"open-outcry/pkg/models/app_entity"
-	"open-outcry/pkg/models/currency_account"
+	appentity "open-outcry/pkg/models/app_entity"
+	currencyaccount "open-outcry/pkg/models/currency_account"
 	"open-outcry/pkg/models/instrument"
-	"open-outcry/pkg/models/instrument_account"
+	instrumentaccount "open-outcry/pkg/models/instrument_account"
 	"open-outcry/pkg/models/trade"
-	"open-outcry/pkg/models/trade_order"
+	tradeorder "open-outcry/pkg/models/trade_order"
 	"open-outcry/pkg/models/transfer"
 )
 

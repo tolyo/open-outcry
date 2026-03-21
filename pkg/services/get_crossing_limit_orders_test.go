@@ -1,6 +1,6 @@
 package services
 
-import "open-outcry/pkg/models/trade_order"
+import tradeorder "open-outcry/pkg/models/trade_order"
 
 func (assert *ServiceTestSuite) TestGetCrossingLimitOrdersSellSidePrice() {
 	assert.Equal(0, GetCrossingLimitOrders(1, tradeorder.Sell, 10.00))

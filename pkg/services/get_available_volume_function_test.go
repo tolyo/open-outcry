@@ -2,7 +2,7 @@ package services
 
 import (
 	order "open-outcry/pkg/models/order_book"
-	"open-outcry/pkg/models/trade_order"
+	tradeorder "open-outcry/pkg/models/trade_order"
 )
 
 var volumeCases = []MatchingServiceTestCase{

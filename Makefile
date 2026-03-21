@@ -2,7 +2,7 @@ include api/api.mk
 include demo/demo.mk
 
 .DEFAULT_GOAL := help
-.PHONY: help ensure-goimports ensure-staticcheck
+.PHONY: help ensure-goimports ensure-staticcheck precommit install-hooks
 
 TEST_PACKAGES := $(shell go list -f '{{if or .TestGoFiles .XTestGoFiles}}{{.ImportPath}}{{end}}' ./... | sed '/^$$/d')
 GOBIN := $(shell go env GOPATH)/bin
@@ -12,7 +12,7 @@ GO_VERSION := $(shell go env GOVERSION)
 MIGRATION_DIR_ENV := OPEN_OUTCRY_MIGRATION_DIR
 ENV ?= DEV
 
-setup:
+setup: install-hooks
 	go install golang.org/x/tools/cmd/goimports@latest
 	GOTOOLCHAIN=$(GO_VERSION) go install honnef.co/go/tools/cmd/staticcheck@latest
 	go install github.com/pressly/goose/v3/cmd/goose@latest
@@ -26,7 +26,7 @@ run: ## Start dev mode
 	make db-up
 	go run main.go
 
-test:
+test: ## Run the Go test suite with generated migrations
 	tmpdir=$$(mktemp -d); \
 	trap 'rm -rf "$$tmpdir"' EXIT; \
 	ENV=DEV go run ./cmd/migrationgen -out "$$tmpdir"; \
@@ -44,11 +44,31 @@ ensure-staticcheck:
 		GOTOOLCHAIN=$(GO_VERSION) go install honnef.co/go/tools/cmd/staticcheck@latest; \
 	fi
 
-lint: ensure-goimports ensure-staticcheck
+lint: ensure-goimports ensure-staticcheck ## Format and lint the Go codebase
 	go fmt ./...
 	$(GOIMPORTS_BIN) -l -w .
 	$(STATICCHECK_BIN) ./...
 	go vet ./...
+
+precommit: lint
+	@unformatted=$$(git ls-files '*.go' | xargs gofmt -l); \
+	if [ -n "$$unformatted" ]; then \
+		echo 'gofmt required for:'; \
+		echo "$$unformatted"; \
+		exit 1; \
+	fi
+	@unimported=$$(git ls-files '*.go' | xargs $(GOIMPORTS_BIN) -l); \
+	if [ -n "$$unimported" ]; then \
+		echo 'goimports required for:'; \
+		echo "$$unimported"; \
+		exit 1; \
+	fi
+	$(STATICCHECK_BIN) ./...
+	go vet ./...
+	go test ./... -run TestDoesNotExist
+
+install-hooks: ## Configure git to use the repo hooks in .githooks
+	git config core.hooksPath .githooks
 
 include ./pkg/conf/dev.env
 DB_DSN:="host=$(POSTGRES_HOST) user=$(POSTGRES_USER) password=$(POSTGRES_PASSWORD) dbname=$(POSTGRES_DB) port=$(POSTGRES_PORT) sslmode=disable"

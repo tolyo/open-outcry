@@ -1,9 +1,9 @@
 package services
 
 import (
-	"open-outcry/pkg/models/currency_account"
-	"open-outcry/pkg/models/order_book"
-	"open-outcry/pkg/models/trade_order"
+	currencyaccount "open-outcry/pkg/models/currency_account"
+	orderbook "open-outcry/pkg/models/order_book"
+	tradeorder "open-outcry/pkg/models/trade_order"
 	"open-outcry/pkg/utils"
 	"reflect"
 )
