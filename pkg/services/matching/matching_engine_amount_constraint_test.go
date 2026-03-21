@@ -1,4 +1,4 @@
-package services
+package matching
 
 //	These tests apply to balance constraints of order matching as we never want to allow
 //	order into the order book that do no have sufficient leverage.

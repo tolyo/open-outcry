@@ -1,4 +1,4 @@
-package services
+package matching
 
 func (assert *ServiceTestSuite) TestProcessLimitSellOrderSave() {
 	// when: a limit order is sent to an empty matching unit

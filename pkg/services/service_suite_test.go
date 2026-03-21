@@ -3,6 +3,8 @@ package services
 import (
 	"open-outcry/pkg/conf"
 	"open-outcry/pkg/db"
+	"open-outcry/pkg/models/app_entity"
+	"open-outcry/pkg/models/instrument_account"
 	"open-outcry/pkg/utils"
 	"open-outcry/sql"
 	"testing"
@@ -12,10 +14,10 @@ import (
 
 type ServiceTestSuite struct {
 	suite.Suite
-	appEntity1         AppEntityId
-	instrumentAccount1 InstrumentAccountId // seller
-	appEntity2         AppEntityId
-	instrumentAccount2 InstrumentAccountId // buyer
+	appEntity1         appentity.AppEntityId
+	instrumentAccount1 instrumentaccount.InstrumentAccountId
+	appEntity2         appentity.AppEntityId
+	instrumentAccount2 instrumentaccount.InstrumentAccountId
 }
 
 func TestServiceTestSuite(t *testing.T) {
@@ -24,11 +26,10 @@ func TestServiceTestSuite(t *testing.T) {
 }
 
 func (assert *ServiceTestSuite) SetupSuite() {
-	err := db.SetupInstance()
-	if err != nil {
+	if err := db.SetupInstance(); err != nil {
 		panic(err)
 	}
-	sql.MigrateUp()
+	_ = sql.MigrateUp()
 }
 
 func (assert *ServiceTestSuite) SetupTest() {
@@ -52,6 +53,6 @@ func (assert *ServiceTestSuite) TearDownTest() {
 }
 
 func (assert *ServiceTestSuite) TearDownAllSuite() {
-	sql.MigrateDown()
-	db.Instance().Close()
+	_ = sql.MigrateDown()
+	_ = db.Instance().Close()
 }

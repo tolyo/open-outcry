@@ -1,9 +1,13 @@
-package services
+package tradeorder
 
 import (
 	"context"
 	"database/sql"
+
 	"open-outcry/pkg/db"
+	instrument "open-outcry/pkg/models/instrument"
+	instrumentaccount "open-outcry/pkg/models/instrument_account"
+	tradeorder "open-outcry/pkg/models/trade_order"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -12,14 +16,14 @@ import (
 //   - For BUY side, the amount must be allocated in quote currency.
 //   - For SELL side the amount must be allocated in base currency
 func ProcessTradeOrder(
-	instrumentAccountId InstrumentAccountId,
-	instrumentName InstrumentName,
-	orderType OrderType,
-	side OrderSide,
-	price OrderPrice,
+	instrumentAccountId instrumentaccount.InstrumentAccountId,
+	instrumentName instrument.InstrumentName,
+	orderType tradeorder.OrderType,
+	side tradeorder.OrderSide,
+	price tradeorder.OrderPrice,
 	amount float64,
-	timeInForce OrderTimeInForce,
-) (TradeOrderId, error) {
+	timeInForce tradeorder.OrderTimeInForce,
+) (tradeorder.TradeOrderId, error) {
 	var tradeOrderId string
 	tx, err := db.Instance().BeginTx(context.Background(), &sql.TxOptions{Isolation: sql.LevelSerializable})
 	if err != nil {
@@ -48,10 +52,10 @@ func ProcessTradeOrder(
 		return "", err
 	}
 
-	return TradeOrderId(tradeOrderId), nil
+	return tradeorder.TradeOrderId(tradeOrderId), nil
 }
 
-func CancelTradeOrder(tradeOrderId TradeOrderId) error {
+func CancelTradeOrder(tradeOrderId tradeorder.TradeOrderId) error {
 	tx, err := db.Instance().BeginTx(context.Background(), &sql.TxOptions{Isolation: sql.LevelSerializable})
 	if err != nil {
 		return err

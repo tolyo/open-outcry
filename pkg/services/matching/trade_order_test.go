@@ -1,4 +1,4 @@
-package services
+package matching
 
 func (assert *ServiceTestSuite) TestCreateTradeOrderBook() {
 	// given

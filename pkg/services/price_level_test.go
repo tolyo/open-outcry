@@ -2,142 +2,44 @@ package services
 
 import (
 	"open-outcry/pkg/db"
+	"open-outcry/pkg/models/trade_order"
 )
 
 func (assert *ServiceTestSuite) TestCreatePriceLevel() {
-	// given:
-	// when given a new saved limit order
-	_, err := ProcessTradeOrder(
-		assert.instrumentAccount1,
-		"BTC_EUR",
-		"LIMIT",
-		Buy,
-		10.00,
-		10.00,
-		GTC,
-	)
-
+	_, err := ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", tradeorder.Buy, 10.00, 10.00, tradeorder.GTC)
 	assert.Nil(err)
-	// then a price level is created
 	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
-
-	// when give another order for smaller amount
-	ProcessTradeOrder(assert.instrumentAccount1,
-		"BTC_EUR",
-		"LIMIT",
-		Buy,
-		10.00,
-		5,
-		GTC,
-	)
-
-	// then price level is updated
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", tradeorder.Buy, 10.00, 5, tradeorder.GTC)
 	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(15.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
-
-	// when give another order for different price
-	ProcessTradeOrder(assert.instrumentAccount1,
-		"BTC_EUR",
-		"LIMIT", Buy,
-		5.00,
-		5,
-		GTC,
-	)
-
-	// then another price level is created
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", tradeorder.Buy, 5.00, 5, tradeorder.GTC)
 	assert.Equal(2, db.GetCount("price_level"))
 }
 
 func (assert *ServiceTestSuite) TestCancelWithSingle() {
-	// when given a new saved limit order
-
-	id, _ := ProcessTradeOrder(
-		assert.instrumentAccount1,
-		"BTC_EUR",
-		"LIMIT",
-		Buy,
-		10.00,
-		10.00,
-		GTC,
-	)
-
-	// then a price level is created
+	id, _ := ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", tradeorder.Buy, 10.00, 10.00, tradeorder.GTC)
 	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
-
-	// when the order is deleted
 	CancelTradeOrder(id)
-
-	// then price level is deleted also
 	assert.Equal(0, db.GetCount("price_level"))
 }
 
 func (assert *ServiceTestSuite) TestCancelWithTwoOrdersOfSameSize() {
-	// when given a new saved limit order
-
-	id, _ := ProcessTradeOrder(
-		assert.instrumentAccount1,
-		"BTC_EUR",
-		"LIMIT",
-		Buy,
-		10.00,
-		10.00,
-		GTC,
-	)
-
-	ProcessTradeOrder(
-		assert.instrumentAccount1,
-		"BTC_EUR",
-		"LIMIT",
-		Buy,
-		10.00,
-		10.00,
-		GTC,
-	)
-
-	// then a price level is created
+	id, _ := ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", tradeorder.Buy, 10.00, 10.00, tradeorder.GTC)
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", tradeorder.Buy, 10.00, 10.00, tradeorder.GTC)
 	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(20.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
-
-	// when the order is deleted
 	CancelTradeOrder(id)
-
-	// then price level updated
 	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 }
 
 func (assert *ServiceTestSuite) TestCancelWithTwoOrdersWithDiffPrice() {
-	// when given a new saved limit order
-
-	id, _ := ProcessTradeOrder(
-		assert.instrumentAccount1,
-		"BTC_EUR",
-		"LIMIT",
-		Buy,
-		20.00,
-		10.00,
-		GTC,
-	)
-
-	ProcessTradeOrder(
-		assert.instrumentAccount1,
-		"BTC_EUR",
-		"LIMIT",
-		Buy,
-		10.00,
-		10.00,
-		GTC,
-	)
-
-	// then a price level is created
+	id, _ := ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", tradeorder.Buy, 20.00, 10.00, tradeorder.GTC)
+	ProcessTradeOrder(assert.instrumentAccount1, "BTC_EUR", "LIMIT", tradeorder.Buy, 10.00, 10.00, tradeorder.GTC)
 	assert.Equal(2, db.GetCount("price_level"))
-
-	// when the order is deleted
 	CancelTradeOrder(id)
-
-	// then price levels are updated
 	assert.Equal(1, db.GetCount("price_level"))
 	assert.Equal(10.0, db.QueryVal[float64]("SELECT volume FROM price_level LIMIT 1"))
 }

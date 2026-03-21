@@ -1,4 +1,4 @@
-package services
+package matching
 
 import (
 	"open-outcry/pkg/db"
