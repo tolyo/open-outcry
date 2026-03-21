@@ -3,8 +3,9 @@ package api
 import (
 	"context"
 	"net/http"
+
 	appentity "open-outcry/pkg/models/app_entity"
-	transfer "open-outcry/pkg/models/transfer"
+	"open-outcry/pkg/models/transfer"
 )
 
 type AdminAPIService struct{}
@@ -22,28 +23,11 @@ func (s *AdminAPIService) GetAdminTransferById(ctx context.Context, transferId s
 	if entry == nil {
 		return Response(http.StatusNotFound, nil), nil
 	}
-	return Response(http.StatusOK, TransferEntry{
-		Id:                      entry.Id,
-		Type:                    TransferType(entry.Type),
-		Amount:                  entry.Amount,
-		Currency:                string(entry.Currency),
-		SenderAccountId:         string(entry.SenderAccountId),
-		BeneficiaryAccountId:    string(entry.BeneficiaryAccountId),
-		Details:                 string(entry.Details),
-		ExternalReferenceNumber: string(entry.ExternalReferenceNumber),
-		Status:                  entry.Status,
-		DebitBalanceAmount:      entry.DebitBalanceAmount,
-		CreditBalanceAmount:     entry.CreditBalanceAmount,
-	}), nil
+	return Response(http.StatusOK, mapTransferEntry(*entry)), nil
 }
 
 func (s *AdminAPIService) GetAppEntities(ctx context.Context) (ImplResponse, error) {
-	entities := appentity.GetAppEntities()
-	var result []AppEntity
-	for _, e := range entities {
-		result = append(result, AppEntity{Id: string(e.Id), ExternalId: string(e.ExternalId)})
-	}
-	return Response(http.StatusOK, result), nil
+	return Response(http.StatusOK, mapAppEntities(appentity.GetAppEntities())), nil
 }
 
 func (s *AdminAPIService) GetAppEntity(ctx context.Context, appEntityId string) (ImplResponse, error) {
@@ -51,5 +35,5 @@ func (s *AdminAPIService) GetAppEntity(ctx context.Context, appEntityId string) 
 	if entity == nil {
 		return Response(http.StatusNotFound, nil), nil
 	}
-	return Response(http.StatusOK, AppEntity{Id: string(entity.Id), ExternalId: string(entity.ExternalId)}), nil
+	return Response(http.StatusOK, mapAppEntity(*entity)), nil
 }
