@@ -15,8 +15,9 @@
 `pkg/conf/seeds_dev.sql` is appended only when `ENV=DEV`.
 
 - `make db-up` and `make db-down` default to `ENV=DEV`, so local development gets seed data.
-- `make test` generates migrations with `ENV=TEST`, so tests run without dev seed data.
-- If `ENV` is unset or set to a non-listed value, no environment-specific seed files are added.
+- `make test` currently generates migrations with `ENV=DEV`, because the existing test suite depends on the baseline seeded data.
+- If `ENV` is unset, migration generation defaults to `DEV`, matching local app startup and direct `go test` usage.
+- If `ENV` is set to a non-listed value, no environment-specific seed files are added.
 
 ## Ordering Rule
 

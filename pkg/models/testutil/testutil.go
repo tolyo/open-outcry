@@ -1,5 +1,10 @@
 package testutil
 
+// Package testutil provides a shared integration-test harness for model packages.
+// The model tests all run against the same Postgres database, so setup and
+// teardown are centralized here and access is serialized with a file lock to
+// avoid concurrent migration and data-reset races across packages.
+
 import (
 	"os"
 	"path/filepath"

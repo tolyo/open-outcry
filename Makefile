@@ -29,8 +29,8 @@ run: ## Start dev mode
 test:
 	tmpdir=$$(mktemp -d); \
 	trap 'rm -rf "$$tmpdir"' EXIT; \
-	ENV=TEST go run ./cmd/migrationgen -out "$$tmpdir"; \
-	ENV=TEST $(MIGRATION_DIR_ENV)="$$tmpdir" go test $(TEST_PACKAGES) -v -cover -p 1
+	ENV=DEV go run ./cmd/migrationgen -out "$$tmpdir"; \
+	ENV=DEV $(MIGRATION_DIR_ENV)="$$tmpdir" go test $(TEST_PACKAGES) -v -cover -p 1
 
 ensure-goimports:
 	@if [ ! -x "$(GOIMPORTS_BIN)" ]; then \

@@ -85,5 +85,9 @@ func GeneratedMigrationName(index int, source string) string {
 }
 
 func currentEnv() string {
-	return strings.ToUpper(strings.TrimSpace(os.Getenv("ENV")))
+	env := strings.ToUpper(strings.TrimSpace(os.Getenv("ENV")))
+	if env == "" {
+		return "DEV"
+	}
+	return env
 }
