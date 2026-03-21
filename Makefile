@@ -2,13 +2,18 @@ include api/api.mk
 include demo/demo.mk
 
 .DEFAULT_GOAL := help
-.PHONY: help
+.PHONY: help ensure-goimports ensure-staticcheck
 
 TEST_PACKAGES := $(shell go list -f '{{if or .TestGoFiles .XTestGoFiles}}{{.ImportPath}}{{end}}' ./... | sed '/^$$/d')
+GOBIN := $(shell go env GOPATH)/bin
+GOIMPORTS_BIN := $(GOBIN)/goimports
+STATICCHECK_BIN := $(GOBIN)/staticcheck
+GO_VERSION := $(shell go env GOVERSION)
+MIGRATION_DIR_ENV := OPEN_OUTCRY_MIGRATION_DIR
 
 setup:
 	go install golang.org/x/tools/cmd/goimports@latest
-	go install honnef.co/go/tools/cmd/staticcheck@latest
+	GOTOOLCHAIN=$(GO_VERSION) go install honnef.co/go/tools/cmd/staticcheck@latest
 	go install github.com/pressly/goose/v3/cmd/goose@latest
 	go get ./...
 	(cd api && npm i)
@@ -21,26 +26,44 @@ run: ## Start dev mode
 	go run main.go
 
 test:
-	go test $(TEST_PACKAGES) -v -cover -p 1
+	tmpdir=$$(mktemp -d); \
+	trap 'rm -rf "$$tmpdir"' EXIT; \
+	go run ./cmd/migrationgen -out "$$tmpdir"; \
+	$(MIGRATION_DIR_ENV)="$$tmpdir" go test $(TEST_PACKAGES) -v -cover -p 1
 
-lint:
+ensure-goimports:
+	@if [ ! -x "$(GOIMPORTS_BIN)" ]; then \
+		go install golang.org/x/tools/cmd/goimports@latest; \
+	fi
+
+ensure-staticcheck:
+	@if [ ! -x "$(STATICCHECK_BIN)" ]; then \
+		GOTOOLCHAIN=$(GO_VERSION) go install honnef.co/go/tools/cmd/staticcheck@latest; \
+	elif [ "$$(go version -m "$(STATICCHECK_BIN)" 2>/dev/null | sed -n '1s/.*: //p')" != "$(GO_VERSION)" ]; then \
+		GOTOOLCHAIN=$(GO_VERSION) go install honnef.co/go/tools/cmd/staticcheck@latest; \
+	fi
+
+lint: ensure-goimports ensure-staticcheck
 	go fmt ./...
-	goimports -l -w .
-	staticcheck ./...
+	$(GOIMPORTS_BIN) -l -w .
+	$(STATICCHECK_BIN) ./...
 	go vet ./...
 
 include ./pkg/conf/dev.env
 DB_DSN:="host=$(POSTGRES_HOST) user=$(POSTGRES_USER) password=$(POSTGRES_PASSWORD) dbname=$(POSTGRES_DB) port=$(POSTGRES_PORT) sslmode=disable"
-MIGRATE_OPTIONS=-allow-missing -dir="./sql/generated"
+MIGRATE_OPTIONS=-allow-missing
 
-db-sync-migrations: ## Generate numbered goose migrations from the sql manifest
-	go run ./cmd/migrationgen
+db-up: ## Migrate database up
+	tmpdir=$$(mktemp -d); \
+	trap 'rm -rf "$$tmpdir"' EXIT; \
+	go run ./cmd/migrationgen -out "$$tmpdir"; \
+	goose -v $(MIGRATE_OPTIONS) -dir="$$tmpdir" postgres $(DB_DSN) up
 
-db-up: db-sync-migrations ## Migrate database up
-	goose -v $(MIGRATE_OPTIONS) postgres $(DB_DSN) up
-
-db-down: db-sync-migrations ## Reset database migrations
-	goose -v $(MIGRATE_OPTIONS) postgres $(DB_DSN) reset
+db-down: ## Reset database migrations
+	tmpdir=$$(mktemp -d); \
+	trap 'rm -rf "$$tmpdir"' EXIT; \
+	go run ./cmd/migrationgen -out "$$tmpdir"; \
+	goose -v $(MIGRATE_OPTIONS) -dir="$$tmpdir" postgres $(DB_DSN) reset
 
 db-rebuild: ## Reset the database
 	make db-down

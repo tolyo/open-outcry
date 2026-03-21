@@ -432,10 +432,6 @@ func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err err
 		return nil
 	}
 	if f, ok := v.(*os.File); ok {
-		f, err = os.CreateTemp("", "HttpClientFile")
-		if err != nil {
-			return
-		}
 		_, err = f.Write(b)
 		if err != nil {
 			return
@@ -541,7 +537,7 @@ func setBody(body interface{}, contentType string) (bodyBuf *bytes.Buffer, err e
 	}
 
 	if bodyBuf.Len() == 0 {
-		err = fmt.Errorf("invalid body type %s\n", contentType)
+		err = fmt.Errorf("invalid body type %s", contentType)
 		return nil, err
 	}
 	return bodyBuf, nil

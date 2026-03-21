@@ -1,7 +1,11 @@
 package sql
 
 import (
-	"embed"
+	"fmt"
+	"os"
+	"path/filepath"
+	"sync"
+
 	"open-outcry/pkg/db"
 
 	log "github.com/sirupsen/logrus"
@@ -9,13 +13,15 @@ import (
 	"github.com/pressly/goose/v3"
 )
 
-const generatedMigrationDir = "generated"
+const migrationDirEnv = "OPEN_OUTCRY_MIGRATION_DIR"
 
-//go:embed generated/*.sql
-var embedMigrations embed.FS
+var (
+	migrationDirMu        sync.Mutex
+	activeMigrationDir    string
+	cleanupMigrationDirFn func()
+)
 
 func configureGoose() {
-	goose.SetBaseFS(embedMigrations)
 	if err := goose.SetDialect("postgres"); err != nil {
 		panic(err)
 	}
@@ -24,7 +30,12 @@ func configureGoose() {
 func MigrateUp() error {
 	log.Info("Migrate up")
 	configureGoose()
-	if err := goose.Up(db.Instance().DB, generatedMigrationDir); err != nil {
+
+	migrationDir, err := ensureMigrationDir()
+	if err != nil {
+		return err
+	}
+	if err := goose.Up(db.Instance().DB, migrationDir); err != nil {
 		panic(err)
 	}
 
@@ -33,9 +44,52 @@ func MigrateUp() error {
 
 func MigrateDown() error {
 	configureGoose()
-	if err := goose.DownTo(db.Instance().DB, generatedMigrationDir, 0); err != nil {
+
+	migrationDir, err := ensureMigrationDir()
+	if err != nil {
+		return err
+	}
+	if err := goose.DownTo(db.Instance().DB, migrationDir, 0); err != nil {
 		panic(err)
 	}
 
+	releaseMigrationDir()
 	return nil
+}
+
+func ensureMigrationDir() (string, error) {
+	migrationDirMu.Lock()
+	defer migrationDirMu.Unlock()
+
+	if activeMigrationDir != "" {
+		return activeMigrationDir, nil
+	}
+
+	if configuredDir := os.Getenv(migrationDirEnv); configuredDir != "" {
+		activeMigrationDir = filepath.Clean(configuredDir)
+		if _, err := os.Stat(activeMigrationDir); err != nil {
+			return "", fmt.Errorf("migration dir %s: %w", activeMigrationDir, err)
+		}
+		cleanupMigrationDirFn = nil
+		return activeMigrationDir, nil
+	}
+
+	generatedDir, cleanup, err := CreateTempMigrations()
+	if err != nil {
+		return "", err
+	}
+	activeMigrationDir = generatedDir
+	cleanupMigrationDirFn = cleanup
+	return activeMigrationDir, nil
+}
+
+func releaseMigrationDir() {
+	migrationDirMu.Lock()
+	defer migrationDirMu.Unlock()
+
+	if cleanupMigrationDirFn != nil {
+		cleanupMigrationDirFn()
+	}
+	activeMigrationDir = ""
+	cleanupMigrationDirFn = nil
 }
