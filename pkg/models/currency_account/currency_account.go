@@ -1,7 +1,9 @@
-package models
+package currencyaccount
 
 import (
 	"open-outcry/pkg/db"
+	appentity "open-outcry/pkg/models/app_entity"
+	"open-outcry/pkg/models/currency"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -11,11 +13,11 @@ type CurrencyAccountId string
 
 type CurrencyAccount struct {
 	Id              CurrencyAccountId
-	AppEntityId     AppEntityId
+	AppEntityId     appentity.AppEntityId
 	Amount          float64
 	AmountAvailable float64
 	AmountReserved  float64
-	Currency        CurrencyName
+	Currency        currency.CurrencyName
 }
 
 const baseCurrencyAccountQuery = `
@@ -53,8 +55,8 @@ func GetCurrencyAccount(id CurrencyAccountId) *CurrencyAccount {
 }
 
 func FindCurrencyAccountByAppEntityIdAndCurrencyName(
-	appEntityId AppEntityId,
-	currencyName CurrencyName,
+	appEntityId appentity.AppEntityId,
+	currencyName currency.CurrencyName,
 ) *CurrencyAccount {
 	var currencyAccount CurrencyAccount
 	err := db.Instance().QueryRow(
@@ -75,7 +77,7 @@ func FindCurrencyAccountByAppEntityIdAndCurrencyName(
 	return &currencyAccount
 }
 
-func CreateCurrencyAccount(appEntityId AppEntityId, currencyName CurrencyName) CurrencyAccountId {
+func CreateCurrencyAccount(appEntityId appentity.AppEntityId, currencyName currency.CurrencyName) CurrencyAccountId {
 	var id string
 	err := db.Instance().QueryRow("SELECT create_currency_account($1, $2)", appEntityId, currencyName).Scan(&id)
 	if err != nil {
@@ -84,7 +86,7 @@ func CreateCurrencyAccount(appEntityId AppEntityId, currencyName CurrencyName) C
 	return CurrencyAccountId(id)
 }
 
-func GetCurrencyAccountsByAppEntity(appEntityId AppEntityId) []CurrencyAccount {
+func GetCurrencyAccountsByAppEntity(appEntityId appentity.AppEntityId) []CurrencyAccount {
 	query := baseCurrencyAccountQuery + `WHERE ae.pub_id = $1`
 	rows, err := db.Instance().Query(query, appEntityId)
 	if err != nil {

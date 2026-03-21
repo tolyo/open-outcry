@@ -125,7 +125,7 @@ func (a *AdminAPIService) CreateAdminTransferExecute(r ApiCreateAdminTransferReq
 type ApiGetAdminTransferByIdRequest struct {
 	ctx        context.Context
 	ApiService *AdminAPIService
-	transferId  string
+	transferId string
 }
 
 func (r ApiGetAdminTransferByIdRequest) Execute() (*TransferEntry, *http.Response, error) {
@@ -145,7 +145,7 @@ func (a *AdminAPIService) GetAdminTransferById(ctx context.Context, transferId s
 	return ApiGetAdminTransferByIdRequest{
 		ApiService: a,
 		ctx:        ctx,
-		transferId:  transferId,
+		transferId: transferId,
 	}
 }
 

@@ -1,9 +1,10 @@
-package models
+package fee
 
 import (
 	"encoding/csv"
 	"io"
 	"open-outcry/pkg/db"
+	"open-outcry/pkg/models/currency"
 	"strconv"
 	"strings"
 
@@ -13,7 +14,7 @@ import (
 
 type Fee struct {
 	Type       string
-	Currency   CurrencyName
+	Currency   currency.CurrencyName
 	Min        decimal.Decimal
 	Max        decimal.Decimal
 	Percentage int
@@ -24,19 +25,18 @@ func LoadFees(fees string) {
 
 	r := csv.NewReader(strings.NewReader(fees))
 	record, err := r.ReadAll()
-	// Stop at EOF.
 	if err != io.EOF && err != nil {
 		panic(err)
 	}
 
 	for i, line := range record {
-		if i > 0 { // omit header line
+		if i > 0 {
 			var rec Fee
 			for j, field := range line {
 				if j == 0 {
 					rec.Type = field
 				} else if j == 1 {
-					rec.Currency = CurrencyName(field)
+					rec.Currency = currency.CurrencyName(field)
 				} else if j == 2 {
 					min, err := decimal.NewFromString(field)
 					if err == nil {
@@ -61,7 +61,6 @@ func LoadFees(fees string) {
 	for _, val := range feeList {
 		CreateOrUpdateFee(val)
 	}
-
 }
 
 func CreateOrUpdateFee(fee Fee) {

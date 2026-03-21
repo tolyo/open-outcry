@@ -23,10 +23,10 @@ import (
 type UserAPIService service
 
 type ApiCreateTradeRequest struct {
-	ctx                context.Context
-	ApiService         *UserAPIService
-	instrumentAccountId   string
-	createTradeRequest *CreateTradeRequest
+	ctx                 context.Context
+	ApiService          *UserAPIService
+	instrumentAccountId string
+	createTradeRequest  *CreateTradeRequest
 }
 
 func (r ApiCreateTradeRequest) CreateTradeRequest(createTradeRequest CreateTradeRequest) ApiCreateTradeRequest {
@@ -49,8 +49,8 @@ Creates a trade order
 */
 func (a *UserAPIService) CreateTrade(ctx context.Context, instrumentAccountId string) ApiCreateTradeRequest {
 	return ApiCreateTradeRequest{
-		ApiService:       a,
-		ctx:              ctx,
+		ApiService:          a,
+		ctx:                 ctx,
 		instrumentAccountId: instrumentAccountId,
 	}
 }
@@ -138,10 +138,10 @@ func (a *UserAPIService) CreateTradeExecute(r ApiCreateTradeRequest) (*TradeOrde
 }
 
 type ApiDeleteTradeOrderByIdRequest struct {
-	ctx              context.Context
-	ApiService       *UserAPIService
+	ctx                 context.Context
+	ApiService          *UserAPIService
 	instrumentAccountId string
-	tradeOrderId     string
+	tradeOrderId        string
 }
 
 func (r ApiDeleteTradeOrderByIdRequest) Execute() (*http.Response, error) {
@@ -160,10 +160,10 @@ Cancels a trade order by id
 */
 func (a *UserAPIService) DeleteTradeOrderById(ctx context.Context, instrumentAccountId string, tradeOrderId string) ApiDeleteTradeOrderByIdRequest {
 	return ApiDeleteTradeOrderByIdRequest{
-		ApiService:       a,
-		ctx:              ctx,
+		ApiService:          a,
+		ctx:                 ctx,
 		instrumentAccountId: instrumentAccountId,
-		tradeOrderId:     tradeOrderId,
+		tradeOrderId:        tradeOrderId,
 	}
 }
 
@@ -234,8 +234,8 @@ func (a *UserAPIService) DeleteTradeOrderByIdExecute(r ApiDeleteTradeOrderByIdRe
 }
 
 type ApiGetBookOrdersRequest struct {
-	ctx              context.Context
-	ApiService       *UserAPIService
+	ctx                 context.Context
+	ApiService          *UserAPIService
 	instrumentAccountId string
 }
 
@@ -254,8 +254,8 @@ Returns list of user's trade orders currently on the order book
 */
 func (a *UserAPIService) GetBookOrders(ctx context.Context, instrumentAccountId string) ApiGetBookOrdersRequest {
 	return ApiGetBookOrdersRequest{
-		ApiService:       a,
-		ctx:              ctx,
+		ApiService:          a,
+		ctx:                 ctx,
 		instrumentAccountId: instrumentAccountId,
 	}
 }
@@ -442,10 +442,10 @@ func (a *UserAPIService) GetCurrencyAccountsExecute(r ApiGetCurrencyAccountsRequ
 }
 
 type ApiGetTradeByIdRequest struct {
-	ctx              context.Context
-	ApiService       *UserAPIService
+	ctx                 context.Context
+	ApiService          *UserAPIService
 	instrumentAccountId string
-	tradeId          string
+	tradeId             string
 }
 
 func (r ApiGetTradeByIdRequest) Execute() (*Trade, *http.Response, error) {
@@ -464,10 +464,10 @@ Returns a trade by id
 */
 func (a *UserAPIService) GetTradeById(ctx context.Context, instrumentAccountId string, tradeId string) ApiGetTradeByIdRequest {
 	return ApiGetTradeByIdRequest{
-		ApiService:       a,
-		ctx:              ctx,
+		ApiService:          a,
+		ctx:                 ctx,
 		instrumentAccountId: instrumentAccountId,
-		tradeId:          tradeId,
+		tradeId:             tradeId,
 	}
 }
 
@@ -550,10 +550,10 @@ func (a *UserAPIService) GetTradeByIdExecute(r ApiGetTradeByIdRequest) (*Trade, 
 }
 
 type ApiGetTradeOrderByIdRequest struct {
-	ctx              context.Context
-	ApiService       *UserAPIService
+	ctx                 context.Context
+	ApiService          *UserAPIService
 	instrumentAccountId string
-	tradeOrderId     string
+	tradeOrderId        string
 }
 
 func (r ApiGetTradeOrderByIdRequest) Execute() (*TradeOrder, *http.Response, error) {
@@ -572,10 +572,10 @@ Returns user's trade order
 */
 func (a *UserAPIService) GetTradeOrderById(ctx context.Context, instrumentAccountId string, tradeOrderId string) ApiGetTradeOrderByIdRequest {
 	return ApiGetTradeOrderByIdRequest{
-		ApiService:       a,
-		ctx:              ctx,
+		ApiService:          a,
+		ctx:                 ctx,
 		instrumentAccountId: instrumentAccountId,
-		tradeOrderId:     tradeOrderId,
+		tradeOrderId:        tradeOrderId,
 	}
 }
 
@@ -658,8 +658,8 @@ func (a *UserAPIService) GetTradeOrderByIdExecute(r ApiGetTradeOrderByIdRequest)
 }
 
 type ApiGetTradeOrdersRequest struct {
-	ctx              context.Context
-	ApiService       *UserAPIService
+	ctx                 context.Context
+	ApiService          *UserAPIService
 	instrumentAccountId string
 }
 
@@ -678,8 +678,8 @@ Returns list of user's trade orders
 */
 func (a *UserAPIService) GetTradeOrders(ctx context.Context, instrumentAccountId string) ApiGetTradeOrdersRequest {
 	return ApiGetTradeOrdersRequest{
-		ApiService:       a,
-		ctx:              ctx,
+		ApiService:          a,
+		ctx:                 ctx,
 		instrumentAccountId: instrumentAccountId,
 	}
 }
@@ -762,8 +762,8 @@ func (a *UserAPIService) GetTradeOrdersExecute(r ApiGetTradeOrdersRequest) ([]Tr
 }
 
 type ApiGetTradesRequest struct {
-	ctx              context.Context
-	ApiService       *UserAPIService
+	ctx                 context.Context
+	ApiService          *UserAPIService
 	instrumentAccountId string
 }
 
@@ -782,8 +782,8 @@ Returns list of entity's trades
 */
 func (a *UserAPIService) GetTrades(ctx context.Context, instrumentAccountId string) ApiGetTradesRequest {
 	return ApiGetTradesRequest{
-		ApiService:       a,
-		ctx:              ctx,
+		ApiService:          a,
+		ctx:                 ctx,
 		instrumentAccountId: instrumentAccountId,
 	}
 }
@@ -866,8 +866,8 @@ func (a *UserAPIService) GetTradesExecute(r ApiGetTradesRequest) ([]Trade, *http
 }
 
 type ApiGetInstrumentAccountRequest struct {
-	ctx              context.Context
-	ApiService       *UserAPIService
+	ctx                 context.Context
+	ApiService          *UserAPIService
 	instrumentAccountId string
 }
 
@@ -886,8 +886,8 @@ Returns user's trading account
 */
 func (a *UserAPIService) GetInstrumentAccount(ctx context.Context, instrumentAccountId string) ApiGetInstrumentAccountRequest {
 	return ApiGetInstrumentAccountRequest{
-		ApiService:       a,
-		ctx:              ctx,
+		ApiService:          a,
+		ctx:                 ctx,
 		instrumentAccountId: instrumentAccountId,
 	}
 }

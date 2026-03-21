@@ -1,4 +1,4 @@
-package models
+package currency
 
 import "open-outcry/pkg/db"
 
@@ -11,8 +11,6 @@ type Currency struct {
 	Precision CurrencyPrecision
 }
 
-// GetCurrencies return
 func GetCurrencies() []Currency {
-	res := db.QueryList[Currency](`SELECT * FROM currency`)
-	return res
+	return db.QueryList[Currency](`SELECT * FROM currency`)
 }

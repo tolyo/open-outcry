@@ -1,4 +1,4 @@
-package models
+package appentity
 
 import "open-outcry/pkg/db"
 

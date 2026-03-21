@@ -1,21 +1,17 @@
 package services
 
-import (
-	"open-outcry/pkg/models"
-)
-
 // AppState represents the expected transfer account state for both test entities
 type AppState struct {
-	entity1         []models.CurrencyAccount
-	entity2         []models.CurrencyAccount
+	entity1         []CurrencyAccount
+	entity2         []CurrencyAccount
 	tradeCount      int
-	orderBookStates models.OrderBook
+	orderBookStates OrderBook
 }
 
 // TestStep is a representation of initial and final account states with orders to be executed in between
 type TestStep struct {
 	initialState  AppState
-	orders        []models.TradeOrder
+	orders        []TradeOrder
 	expectedState AppState
 }
 
@@ -25,11 +21,11 @@ type MatchingServiceTestCase struct {
 }
 
 // Acc shorthand methods
-func Acc(v string) (models.AppEntityId, models.InstrumentAccountId) {
-	appEntityId := CreateAppEntity(models.AppEntityExternalId(v))
-	models.CreateCurrencyAccount(appEntityId, "BTC")
+func Acc(v string) (AppEntityId, InstrumentAccountId) {
+	appEntityId := CreateAppEntity(AppEntityExternalId(v))
+	CreateCurrencyAccount(appEntityId, "BTC")
 	CreateTransferDeposit(appEntityId, 1000, "BTC", "Test", "Test")
 	CreateTransferDeposit(appEntityId, 1000, "EUR", "Test", "Test")
-	instrumentAccount := models.FindInstrumentAccountByApplicationEntityId(appEntityId)
+	instrumentAccount := FindInstrumentAccountByApplicationEntityId(appEntityId)
 	return appEntityId, instrumentAccount.Id
 }

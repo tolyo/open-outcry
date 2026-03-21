@@ -1,4 +1,4 @@
-package models
+package instrument
 
 import "open-outcry/pkg/db"
 
@@ -9,10 +9,10 @@ type InstrumentId string
 type InstrumentName string
 
 // InstrumentBaseCurrency The underlying currency of the FX instrument
-type InstrumentBaseCurrency CurrencyName
+type InstrumentBaseCurrency string
 
 // InstrumentQuoteCurrency The default currency for market quotes of the instrument
-type InstrumentQuoteCurrency CurrencyName
+type InstrumentQuoteCurrency string
 
 type Instrument struct {
 	Id            InstrumentId `db:"pub_id"`

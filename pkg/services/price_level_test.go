@@ -2,7 +2,6 @@ package services
 
 import (
 	"open-outcry/pkg/db"
-	"open-outcry/pkg/models"
 )
 
 func (assert *ServiceTestSuite) TestCreatePriceLevel() {
@@ -12,10 +11,10 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
-		models.Buy,
+		Buy,
 		10.00,
 		10.00,
-		models.GTC,
+		GTC,
 	)
 
 	assert.Nil(err)
@@ -27,10 +26,10 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	ProcessTradeOrder(assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
-		models.Buy,
+		Buy,
 		10.00,
 		5,
-		models.GTC,
+		GTC,
 	)
 
 	// then price level is updated
@@ -40,10 +39,10 @@ func (assert *ServiceTestSuite) TestCreatePriceLevel() {
 	// when give another order for different price
 	ProcessTradeOrder(assert.instrumentAccount1,
 		"BTC_EUR",
-		"LIMIT", models.Buy,
+		"LIMIT", Buy,
 		5.00,
 		5,
-		models.GTC,
+		GTC,
 	)
 
 	// then another price level is created
@@ -57,10 +56,10 @@ func (assert *ServiceTestSuite) TestCancelWithSingle() {
 		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
-		models.Buy,
+		Buy,
 		10.00,
 		10.00,
-		models.GTC,
+		GTC,
 	)
 
 	// then a price level is created
@@ -81,20 +80,20 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersOfSameSize() {
 		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
-		models.Buy,
+		Buy,
 		10.00,
 		10.00,
-		models.GTC,
+		GTC,
 	)
 
 	ProcessTradeOrder(
 		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
-		models.Buy,
+		Buy,
 		10.00,
 		10.00,
-		models.GTC,
+		GTC,
 	)
 
 	// then a price level is created
@@ -116,20 +115,20 @@ func (assert *ServiceTestSuite) TestCancelWithTwoOrdersWithDiffPrice() {
 		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
-		models.Buy,
+		Buy,
 		20.00,
 		10.00,
-		models.GTC,
+		GTC,
 	)
 
 	ProcessTradeOrder(
 		assert.instrumentAccount1,
 		"BTC_EUR",
 		"LIMIT",
-		models.Buy,
+		Buy,
 		10.00,
 		10.00,
-		models.GTC,
+		GTC,
 	)
 
 	// then a price level is created

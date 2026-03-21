@@ -2,27 +2,26 @@ package services
 
 import (
 	"open-outcry/pkg/db"
-	"open-outcry/pkg/models"
 
 	log "github.com/sirupsen/logrus"
 )
 
-func CreateTransferDeposit(appEntityId models.AppEntityId,
+func CreateTransferDeposit(appEntityId AppEntityId,
 	amount float64,
-	currency models.CurrencyName,
+	currency CurrencyName,
 	reference string,
 	details string,
-) models.TransferJournalId {
+) TransferJournalId {
 	return CreateTransferDepositCustomFee(appEntityId, amount, currency, reference, details, "DEPOSIT_FEE")
 }
 
-func CreateTransferDepositCustomFee(appEntityId models.AppEntityId,
+func CreateTransferDepositCustomFee(appEntityId AppEntityId,
 	amount float64,
-	currency models.CurrencyName,
+	currency CurrencyName,
 	reference string,
 	details string,
 	feeType any,
-) models.TransferJournalId {
+) TransferJournalId {
 	var id string
 	err := db.Instance().QueryRow(
 		"SELECT process_transfer('DEPOSIT', 'MASTER', $2, $3, $1, $4, $5, $6)",
@@ -31,5 +30,5 @@ func CreateTransferDepositCustomFee(appEntityId models.AppEntityId,
 	if err != nil {
 		log.Fatal(err)
 	}
-	return models.TransferJournalId(id)
+	return TransferJournalId(id)
 }

@@ -2,10 +2,9 @@ package services
 
 import (
 	"open-outcry/pkg/db"
-	"open-outcry/pkg/models"
 )
 
-func GetVolumeAtPrice(instrumentName models.InstrumentName, side models.OrderSide, price models.OrderPrice) float64 {
+func GetVolumeAtPrice(instrumentName InstrumentName, side OrderSide, price OrderPrice) float64 {
 	res := db.QueryVal[float64](`
 	 SELECT volume
 	 FROM price_level
@@ -16,15 +15,15 @@ func GetVolumeAtPrice(instrumentName models.InstrumentName, side models.OrderSid
 	return res
 }
 
-func GetVolumes(instrumentName models.InstrumentName, side models.OrderSide) []models.PriceVolume {
+func GetVolumes(instrumentName InstrumentName, side OrderSide) []PriceVolume {
 	var orderBy string
 	switch side {
-	case models.Sell:
+	case Sell:
 		orderBy = "ASC"
-	case models.Buy:
+	case Buy:
 		orderBy = "DESC"
 	}
-	res := db.QueryList[models.PriceVolume](`
+	res := db.QueryList[PriceVolume](`
 		SELECT price, volume
 		FROM price_level
 		WHERE side = $2
@@ -37,8 +36,8 @@ func GetVolumes(instrumentName models.InstrumentName, side models.OrderSide) []m
 	return res
 }
 
-func GetOrderBook(instrumentName models.InstrumentName) models.OrderBook {
-	res := db.QueryList[models.PriceVolume](`
+func GetOrderBook(instrumentName InstrumentName) OrderBook {
+	res := db.QueryList[PriceVolume](`
 		SELECT price, volume, side
 		FROM price_level
 		WHERE price > 0
@@ -46,16 +45,16 @@ func GetOrderBook(instrumentName models.InstrumentName) models.OrderBook {
 		ORDER BY price ASC, side DESC
 	`, instrumentName)
 
-	orderBook := models.OrderBook{
-		SellSide: make([]models.PriceVolume, 0),
-		BuySide:  make([]models.PriceVolume, 0),
+	orderBook := OrderBook{
+		SellSide: make([]PriceVolume, 0),
+		BuySide:  make([]PriceVolume, 0),
 	}
 	for _, entry := range res {
 		switch entry.Side {
-		case models.Sell:
-			orderBook.SellSide = append(orderBook.SellSide, models.PriceVolume{Price: entry.Price, Volume: entry.Volume})
-		case models.Buy:
-			orderBook.BuySide = append(orderBook.BuySide, models.PriceVolume{Price: entry.Price, Volume: entry.Volume})
+		case Sell:
+			orderBook.SellSide = append(orderBook.SellSide, PriceVolume{Price: entry.Price, Volume: entry.Volume})
+		case Buy:
+			orderBook.BuySide = append(orderBook.BuySide, PriceVolume{Price: entry.Price, Volume: entry.Volume})
 		}
 	}
 

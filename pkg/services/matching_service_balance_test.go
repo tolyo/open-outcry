@@ -1,7 +1,6 @@
 package services
 
 import (
-	"open-outcry/pkg/models"
 	"open-outcry/pkg/utils"
 	"reflect"
 )
@@ -12,7 +11,7 @@ var testcases = []MatchingServiceTestCase{
 		// - reserve balance should increase
 		{
 			initialState: AppState{
-				entity1: []models.CurrencyAccount{
+				entity1: []CurrencyAccount{
 					{
 						Amount:          1000,
 						AmountAvailable: 1000,
@@ -22,11 +21,11 @@ var testcases = []MatchingServiceTestCase{
 				},
 				entity2: nil,
 			},
-			orders: []models.TradeOrder{
-				{Side: models.Buy, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
+			orders: []TradeOrder{
+				{Side: Buy, Type: Limit, Price: 10, Amount: 10, TimeInForce: GTC},
 			},
 			expectedState: AppState{
-				entity1: []models.CurrencyAccount{
+				entity1: []CurrencyAccount{
 					{
 						Amount:          1000,
 						AmountAvailable: 900,
@@ -40,7 +39,7 @@ var testcases = []MatchingServiceTestCase{
 
 		{
 			initialState: AppState{
-				entity1: []models.CurrencyAccount{
+				entity1: []CurrencyAccount{
 					{
 						Amount:          1000,
 						AmountAvailable: 900,
@@ -50,11 +49,11 @@ var testcases = []MatchingServiceTestCase{
 				},
 				entity2: nil,
 			},
-			orders: []models.TradeOrder{
-				{Side: models.Buy, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
+			orders: []TradeOrder{
+				{Side: Buy, Type: Limit, Price: 10, Amount: 10, TimeInForce: GTC},
 			},
 			expectedState: AppState{
-				entity1: []models.CurrencyAccount{
+				entity1: []CurrencyAccount{
 					{
 						Amount:          1000,
 						AmountAvailable: 800,
@@ -72,7 +71,7 @@ var testcases = []MatchingServiceTestCase{
 		// - reserve balance should increase
 		{
 			initialState: AppState{
-				entity1: []models.CurrencyAccount{
+				entity1: []CurrencyAccount{
 					{
 						Amount:          1000,
 						AmountAvailable: 1000,
@@ -82,11 +81,11 @@ var testcases = []MatchingServiceTestCase{
 				},
 				entity2: nil,
 			},
-			orders: []models.TradeOrder{
-				{Side: models.Sell, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
+			orders: []TradeOrder{
+				{Side: Sell, Type: Limit, Price: 10, Amount: 10, TimeInForce: GTC},
 			},
 			expectedState: AppState{
-				entity1: []models.CurrencyAccount{
+				entity1: []CurrencyAccount{
 					{
 						Amount:          1000,
 						AmountAvailable: 990,
@@ -100,7 +99,7 @@ var testcases = []MatchingServiceTestCase{
 
 		{
 			initialState: AppState{
-				entity1: []models.CurrencyAccount{
+				entity1: []CurrencyAccount{
 					{
 						Amount:          1000,
 						AmountAvailable: 990,
@@ -110,11 +109,11 @@ var testcases = []MatchingServiceTestCase{
 				},
 				entity2: nil,
 			},
-			orders: []models.TradeOrder{
-				{Side: models.Sell, Type: models.Limit, Price: 10, Amount: 10, TimeInForce: models.GTC},
+			orders: []TradeOrder{
+				{Side: Sell, Type: Limit, Price: 10, Amount: 10, TimeInForce: GTC},
 			},
 			expectedState: AppState{
-				entity1: []models.CurrencyAccount{
+				entity1: []CurrencyAccount{
 					{
 						Amount:          1000,
 						AmountAvailable: 980,
@@ -141,8 +140,8 @@ func RunTestCases(assert *ServiceTestSuite, cases []MatchingServiceTestCase) {
 
 			// given:
 			expect := func(expectedState AppState) {
-				utils.Each(expectedState.entity1, func(account models.CurrencyAccount) {
-					var currencyAccount = models.FindCurrencyAccountByAppEntityIdAndCurrencyName(assert.appEntity1,
+				utils.Each(expectedState.entity1, func(account CurrencyAccount) {
+					var currencyAccount = FindCurrencyAccountByAppEntityIdAndCurrencyName(assert.appEntity1,
 						account.Currency)
 					assert.Equal(account.Amount, currencyAccount.Amount)
 					assert.Equal(account.AmountAvailable, currencyAccount.AmountAvailable)
@@ -153,17 +152,17 @@ func RunTestCases(assert *ServiceTestSuite, cases []MatchingServiceTestCase) {
 				}
 
 				if fieldExists(expectedState, "orderBookStates") {
-					utils.Each(expectedState.orderBookStates.BuySide, func(level models.PriceVolume) {
-						assert.Equal(level.Volume, GetAvailableLimitVolume(models.Buy, models.OrderPrice(level.Price)))
+					utils.Each(expectedState.orderBookStates.BuySide, func(level PriceVolume) {
+						assert.Equal(level.Volume, GetAvailableLimitVolume(Buy, OrderPrice(level.Price)))
 					})
-					utils.Each(expectedState.orderBookStates.SellSide, func(level models.PriceVolume) {
-						assert.Equal(level.Volume, GetAvailableLimitVolume(models.Sell, models.OrderPrice(level.Price)))
+					utils.Each(expectedState.orderBookStates.SellSide, func(level PriceVolume) {
+						assert.Equal(level.Volume, GetAvailableLimitVolume(Sell, OrderPrice(level.Price)))
 					})
 				}
 			}
 			// then:
 			expect(step.initialState)
-			utils.Each(step.orders, func(order models.TradeOrder) {
+			utils.Each(step.orders, func(order TradeOrder) {
 				orderId, err := ProcessTradeOrder(assert.instrumentAccount1,
 					"BTC_EUR",
 					order.Type,

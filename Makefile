@@ -4,6 +4,8 @@ include demo/demo.mk
 .DEFAULT_GOAL := help
 .PHONY: help
 
+TEST_PACKAGES := $(shell go list -f '{{if or .TestGoFiles .XTestGoFiles}}{{.ImportPath}}{{end}}' ./... | sed '/^$$/d')
+
 setup:
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install honnef.co/go/tools/cmd/staticcheck@latest
@@ -19,7 +21,7 @@ run: ## Start dev mode
 	go run main.go
 
 test:
-	go test ./... -v -cover -p 1
+	go test $(TEST_PACKAGES) -v -cover -p 1
 
 lint:
 	go fmt ./...
@@ -29,12 +31,15 @@ lint:
 
 include ./pkg/conf/dev.env
 DB_DSN:="host=$(POSTGRES_HOST) user=$(POSTGRES_USER) password=$(POSTGRES_PASSWORD) dbname=$(POSTGRES_DB) port=$(POSTGRES_PORT) sslmode=disable"
-MIGRATE_OPTIONS=-allow-missing -dir="./sql"
+MIGRATE_OPTIONS=-allow-missing -dir="./sql/generated"
 
-db-up: ## Migrate down on database
+db-sync-migrations: ## Generate numbered goose migrations from the sql manifest
+	go run ./cmd/migrationgen
+
+db-up: db-sync-migrations ## Migrate database up
 	goose -v $(MIGRATE_OPTIONS) postgres $(DB_DSN) up
 
-db-down: ## Migrate up on database
+db-down: db-sync-migrations ## Reset database migrations
 	goose -v $(MIGRATE_OPTIONS) postgres $(DB_DSN) reset
 
 db-rebuild: ## Reset the database

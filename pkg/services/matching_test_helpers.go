@@ -2,13 +2,12 @@ package services
 
 import (
 	"open-outcry/pkg/db"
-	"open-outcry/pkg/models"
 	"open-outcry/pkg/utils"
 
 	log "github.com/sirupsen/logrus"
 )
 
-func GetBookOrderCount(side models.OrderSide) int {
+func GetBookOrderCount(side OrderSide) int {
 	return db.QueryVal[int](utils.Format(
 		`
 		SELECT COUNT(*)
@@ -21,11 +20,11 @@ func GetBookOrderCount(side models.OrderSide) int {
 }
 
 func GetSellBookOrderCount() int {
-	return GetBookOrderCount(models.Sell)
+	return GetBookOrderCount(Sell)
 }
 
 func GetBuyBookOrderCount() int {
-	return GetBookOrderCount(models.Buy)
+	return GetBookOrderCount(Buy)
 }
 
 func GetTradeCount() int {
@@ -36,7 +35,7 @@ func GetTradePrices() []float64 {
 	return db.QueryList[float64]("SELECT (price) FROM trade ORDER BY created_at ASC")
 }
 
-func GetCrossingLimitOrders(instrumentId int, side models.OrderSide, price models.OrderPrice) int {
+func GetCrossingLimitOrders(instrumentId int, side OrderSide, price OrderPrice) int {
 	rows, err := db.Instance().Query("SELECT get_crossing_limit_orders($1, $2, $3, $4)",
 		instrumentId,
 		side,
@@ -54,6 +53,6 @@ func GetCrossingLimitOrders(instrumentId int, side models.OrderSide, price model
 	return count
 }
 
-func GetAvailableLimitVolume(side models.OrderSide, price models.OrderPrice) float64 {
+func GetAvailableLimitVolume(side OrderSide, price OrderPrice) float64 {
 	return db.QueryVal[float64]("SELECT get_available_limit_volume(1, $1::order_side, $2)", side, price)
 }

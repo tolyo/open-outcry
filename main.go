@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"open-outcry/pkg/conf"
 	"open-outcry/pkg/db"
-	"open-outcry/pkg/models"
+	fee "open-outcry/pkg/models/fee"
 	"open-outcry/pkg/rest"
 	"os"
 
@@ -15,7 +15,6 @@ import (
 var fees string
 
 func main() {
-
 	envVarValue := os.Getenv("ENV")
 	if envVarValue == "" {
 		envVarValue = "DEV"
@@ -26,17 +25,12 @@ func main() {
 	db.SetupInstance()
 
 	if conf.Get().UpdateFees {
-		models.LoadFees(fees)
+		fee.LoadFees(fees)
 	}
-
-	// Sample seed for debugging
-	//_, tradingAccount1 := services.Acc("test")
-	//services.ProcessTradeOrder(tradingAccount1, "BTC_EUR", "LIMIT", models.Sell, 10.00, 1, "GTC")
 
 	server := rest.NewServer()
 	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }

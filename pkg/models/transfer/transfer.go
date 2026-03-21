@@ -1,7 +1,10 @@
-package models
+package transfer
 
 import (
 	"open-outcry/pkg/db"
+	appentity "open-outcry/pkg/models/app_entity"
+	"open-outcry/pkg/models/currency"
+	currencyaccount "open-outcry/pkg/models/currency_account"
 
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
@@ -31,9 +34,9 @@ type TransferEntry struct {
 	Id                      string
 	Type                    TransferType
 	Amount                  float64
-	Currency                CurrencyName
-	SenderAccountId         CurrencyAccountId
-	BeneficiaryAccountId    CurrencyAccountId
+	Currency                currency.CurrencyName
+	SenderAccountId         currencyaccount.CurrencyAccountId
+	BeneficiaryAccountId    currencyaccount.CurrencyAccountId
 	Details                 TransferDetails
 	ExternalReferenceNumber TransferExternalReferenceNumber
 	Status                  string
@@ -76,7 +79,7 @@ func GetTransfer(id string) *TransferEntry {
 	return &t
 }
 
-func GetTransfersByAppEntity(appEntityId AppEntityId) []TransferEntry {
+func GetTransfersByAppEntity(appEntityId appentity.AppEntityId) []TransferEntry {
 	query := transferBaseQuery + `
 		WHERE debit_ta.app_entity_id = (SELECT id FROM app_entity WHERE pub_id = $1)
 		   OR credit_ta.app_entity_id = (SELECT id FROM app_entity WHERE pub_id = $1)
@@ -111,14 +114,13 @@ func GetTransfersByAppEntity(appEntityId AppEntityId) []TransferEntry {
 type TransferLedgerEntry struct {
 	Id                string
 	TransferId        string
-	CurrencyAccountId CurrencyAccountId
+	CurrencyAccountId currencyaccount.CurrencyAccountId
 	EntryType         string
 	Amount            decimal.Decimal
 	ResultingBalance  decimal.Decimal
 	CreatedAt         string
 }
 
-// GetTransferLedgerEntries returns all ledger entries for a given transfer.
 func GetTransferLedgerEntries(transferPubId string) []TransferLedgerEntry {
 	rows, err := db.Instance().Query(`
 		SELECT
@@ -158,8 +160,7 @@ func GetTransferLedgerEntries(transferPubId string) []TransferLedgerEntry {
 	return entries
 }
 
-// GetTransferLedgerEntriesByAccount returns all ledger entries for a given currency account.
-func GetTransferLedgerEntriesByAccount(currencyAccountPubId CurrencyAccountId) []TransferLedgerEntry {
+func GetTransferLedgerEntriesByAccount(currencyAccountPubId currencyaccount.CurrencyAccountId) []TransferLedgerEntry {
 	rows, err := db.Instance().Query(`
 		SELECT
 			tle.pub_id,

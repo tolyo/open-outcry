@@ -1,8 +1,10 @@
-package models
+package instrumentaccount
 
 import (
 	"log"
 	"open-outcry/pkg/db"
+	appentity "open-outcry/pkg/models/app_entity"
+	"open-outcry/pkg/models/instrument"
 
 	"github.com/shopspring/decimal"
 )
@@ -14,14 +16,14 @@ type InstrumentAccountHolding struct {
 	Amount          decimal.Decimal
 	AmountAvailable float64
 	AmountReserved  float64
-	Name            InstrumentName
+	Name            instrument.InstrumentName
 	Value           float64
-	Currency        CurrencyName
+	Currency        string
 }
 
 type InstrumentAccount struct {
 	Id          InstrumentAccountId
-	AppEntityId AppEntityExternalId
+	AppEntityId appentity.AppEntityExternalId
 }
 
 const instrumentAccountBaseQuery = `
@@ -32,14 +34,14 @@ const instrumentAccountBaseQuery = `
 `
 
 func GetInstrumentAccount(id InstrumentAccountId) *InstrumentAccount {
-	return helper(instrumentAccountBaseQuery+"WHERE t.pub_id = $1", id)
+	return getInstrumentAccount(instrumentAccountBaseQuery+"WHERE t.pub_id = $1", id)
 }
 
-func FindInstrumentAccountByApplicationEntityId(appEntityId AppEntityId) *InstrumentAccount {
-	return helper(instrumentAccountBaseQuery+"WHERE ae.pub_id = $1", appEntityId)
+func FindInstrumentAccountByApplicationEntityId(appEntityId appentity.AppEntityId) *InstrumentAccount {
+	return getInstrumentAccount(instrumentAccountBaseQuery+"WHERE ae.pub_id = $1", appEntityId)
 }
 
-func helper(query string, arg any) *InstrumentAccount {
+func getInstrumentAccount(query string, arg any) *InstrumentAccount {
 	var instrumentAccount InstrumentAccount
 	err := db.Instance().QueryRow(
 		query, arg,
